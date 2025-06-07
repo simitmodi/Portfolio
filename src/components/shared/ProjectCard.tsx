@@ -22,7 +22,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
     <Card
       ref={cardRef}
       className={cn(
-        "flex flex-col h-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300",
+        "flex flex-col h-full overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-out", // Enhanced hover
         "opacity-0",
         isCardInView && "animate-fade-in" // Uses a general fade-in, can be more specific
       )}

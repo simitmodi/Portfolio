@@ -56,7 +56,11 @@ const AboutSection = () => {
                 <h3 className="text-xl font-semibold font-headline mb-4 text-primary">My Skills</h3>
                 <div className="flex flex-wrap gap-3">
                   {portfolioConfig.skills.map((skill, index) => (
-                    <Badge key={index} variant="default" className="px-4 py-2 text-sm shadow-md hover:bg-primary/90 transition-colors">
+                    <Badge 
+                      key={index} 
+                      variant="default" 
+                      className="px-4 py-2 text-sm shadow-md hover:bg-primary/90 transform hover:scale-105 transition-all duration-200 ease-out" // Enhanced hover
+                    >
                       {skill.icon && <skill.icon className="mr-2 h-4 w-4" />}
                       {skill.name}
                     </Badge>
