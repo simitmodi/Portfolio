@@ -11,7 +11,6 @@ import { cn } from '@/lib/utils';
 
 const ContactSection = () => {
   const [leftContentRef, isLeftContentInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.2 });
-  // ContactForm will handle its own animation
 
   return (
     <section id="contact" className="bg-background">
@@ -33,27 +32,26 @@ const ContactSection = () => {
             </p>
             <div className="space-y-4">
               <a href={`mailto:${portfolioConfig.contact.email}`} className="flex items-center space-x-3 group">
-                <Button variant="outline" size="icon" className="rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                <Button variant="outline" size="icon" className="rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-200 ease-out transform group-hover:scale-110">
                   <Mail className="h-5 w-5" />
                 </Button>
                 <span className="text-foreground/90 group-hover:text-accent transition-colors">{portfolioConfig.contact.email}</span>
               </a>
               <Link href={portfolioConfig.contact.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 group">
-                 <Button variant="outline" size="icon" className="rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                 <Button variant="outline" size="icon" className="rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-200 ease-out transform group-hover:scale-110">
                    <Linkedin className="h-5 w-5" />
                  </Button>
                 <span className="text-foreground/90 group-hover:text-accent transition-colors">LinkedIn Profile</span>
               </Link>
               <Link href={portfolioConfig.contact.github} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 group">
-                <Button variant="outline" size="icon" className="rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                <Button variant="outline" size="icon" className="rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-200 ease-out transform group-hover:scale-110">
                   <Github className="h-5 w-5" />
                 </Button>
                 <span className="text-foreground/90 group-hover:text-accent transition-colors">GitHub Profile</span>
               </Link>
             </div>
           </div>
-          {/* ContactForm component animates itself */}
-          <div className="animate-slide-in-right-placeholder"> {/* This div is mainly for grid structure; animation is in ContactForm */}
+          <div className="animate-slide-in-right-placeholder"> 
             <ContactForm />
           </div>
         </div>

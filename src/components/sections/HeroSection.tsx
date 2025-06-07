@@ -16,7 +16,7 @@ const HeroSection = () => {
 
 
   return (
-    <section id="hero" className="py-20 md:py-32 bg-gradient-to-br from-background to-secondary/30"> {/* Added id="hero" */}
+    <section id="hero" className="py-20 md:py-32 bg-gradient-to-br from-background to-secondary/30"> 
       <div className="container mx-auto px-6 text-center">
         <div className="max-w-3xl mx-auto">
           <div
@@ -63,12 +63,12 @@ const HeroSection = () => {
               isButtonsInView && "animate-fade-in"
             )}
           >
-            <Button size="lg" asChild>
+            <Button size="lg" asChild className="transition-transform duration-200 ease-out hover:-translate-y-0.5">
               <Link href="#projects">
                 View Projects <ArrowDown className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" asChild>
+            <Button size="lg" variant="outline" asChild className="transition-transform duration-200 ease-out hover:-translate-y-0.5">
               <a href="/resume.pdf" download="resume.pdf"> 
                 Download CV <Download className="ml-2 h-5 w-5" />
               </a>

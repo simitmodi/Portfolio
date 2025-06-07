@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 
 interface ProjectCardProps {
   project: Project;
-  index: number; // Index can be used for staggered animation if needed, or remove if not
+  index: number; 
 }
 
 const ProjectCard = ({ project, index }: ProjectCardProps) => {
@@ -22,9 +22,9 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
     <Card
       ref={cardRef}
       className={cn(
-        "flex flex-col h-full overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-out", // Enhanced hover
+        "flex flex-col h-full overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-out", 
         "opacity-0",
-        isCardInView && "animate-fade-in" // Uses a general fade-in, can be more specific
+        isCardInView && "animate-fade-in" 
       )}
     >
       <CardHeader className="p-0">
@@ -51,14 +51,14 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       <CardFooter className="p-6 pt-0">
         <div className="flex space-x-2 w-full">
           {project.projectUrl && (
-            <Button asChild variant="outline" className="flex-1">
+            <Button asChild variant="outline" className="flex-1 transition-transform duration-200 ease-out hover:-translate-y-0.5">
               <Link href={project.projectUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="mr-2 h-4 w-4" /> View Live
               </Link>
             </Button>
           )}
           {project.githubUrl && (
-             <Button asChild variant="default" className="flex-1">
+             <Button asChild variant="default" className="flex-1 transition-transform duration-200 ease-out hover:-translate-y-0.5">
               <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                 <Github className="mr-2 h-4 w-4" /> Source Code
               </Link>
