@@ -18,7 +18,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        headline: ['"Roboto"', 'sans-serif'],
+        headline: ['"Roboto Mono"', 'monospace'], // Changed to Roboto Mono
         body: ['"Roboto Mono"', 'monospace'],
         code: ['monospace', 'monospace'],
       },
@@ -112,6 +112,10 @@ export default {
           '0%, 100%': { boxShadow: '0 0 0 0px hsl(var(--primary) / 0)' },
           '50%': { boxShadow: '0 0 0 4px hsl(var(--primary) / 0.3)' },
         },
+        'blink': { // Added blink animation
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -120,6 +124,7 @@ export default {
         'slide-in-left': 'slide-in-left 0.7s ease-out forwards',
         'slide-in-right': 'slide-in-right 0.7s ease-out forwards',
         'switch-on-pulse': 'switch-on-pulse 0.6s ease-out 1',
+        'blink': 'blink 1s step-end infinite', // Added blink animation utility
       },
     },
   },

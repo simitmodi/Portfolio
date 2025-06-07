@@ -7,16 +7,17 @@ import { ArrowDown, Download } from 'lucide-react';
 import Image from 'next/image';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
+import TypingAnimation from '@/components/shared/TypingAnimation'; // New import
 
 const HeroSection = () => {
   const [imageRef, isImageInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
-  const [titleRef, isTitleInView] = useScrollAnimation<HTMLHeadingElement>({ triggerOnce: false, threshold: 0.2 });
+  // const [titleRef, isTitleInView] = useScrollAnimation<HTMLHeadingElement>({ triggerOnce: false, threshold: 0.2 }); // Removed titleRef
   const [jobTitleRef, isJobTitleInView] = useScrollAnimation<HTMLParagraphElement>({ triggerOnce: false, threshold: 0.2 });
   const [buttonsRef, isButtonsInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
 
 
   return (
-    <section id="hero" className="py-20 md:py-32 bg-background"> 
+    <section id="hero" className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-6 text-center">
         <div className="max-w-3xl mx-auto">
           <div
@@ -28,7 +29,7 @@ const HeroSection = () => {
             )}
           >
             <Image
-              src="https://placehold.co/200x200.png" 
+              src="https://placehold.co/200x200.png"
               alt={portfolioConfig.name}
               data-ai-hint="professional portrait"
               layout="fill"
@@ -36,14 +37,13 @@ const HeroSection = () => {
             />
           </div>
           <h1
-            ref={titleRef}
-            className={cn(
-              "text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-primary mb-4",
-              "opacity-0",
-              isTitleInView && "animate-fade-in"
+            className={cn( // Removed ref and scroll animation classes
+              "text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-primary mb-4 min-h-[1.2em] sm:min-h-[1.5em] md:min-h-[1.5em]" // Added min-h for layout stability
+              // "opacity-0", // Removed
+              // isTitleInView && "animate-fade-in" // Removed
             )}
           >
-            {portfolioConfig.name}
+            <TypingAnimation text={portfolioConfig.name} speed={100} />
           </h1>
           <p
             ref={jobTitleRef}
@@ -69,7 +69,7 @@ const HeroSection = () => {
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="transition-transform duration-200 ease-out hover:-translate-y-0.5">
-              <a href="/resume.pdf" download="resume.pdf"> 
+              <a href="/resume.pdf" download="resume.pdf">
                 Download CV <Download className="ml-2 h-5 w-5" />
               </a>
             </Button>
