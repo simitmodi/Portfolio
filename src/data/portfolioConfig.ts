@@ -27,8 +27,8 @@ export const portfolioConfig = {
   },
   achievements: [
     {
-      title: "6th Place - Smart India Hackathon",
-      description: "Achieved 6th position nationwide in the Smart India Hackathon 20XX, developing a solution for [briefly mention problem statement if you want].", // Add year and details
+      title: "6th Place - Smart India Hackathon 2024",
+      description: "Achieved 6th position nationwide in the Smart India Hackathon 2024 by developing a solution for optimizing fertilizer usage on Indian farms based on farm field data and weather data.",
       icon: Trophy,
     }
     // Add more achievements if needed
