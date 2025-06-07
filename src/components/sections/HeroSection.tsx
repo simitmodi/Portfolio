@@ -29,7 +29,7 @@ const HeroSection = () => {
             )}
           >
             <Image
-              src="https://firebasestudio.googleapis.com/v0/b/identity-platform-01.appspot.com/o/images%2Fusers%2Fclv68q19v00013f36r23x7j6a%2Fentries%2Fclx47f18w00011n5t21i8k6m1%2FCaputure.JPG?alt=media&token=efd5f4c1-401c-4a48-872a-03ac5c7285ae"
+              src="/profile.jpg" // Updated to use image from public folder
               alt={portfolioConfig.name}
               layout="fill"
               objectFit="cover"
@@ -45,7 +45,7 @@ const HeroSection = () => {
           <p
             ref={jobTitleRef}
             className={cn(
-              "text-xl md:text-2xl text-foreground/80 mb-6", 
+              "text-xl md:text-2xl text-foreground/80 mb-6",
               "opacity-0",
               isJobTitleInView && "animate-fade-in"
             )}
@@ -55,11 +55,11 @@ const HeroSection = () => {
           <p
             ref={taglineRef}
             className={cn(
-              "text-md md:text-lg text-foreground/70 mb-8 max-w-2xl mx-auto", 
+              "text-md md:text-lg text-foreground/70 mb-8 max-w-2xl mx-auto",
               "opacity-0",
               isTaglineInView && "animate-fade-in"
             )}
-            style={{ animationDelay: isTaglineInView ? '0.2s' : '0s' }} 
+            style={{ animationDelay: isTaglineInView ? '0.2s' : '0s' }}
           >
             {portfolioConfig.tagline}
           </p>
