@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { Project } from '@/types';
-import { ExternalLink, Github } from 'lucide-react';
+import { Github } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 
@@ -50,13 +50,6 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       </CardContent>
       <CardFooter className="p-6 pt-0">
         <div className="flex space-x-2 w-full">
-          {project.projectUrl && (
-            <Button asChild variant="outline" className="flex-1 transition-transform duration-200 ease-out hover:-translate-y-0.5">
-              <Link href={project.projectUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="mr-2 h-4 w-4" /> View Live
-              </Link>
-            </Button>
-          )}
           {project.githubUrl && (
              <Button asChild variant="default" className="flex-1 transition-transform duration-200 ease-out hover:-translate-y-0.5">
               <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
