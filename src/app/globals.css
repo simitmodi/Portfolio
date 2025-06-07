@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 body {
-  font-family: 'PT Sans', sans-serif; /* Default body font */
+  font-family: 'Roboto Mono', monospace; /* Default body font */
 }
 
 @layer base {

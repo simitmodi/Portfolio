@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        headline: ['"Playfair Display"', 'serif'],
-        body: ['"PT Sans"', 'sans-serif'],
+        headline: ['"Roboto"', 'sans-serif'],
+        body: ['"Roboto Mono"', 'monospace'],
         code: ['monospace', 'monospace'],
       },
       colors: {
