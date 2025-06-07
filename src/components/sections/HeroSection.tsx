@@ -79,7 +79,7 @@ const HeroSection = () => {
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="transition-transform duration-200 ease-out hover:-translate-y-0.5">
-              <a href="/resume.pdf" download="resume.pdf">
+              <a href="https://1drv.ms/w/c/edcf171ff47652aa/EapSdvQfF88ggO2PCgAAAAABFWPewLA9-Cctwp-2KCuCqQ?e=99wL1N" target="_blank" rel="noopener noreferrer">
                 Download CV <Download className="ml-2 h-5 w-5" />
               </a>
             </Button>
