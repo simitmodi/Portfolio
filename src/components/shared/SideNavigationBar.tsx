@@ -63,7 +63,7 @@ const SideNavigationBar = () => {
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-48 bg-background p-6 pt-16 hidden md:flex flex-col space-y-6 border-r border-border/40 z-40">
+    <aside className="fixed left-0 top-0 h-screen w-48 bg-background p-6 pt-16 hidden md:flex flex-col space-y-6 z-40">
       <Link href="#hero" onClick={() => handleLinkClick('hero')} className="mb-6 block group">
         <h2 className="text-2xl font-headline font-bold text-primary group-hover:text-accent transition-colors">{portfolioConfig.name.split(' ')[0]}</h2>
         <p className="text-sm text-foreground/70 group-hover:text-accent/80 transition-colors">{portfolioConfig.jobTitle}</p>
