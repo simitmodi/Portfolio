@@ -7,33 +7,39 @@ import { cn } from '@/lib/utils';
 import { portfolioConfig } from '@/data/portfolioConfig';
 
 const navItems = [
+  { name: 'Home', href: '#hero', id: 'hero' }, // Added Home
   { name: 'About', href: '#about', id: 'about' },
   { name: 'Projects', href: '#projects', id: 'projects' },
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
-const sectionIds = ['hero', ...navItems.map(item => item.id)];
+// sectionIds will now correctly include 'hero' from the navItems for active state logic
+const sectionIds = navItems.map(item => item.id);
 
 const SideNavigationBar = () => {
   const [activeSection, setActiveSection] = useState<string>('hero');
 
   const handleScroll = useCallback(() => {
-    let currentSection = 'hero';
-    const scrollThresholdRatio = 0.3; // Section top needs to pass 30% of viewport height from the top
+    let currentSection = sectionIds[0]; // Default to the first item (Home/hero)
+    const scrollThresholdRatio = 0.3; 
 
     for (const id of sectionIds) {
       const element = document.getElementById(id);
       if (element) {
         const rect = element.getBoundingClientRect();
+        // Check if the section is within the threshold area of the viewport
         if (rect.top <= window.innerHeight * scrollThresholdRatio && rect.bottom >= window.innerHeight * scrollThresholdRatio) {
           currentSection = id;
-          break;
+          break; 
         }
+        // If a section's top is above the threshold, it's likely the current or upcoming one
         if (rect.top < window.innerHeight * scrollThresholdRatio) {
-          currentSection = id;
+          currentSection = id; 
         }
       }
     }
+    
+    // Explicitly set to 'hero' if very close to the top, to ensure "Home" is active
     if (window.scrollY < 50) {
         currentSection = 'hero';
     }
@@ -42,7 +48,8 @@ const SideNavigationBar = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(handleScroll, 100);
+    // Initial call to set active section based on current view (e.g. on page load with hash)
+    const timer = setTimeout(handleScroll, 100); 
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
@@ -55,7 +62,8 @@ const SideNavigationBar = () => {
   }, [handleScroll]);
 
   const handleLinkClick = (id: string) => {
-    setActiveSection(id);
+    // No need to prevent default for internal links handled by smooth scroll
+    setActiveSection(id); // Set active state immediately on click
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -70,11 +78,11 @@ const SideNavigationBar = () => {
       </Link>
       <nav className="flex flex-col space-y-1">
         {navItems.map((item) => (
-          <a
+          <a // Changed Link to <a> for direct click handling
             key={item.name}
             href={item.href}
             onClick={(e) => {
-              e.preventDefault();
+              e.preventDefault(); // Prevent default anchor jump
               handleLinkClick(item.id);
             }}
             className={cn(
