@@ -5,6 +5,7 @@ import { Code, Palette, Database, Cpu, GraduationCap, Trophy, Users } from 'luci
 export const portfolioConfig = {
   name: "Simit Modi",
   jobTitle: "Computer Engineering Student",
+  tagline: "Passionate Computer Engineering student dedicated to crafting efficient, user-centric applications. Ready to leverage skills in Java and DSA to innovate and solve real-world problems.",
   bio: "A Computer Engineering student with foundational knowledge in Java, Data Structures & Algorithms (DSA), Database Management Systems (DBMS), HTML, CSS, and C. I am passionate about building efficient and user-friendly applications and eager to apply my developing skills to real-world projects.",
   contact: {
     email: "simit.modi@example.com",

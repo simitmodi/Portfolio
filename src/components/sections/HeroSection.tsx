@@ -7,12 +7,12 @@ import { ArrowDown, Download } from 'lucide-react';
 import Image from 'next/image';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
-import TypingAnimation from '@/components/shared/TypingAnimation'; // New import
+import TypingAnimation from '@/components/shared/TypingAnimation';
 
 const HeroSection = () => {
   const [imageRef, isImageInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
-  // const [titleRef, isTitleInView] = useScrollAnimation<HTMLHeadingElement>({ triggerOnce: false, threshold: 0.2 }); // Removed titleRef
   const [jobTitleRef, isJobTitleInView] = useScrollAnimation<HTMLParagraphElement>({ triggerOnce: false, threshold: 0.2 });
+  const [taglineRef, isTaglineInView] = useScrollAnimation<HTMLParagraphElement>({ triggerOnce: false, threshold: 0.2, rootMargin: '-50px 0px 0px 0px' }); // Adjusted rootMargin
   const [buttonsRef, isButtonsInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
 
 
@@ -37,10 +37,8 @@ const HeroSection = () => {
             />
           </div>
           <h1
-            className={cn( // Removed ref and scroll animation classes
-              "text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-primary mb-4 min-h-[1.2em] sm:min-h-[1.5em] md:min-h-[1.5em]" // Added min-h for layout stability
-              // "opacity-0", // Removed
-              // isTitleInView && "animate-fade-in" // Removed
+            className={cn(
+              "text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-primary mb-4 min-h-[1.2em] sm:min-h-[1.5em] md:min-h-[1.5em]"
             )}
           >
             <TypingAnimation text={portfolioConfig.name} speed={100} />
@@ -48,12 +46,23 @@ const HeroSection = () => {
           <p
             ref={jobTitleRef}
             className={cn(
-              "text-xl md:text-2xl text-foreground/80 mb-8",
+              "text-xl md:text-2xl text-foreground/80 mb-6", // Reduced bottom margin
               "opacity-0",
               isJobTitleInView && "animate-fade-in"
             )}
           >
             {portfolioConfig.jobTitle}
+          </p>
+          <p
+            ref={taglineRef}
+            className={cn(
+              "text-md md:text-lg text-foreground/70 mb-8 max-w-2xl mx-auto", // Added max-width and mx-auto
+              "opacity-0",
+              isTaglineInView && "animate-fade-in"
+            )}
+            style={{ animationDelay: isTaglineInView ? '0.2s' : '0s' }} // Slight delay for tagline
+          >
+            {portfolioConfig.tagline}
           </p>
           <div
             ref={buttonsRef}
@@ -62,6 +71,7 @@ const HeroSection = () => {
               "opacity-0",
               isButtonsInView && "animate-fade-in"
             )}
+            style={{ animationDelay: isButtonsInView ? '0.4s' : '0s' }} // Slight delay for buttons
           >
             <Button size="lg" asChild className="transition-transform duration-200 ease-out hover:-translate-y-0.5">
               <Link href="#projects">
