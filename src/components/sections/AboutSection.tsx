@@ -27,9 +27,8 @@ const AboutSection = () => {
           >
             <div className="relative aspect-square max-w-md mx-auto md:max-w-none rounded-lg overflow-hidden shadow-2xl">
               <Image
-                src="https://placehold.co/500x500.png"
+                src="/profile.jpg" // Updated to use image from public folder
                 alt={portfolioConfig.name}
-                data-ai-hint="professional person"
                 layout="fill"
                 objectFit="cover"
                 className="rounded-lg"
