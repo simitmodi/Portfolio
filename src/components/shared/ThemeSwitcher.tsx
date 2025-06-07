@@ -15,23 +15,32 @@ const ThemeSwitcher = () => {
   const [animateDarkMode, setAnimateDarkMode] = useState(false);
   const [animateHighContrast, setAnimateHighContrast] = useState(false);
 
-  const handleDarkModeToggle = (isChecked: boolean) => {
-    toggleTheme();
-    // Animate if the new state (derived from isChecked) is "on" (dark mode)
-    if (isChecked) {
+  const handleDarkModeToggle = (isChecked: boolean) => { // isChecked is the new state of the dark mode switch
+    const wasHighContrastActive = isHighContrast && isDarkMode; // HC was truly active if both were true
+    
+    toggleTheme(); // This updates theme in context, which might update isHighContrast
+
+    if (isChecked) { // Dark mode is turning ON
       setAnimateDarkMode(true);
-      setTimeout(() => setAnimateDarkMode(false), 600); // Duration of animation
+      setTimeout(() => setAnimateDarkMode(false), 600);
+    } else { // Dark mode is turning OFF (isChecked is false for the dark mode switch)
+      // If high contrast was active before turning dark mode off, it will now be turned off by the context.
+      // We animate the HC switch to indicate this change.
+      if (wasHighContrastActive) {
+        setAnimateHighContrast(true);
+        setTimeout(() => setAnimateHighContrast(false), 600);
+      }
     }
   };
 
-  const handleHighContrastToggle = (isChecked: boolean) => {
-    toggleHighContrast();
-    // Animate if the new state is "on" (HC on) AND dark mode is also on
-    // isChecked reflects the switch's new visual state.
-    // We also need to ensure dark mode is active for HC to be truly on.
+  const handleHighContrastToggle = (isChecked: boolean) => { // isChecked is the visual new state of the HC switch
+    toggleHighContrast(); // Context handles the logic of whether HC can actually be enabled
+
+    // Animate if the switch is visually turning ON (isChecked is true)
+    // AND dark mode is active (meaning HC is *actually* being enabled).
     if (isChecked && isDarkMode) { 
       setAnimateHighContrast(true);
-      setTimeout(() => setAnimateHighContrast(false), 600); // Duration of animation
+      setTimeout(() => setAnimateHighContrast(false), 600);
     }
   };
 
@@ -54,9 +63,8 @@ const ThemeSwitcher = () => {
         <Label 
           htmlFor="high-contrast-switch" 
           className={cn(
-            "flex items-center text-sm cursor-pointer",
-            isDarkMode ? "text-foreground/70" : "text-muted-foreground cursor-not-allowed", 
-            isHighContrast && isDarkMode && "text-primary font-semibold"
+            "flex items-center text-sm cursor-pointer text-foreground/70", // Always appears enabled
+            isHighContrast && isDarkMode && "text-primary font-semibold" // Style when truly active
           )}
         >
           <Contrast className="mr-2 h-4 w-4" />
@@ -64,10 +72,10 @@ const ThemeSwitcher = () => {
         </Label>
         <Switch
           id="high-contrast-switch"
-          checked={isHighContrast && isDarkMode} 
+          checked={isHighContrast && isDarkMode} // Visually "on" only if HC and Dark Mode are both active
           onCheckedChange={handleHighContrastToggle}
-          disabled={!isDarkMode} 
-          aria-label={isHighContrast ? 'Disable high contrast mode' : 'Enable high contrast mode (requires dark mode)'}
+          // No longer disabled
+          aria-label={isHighContrast && isDarkMode ? 'Disable high contrast mode' : 'Enable high contrast mode (requires dark mode)'}
           className={cn(animateHighContrast && 'animate-switch-on-pulse')}
         />
       </div>

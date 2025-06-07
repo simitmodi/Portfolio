@@ -18,52 +18,52 @@ interface ThemeContextProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>('light'); // Default to light
   const [isHighContrast, setIsHighContrast] = useState<boolean>(false);
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme') as Theme | null;
-    const storedHighContrast = localStorage.getItem('isHighContrast') === 'true';
+    // Initialize state from localStorage on mount
+    let initialTheme = (localStorage.getItem('theme') as Theme | null) || 'light';
+    let initialHighContrast = localStorage.getItem('isHighContrast') === 'true';
 
-    if (storedTheme) {
-      setTheme(storedTheme);
+    // Correct invalid state: High contrast cannot be true if theme is light
+    if (initialTheme === 'light' && initialHighContrast) {
+      initialHighContrast = false;
+      localStorage.setItem('isHighContrast', 'false'); // Correct localStorage too
     }
-    // Only apply stored high contrast if the theme is also dark, or if it was already dark.
-    if (storedTheme === 'dark' && storedHighContrast) {
-      setIsHighContrast(true);
-    } else {
-      setIsHighContrast(false); // Ensure it's false otherwise
-      localStorage.setItem('isHighContrast', 'false'); // Sync localStorage
-    }
-  }, []);
+
+    setTheme(initialTheme);
+    setIsHighContrast(initialHighContrast);
+  }, []); // Runs once on mount
 
   useEffect(() => {
+    // Effect for theme changes (dark class, localStorage, and HC dependency)
     localStorage.setItem('theme', theme);
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
-      // If theme changes to light, disable high contrast
+      // If theme changes to light, and high contrast was on, turn it off.
       if (isHighContrast) {
-        setIsHighContrast(false);
+        setIsHighContrast(false); // This will trigger the isHighContrast useEffect
       }
     }
-  }, [theme, isHighContrast]); // Added isHighContrast to dependency array for safety, though setIsHighContrast should trigger its own effect
+  }, [theme]); // Only depends on theme
 
   useEffect(() => {
-    // Only apply high-contrast class if theme is dark
+    // Effect for isHighContrast changes (high-contrast class, localStorage)
+    // This effect ensures DOM class and localStorage are in sync with 'isHighContrast' and 'theme' states.
     if (theme === 'dark' && isHighContrast) {
       document.documentElement.classList.add('high-contrast');
       localStorage.setItem('isHighContrast', 'true');
     } else {
+      // This covers:
+      // 1. theme is light (isHighContrast will be forced to false by the theme effect)
+      // 2. theme is dark, but isHighContrast is false
       document.documentElement.classList.remove('high-contrast');
       localStorage.setItem('isHighContrast', 'false');
-      // If high contrast is turned off OR theme is not dark, ensure state is false
-      if (isHighContrast && theme !== 'dark') {
-          setIsHighContrast(false);
-      }
     }
-  }, [isHighContrast, theme]); // Added theme to dependency array
+  }, [isHighContrast, theme]);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
@@ -75,29 +75,12 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       if (theme === 'dark') {
         return !prev; // Toggle if dark mode is on
       }
-      return false; // Force off if dark mode is not on
+      // If in light mode, attempting to toggle HC "on" should result in it staying "off"
+      // If it was somehow true (which shouldn't happen due to theme effect), turn it off.
+      return false; 
     });
   };
   
-  useEffect(() => {
-    const root = document.documentElement;
-    const initialTheme = localStorage.getItem('theme') as Theme | null;
-    const initialHighContrast = localStorage.getItem('isHighContrast') === 'true';
-
-    if (initialTheme === 'dark') {
-        root.classList.add('dark');
-        if (initialHighContrast) {
-            root.classList.add('high-contrast');
-        } else {
-            root.classList.remove('high-contrast');
-        }
-    } else {
-        root.classList.remove('dark');
-        root.classList.remove('high-contrast'); // Not possible to have HC without dark
-    }
-  }, []);
-
-
   return (
     <ThemeContext.Provider value={{ theme, setTheme, isHighContrast, setIsHighContrast, toggleTheme, toggleHighContrast }}>
       {children}
