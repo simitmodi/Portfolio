@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const [footerRef, isFooterInView] = useScrollAnimation<HTMLElement>({ triggerOnce: true, threshold: 0.05 });
+  const [footerRef, isFooterInView] = useScrollAnimation<HTMLElement>({ triggerOnce: false, threshold: 0.05 });
 
   return (
     <footer

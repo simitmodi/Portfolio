@@ -9,8 +9,8 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 
 const AboutSection = () => {
-  const [imageContainerRef, isImageInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.2 });
-  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.2 });
+  const [imageContainerRef, isImageInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
+  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
 
   return (
     <section id="about" className="bg-secondary/30">

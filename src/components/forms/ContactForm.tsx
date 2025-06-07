@@ -26,7 +26,7 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 const ContactForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.1 });
+  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.1 });
 
 
   const form = useForm<ContactFormValues>({
@@ -57,7 +57,7 @@ const ContactForm = () => {
       className={cn(
         "w-full max-w-xl mx-auto shadow-xl",
         "opacity-0",
-        isCardInView && "animate-fade-in" // Changed from slide-in-right to fade-in for variety
+        isCardInView && "animate-fade-in" 
       )}
     >
       <CardHeader>

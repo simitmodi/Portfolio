@@ -34,7 +34,7 @@ export function useScrollAnimation<T extends HTMLElement>(
           }
         } else {
           if (!options?.triggerOnce) {
-            // setIsInView(false); // Optionally reset if it goes out of view and triggerOnce is false
+            setIsInView(false); // Enable resetting isInView if triggerOnce is false
           }
         }
       },

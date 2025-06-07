@@ -10,7 +10,10 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 
 const ContactSection = () => {
-  const [leftContentRef, isLeftContentInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.2 });
+  const [leftContentRef, isLeftContentInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
+  // ContactForm handles its own animation internally, we don't need a separate ref for its container here if we're okay with its current behavior.
+  // If we wanted to animate the container of ContactForm specifically, we'd add:
+  // const [formContainerRef, isFormContainerInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
 
   return (
     <section id="contact" className="bg-background">
@@ -51,6 +54,16 @@ const ContactSection = () => {
               </Link>
             </div>
           </div>
+          {/* 
+            If we were animating the form's container specifically:
+            <div ref={formContainerRef} className={cn("opacity-0", isFormContainerInView && "animate-slide-in-right")}>
+              <ContactForm />
+            </div> 
+            But ContactForm already animates itself with 'animate-fade-in'.
+            If a different animation (like slide-in-right) is desired for the form,
+            remove the internal animation from ContactForm and use the container animation here.
+            For now, ContactForm handles its own fade-in.
+          */}
           <div className="animate-slide-in-right-placeholder"> 
             <ContactForm />
           </div>

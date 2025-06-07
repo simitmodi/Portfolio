@@ -9,7 +9,7 @@ interface SectionTitleProps extends HTMLAttributes<HTMLHeadingElement> {
 }
 
 const SectionTitle = ({ children, className, ...props }: SectionTitleProps) => {
-  const [ref, isInView] = useScrollAnimation<HTMLHeadingElement>({ triggerOnce: true, threshold: 0.1 });
+  const [ref, isInView] = useScrollAnimation<HTMLHeadingElement>({ triggerOnce: false, threshold: 0.1 });
 
   return (
     <h2

@@ -16,7 +16,7 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ project, index }: ProjectCardProps) => {
-  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.15 });
+  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.15 });
 
   return (
     <Card

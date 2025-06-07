@@ -9,10 +9,10 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 
 const HeroSection = () => {
-  const [imageRef, isImageInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.2 });
-  const [titleRef, isTitleInView] = useScrollAnimation<HTMLHeadingElement>({ triggerOnce: true, threshold: 0.2 });
-  const [jobTitleRef, isJobTitleInView] = useScrollAnimation<HTMLParagraphElement>({ triggerOnce: true, threshold: 0.2 });
-  const [buttonsRef, isButtonsInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.2 });
+  const [imageRef, isImageInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
+  const [titleRef, isTitleInView] = useScrollAnimation<HTMLHeadingElement>({ triggerOnce: false, threshold: 0.2 });
+  const [jobTitleRef, isJobTitleInView] = useScrollAnimation<HTMLParagraphElement>({ triggerOnce: false, threshold: 0.2 });
+  const [buttonsRef, isButtonsInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
 
 
   return (
