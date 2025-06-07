@@ -3,41 +3,22 @@ import type { Project } from '@/types';
 export const projectsData: Project[] = [
   {
     id: '1',
-    title: 'ProfolioHub - Portfolio Builder',
-    description: 'A dynamic platform for creating and managing professional portfolios with AI-powered content enhancement. Built with Next.js and Tailwind CSS for a seamless user experience.',
+    title: 'Bank Appointment & Document Guidance System',
+    description: 'A smart, data-driven web solution designed to reduce unnecessary bank visits by helping users pre-book appointments and receive precise guidance on required documents. This project aims to streamline customer journeys and empower banks with an efficient queue and document-handling system—bridging the gap between digital readiness and user experience.',
     imageUrl: 'https://placehold.co/600x400.png',
-    dataAiHint: 'website builder',
-    projectUrl: '#',
-    githubUrl: '#',
-    tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'GenAI', 'Vercel'],
+    dataAiHint: 'banking finance',
+    projectUrl: '#', // Replace with actual project URL if available
+    githubUrl: '#', // Replace with actual GitHub URL if available
+    tags: ['Next.js', 'TypeScript', 'AI', 'Web Application', 'FinTech'],
   },
   {
     id: '2',
-    title: 'EcoSustain - Green Initiative Tracker',
-    description: 'An application designed to track and promote environmental sustainability initiatives. Features include community forums, progress tracking, and educational resources.',
+    title: 'Terminal-Based To-Do List Application (Java)',
+    description: 'Developed a robust, lightweight terminal-based To-Do List application using core Java, designed to optimize personal task management through a minimalist command-line interface. This project demonstrates strong foundational skills in Java programming, including data handling, user input management, and basic file I/O operations. Key Features: Intuitive CLI-driven task creation, modification, and deletion to enhance productivity. Persistent storage ensuring task data retention across sessions. Modular and clean code architecture to facilitate easy scalability and maintenance. Emphasis on usability with clear prompts and validation for seamless user experience.',
     imageUrl: 'https://placehold.co/600x400.png',
-    dataAiHint: 'environment nature',
-    projectUrl: '#',
-    githubUrl: '#',
-    tags: ['React', 'Node.js', 'MongoDB', 'Express.js', 'Leaflet'],
-  },
-  {
-    id: '3',
-    title: 'MarketInsights - Stock Analysis Tool',
-    description: 'A comprehensive stock market analysis tool providing real-time data, predictive analytics, and customizable dashboards for investors.',
-    imageUrl: 'https://placehold.co/600x400.png',
-    dataAiHint: 'finance chart',
-    projectUrl: '#',
-    githubUrl: '#',
-    tags: ['Python', 'Django', 'Plotly', 'Machine Learning', 'AWS'],
-  },
-  {
-    id: '4',
-    title: 'CulinaryCanvas - Recipe Sharing Platform',
-    description: 'A vibrant community for food enthusiasts to share, discover, and rate recipes. Features user profiles, advanced search, and meal planning.',
-    imageUrl: 'https://placehold.co/600x400.png',
-    dataAiHint: 'food cooking',
-    projectUrl: '#',
-    tags: ['Vue.js', 'Firebase', 'Algolia', 'PWA'],
+    dataAiHint: 'code terminal',
+    projectUrl: '#', // Replace with actual project URL if available
+    githubUrl: '#', // Replace with actual GitHub URL if available
+    tags: ['Java', 'CLI', 'Task Management', 'Core Java', 'Desktop App'],
   },
 ];
