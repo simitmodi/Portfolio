@@ -31,7 +31,7 @@ const SectionTitle = ({ children, className, ...props }: SectionTitleProps) => {
       {...props}
     >
       {typeof children === 'string' ? (
-        <TypingAnimation key={animationKey} text={children} speed={75} />
+        <TypingAnimation key={animationKey} text={children} speed={120} />
       ) : (
         // If children is not a string (e.g., complex ReactNode), render as is.
         children
@@ -41,3 +41,4 @@ const SectionTitle = ({ children, className, ...props }: SectionTitleProps) => {
 };
 
 export default SectionTitle;
+
