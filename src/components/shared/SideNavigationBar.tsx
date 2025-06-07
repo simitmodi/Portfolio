@@ -18,7 +18,7 @@ const sectionIds = navItems.map(item => item.id);
 
 const SideNavigationBar = () => {
   const [activeSection, setActiveSection] = useState<string>('hero');
-  const [logoClickCount, setLogoClickCount] = useState(0);
+  // Removed logoClickCount state, it's no longer needed here for the Easter Egg
 
   const handleScroll = useCallback(() => {
     let currentSection = sectionIds[0];
@@ -61,30 +61,20 @@ const SideNavigationBar = () => {
     };
   }, [handleScroll]);
 
-  const handleLinkClick = (id: string) => {
+  const handleLinkClick = (id: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
+    if (event) event.preventDefault();
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-  };
-
-  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    handleLinkClick(id);
-
-    const newClickCount = logoClickCount + 1;
-    setLogoClickCount(newClickCount);
-
-    if (newClickCount >= 7) {
-      document.dispatchEvent(new CustomEvent('trigger-cursor-easter-egg'));
-      setLogoClickCount(0); // Reset counter
-    }
+    // Easter egg trigger logic removed from here
   };
 
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-48 bg-sidebar text-sidebar-foreground p-6 pt-16 hidden md:flex flex-col space-y-6 z-40 shadow-md">
-      <Link href="#hero" onClick={(e) => handleLogoClick(e, 'hero')} className="mb-6 block group">
+      {/* Updated Link onClick to only handle navigation */}
+      <Link href="#hero" onClick={(e) => handleLinkClick('hero', e)} className="mb-6 block group">
         <h2 className="text-2xl font-headline font-bold text-primary group-hover:text-accent transition-colors">{portfolioConfig.name.split(' ')[0]}</h2>
         <p className="text-sm text-foreground/70 group-hover:text-accent/80 transition-colors">{portfolioConfig.jobTitle}</p>
       </Link>
@@ -94,8 +84,7 @@ const SideNavigationBar = () => {
             key={item.name}
             href={item.href}
             onClick={(e) => {
-              e.preventDefault();
-              handleLinkClick(item.id);
+              handleLinkClick(item.id, e);
             }}
             className={cn(
               "group flex items-center space-x-3 rounded-md px-3 py-2 text-sm font-medium text-foreground/70 hover:text-primary transition-all duration-200 ease-out",

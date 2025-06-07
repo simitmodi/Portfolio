@@ -7,9 +7,22 @@ import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
+import { useState } from 'react'; // Added useState
 
 const ContactSection = () => {
   const [leftContentRef, isLeftContentInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
+  const [connectTitleClickCount, setConnectTitleClickCount] = useState(0); // Added for Easter Egg
+
+  // Easter Egg Handler
+  const handleConnectTitleClick = () => {
+    const newClickCount = connectTitleClickCount + 1;
+    setConnectTitleClickCount(newClickCount);
+
+    if (newClickCount >= 7) {
+      document.dispatchEvent(new CustomEvent('trigger-cursor-easter-egg'));
+      setConnectTitleClickCount(0); // Reset counter
+    }
+  };
 
   return (
     <section id="contact" className="bg-background">
@@ -24,7 +37,13 @@ const ContactSection = () => {
               isLeftContentInView && "animate-slide-in-left"
             )}
           >
-            <h3 className="text-2xl font-headline font-semibold text-primary">Let's Connect!</h3>
+            <h3
+              className="text-2xl font-headline font-semibold text-primary cursor-pointer" // Added cursor-pointer
+              onClick={handleConnectTitleClick} // Added onClick handler
+              title="Psst, try clicking me a few times!" // Added title for discoverability
+            >
+              Let's Connect!
+            </h3>
             <p className="text-foreground/80 leading-relaxed">
               I'm always excited to discuss new projects, creative ideas, or opportunities to collaborate.
               The best way to reach me is via email or the contact form on this page.
@@ -41,7 +60,7 @@ const ContactSection = () => {
               </p>
             </div>
           </div>
-          <div className="animate-slide-in-right-placeholder"> 
+          <div className="animate-slide-in-right-placeholder">
             <ContactForm />
           </div>
         </div>
