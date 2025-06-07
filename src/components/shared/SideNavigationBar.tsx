@@ -21,26 +21,29 @@ const SideNavigationBar = () => {
 
   const handleScroll = useCallback(() => {
     let currentSection = sectionIds[0];
-    const scrollThresholdRatio = 0.3;
+    const scrollThresholdRatio = 0.3; // Determines how much of the section needs to be in the "middle" of the viewport
 
     for (const id of sectionIds) {
       const element = document.getElementById(id);
       if (element) {
         const rect = element.getBoundingClientRect();
+        // Define the "middle" portion of the viewport
         const viewportMiddleTop = window.innerHeight * (0.5 - scrollThresholdRatio / 2);
         const viewportMiddleBottom = window.innerHeight * (0.5 + scrollThresholdRatio / 2);
 
+        // Check if the section is within this middle portion
         if (rect.top <= viewportMiddleBottom && rect.bottom >= viewportMiddleTop) {
           currentSection = id;
-          break;
+          break; 
         }
+        // Fallback for sections that might be larger than the viewport or at edges
         if (rect.top < window.innerHeight && rect.bottom > 0 && rect.top < (document.getElementById(currentSection)?.getBoundingClientRect().top || Infinity)) {
              currentSection = id;
         }
       }
     }
-
-    if (window.scrollY < 50) {
+    // Ensure 'hero' is active if scrolled to the very top
+    if (window.scrollY < 50) { // A small threshold for "very top"
         currentSection = 'hero';
     }
 
@@ -48,7 +51,8 @@ const SideNavigationBar = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(handleScroll, 100);
+    // Initial call with a slight delay to ensure layout is stable
+    const timer = setTimeout(handleScroll, 100); 
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
@@ -61,19 +65,21 @@ const SideNavigationBar = () => {
   }, [handleScroll]);
 
   const handleLinkClick = (id: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
-    if (event) event.preventDefault();
+    if (event) event.preventDefault(); // Prevent default anchor behavior
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      // Manually set active section on click for immediate feedback, then scroll handler will confirm
+      // setActiveSection(id); // Optionally, set active section immediately
     }
   };
 
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-48 bg-sidebar text-sidebar-foreground p-6 pt-16 hidden md:flex flex-col space-y-6 z-40">
+    <aside className="fixed left-0 top-0 h-screen w-48 bg-background text-foreground p-6 pt-16 hidden md:flex flex-col space-y-6 z-40">
       <Link href="#hero" onClick={(e) => handleLinkClick('hero', e)} className="mb-6 block group">
         <h2 className="text-2xl font-headline font-bold text-primary group-hover:text-accent transition-colors">{portfolioConfig.name.split(' ')[0]}</h2>
-        <p className="text-sm text-foreground/70 group-hover:text-accent/80 transition-colors">{portfolioConfig.jobTitle}</p>
+        <p className="text-sm text-muted-foreground group-hover:text-accent/80 transition-colors">{portfolioConfig.jobTitle}</p>
       </Link>
       <nav className="flex flex-col space-y-1 flex-grow">
         {navItems.map((item) => (
