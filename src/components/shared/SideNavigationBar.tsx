@@ -18,7 +18,6 @@ const sectionIds = navItems.map(item => item.id);
 
 const SideNavigationBar = () => {
   const [activeSection, setActiveSection] = useState<string>('hero');
-  // Removed logoClickCount state, it's no longer needed here for the Easter Egg
 
   const handleScroll = useCallback(() => {
     let currentSection = sectionIds[0];
@@ -67,13 +66,11 @@ const SideNavigationBar = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-    // Easter egg trigger logic removed from here
   };
 
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-48 bg-sidebar text-sidebar-foreground p-6 pt-16 hidden md:flex flex-col space-y-6 z-40 shadow-md">
-      {/* Updated Link onClick to only handle navigation */}
+    <aside className="fixed left-0 top-0 h-screen w-48 bg-sidebar text-sidebar-foreground p-6 pt-16 hidden md:flex flex-col space-y-6 z-40">
       <Link href="#hero" onClick={(e) => handleLinkClick('hero', e)} className="mb-6 block group">
         <h2 className="text-2xl font-headline font-bold text-primary group-hover:text-accent transition-colors">{portfolioConfig.name.split(' ')[0]}</h2>
         <p className="text-sm text-foreground/70 group-hover:text-accent/80 transition-colors">{portfolioConfig.jobTitle}</p>
