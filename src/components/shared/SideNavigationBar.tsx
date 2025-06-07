@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { portfolioConfig } from '@/data/portfolioConfig';
-import ThemeSwitcher from '@/components/shared/ThemeSwitcher'; // New import
+import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
 
 const navItems = [
   { name: 'Home', href: '#hero', id: 'hero' },
@@ -18,32 +18,30 @@ const sectionIds = navItems.map(item => item.id);
 
 const SideNavigationBar = () => {
   const [activeSection, setActiveSection] = useState<string>('hero');
+  const [logoClickCount, setLogoClickCount] = useState(0);
 
   const handleScroll = useCallback(() => {
-    let currentSection = sectionIds[0]; 
-    const scrollThresholdRatio = 0.3; 
+    let currentSection = sectionIds[0];
+    const scrollThresholdRatio = 0.3;
 
     for (const id of sectionIds) {
       const element = document.getElementById(id);
       if (element) {
         const rect = element.getBoundingClientRect();
-        // Check if the middle of the element is within the middle 40% of the viewport height
         const viewportMiddleTop = window.innerHeight * (0.5 - scrollThresholdRatio / 2);
         const viewportMiddleBottom = window.innerHeight * (0.5 + scrollThresholdRatio / 2);
 
         if (rect.top <= viewportMiddleBottom && rect.bottom >= viewportMiddleTop) {
           currentSection = id;
-          break; 
+          break;
         }
-        // Fallback if no section is perfectly in the middle, take the topmost visible one
         if (rect.top < window.innerHeight && rect.bottom > 0 && rect.top < (document.getElementById(currentSection)?.getBoundingClientRect().top || Infinity)) {
              currentSection = id;
         }
       }
     }
-    
-    // Ensure "Home" is active if scrolled to the very top
-    if (window.scrollY < 50) { // A small threshold for the top
+
+    if (window.scrollY < 50) {
         currentSection = 'hero';
     }
 
@@ -51,7 +49,7 @@ const SideNavigationBar = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(handleScroll, 100); 
+    const timer = setTimeout(handleScroll, 100);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
@@ -64,26 +62,39 @@ const SideNavigationBar = () => {
   }, [handleScroll]);
 
   const handleLinkClick = (id: string) => {
-    // setActiveSection(id); // Setting active section is now handled by scroll listener primarily
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    handleLinkClick(id);
+
+    const newClickCount = logoClickCount + 1;
+    setLogoClickCount(newClickCount);
+
+    if (newClickCount >= 7) {
+      document.dispatchEvent(new CustomEvent('trigger-cursor-easter-egg'));
+      setLogoClickCount(0); // Reset counter
+    }
+  };
+
+
   return (
     <aside className="fixed left-0 top-0 h-screen w-48 bg-sidebar text-sidebar-foreground p-6 pt-16 hidden md:flex flex-col space-y-6 z-40 shadow-md">
-      <Link href="#hero" onClick={(e) => { e.preventDefault(); handleLinkClick('hero'); }} className="mb-6 block group">
+      <Link href="#hero" onClick={(e) => handleLogoClick(e, 'hero')} className="mb-6 block group">
         <h2 className="text-2xl font-headline font-bold text-primary group-hover:text-accent transition-colors">{portfolioConfig.name.split(' ')[0]}</h2>
         <p className="text-sm text-foreground/70 group-hover:text-accent/80 transition-colors">{portfolioConfig.jobTitle}</p>
       </Link>
       <nav className="flex flex-col space-y-1 flex-grow">
         {navItems.map((item) => (
-          <a 
+          <a
             key={item.name}
             href={item.href}
             onClick={(e) => {
-              e.preventDefault(); 
+              e.preventDefault();
               handleLinkClick(item.id);
             }}
             className={cn(
@@ -99,7 +110,7 @@ const SideNavigationBar = () => {
           </a>
         ))}
       </nav>
-      <div className="mt-auto"> 
+      <div className="mt-auto border-t border-border/40 pt-3">
         <ThemeSwitcher />
       </div>
     </aside>

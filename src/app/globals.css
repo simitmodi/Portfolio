@@ -123,7 +123,7 @@ body {
 
     --primary: 0 0% 0%; /* Black */
     --primary-foreground: 0 0% 100%; /* White */
-    
+
     --secondary: 0 0% 90%; /* Light gray for secondary backgrounds */
     --secondary-foreground: 0 0% 0%; /* Black */
 
@@ -140,7 +140,7 @@ body {
     --input: 0 0% 0%;    /* Black text on white input background */
     --input-background: 0 0% 100%; /* Explicitly white background for inputs */
     --ring: 0 100% 50%; /* Bright blue for focus rings */
-    
+
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 0%;
     --sidebar-primary: 0 0% 0%;
@@ -150,7 +150,7 @@ body {
     --sidebar-border: 0 0% 0%;
     --sidebar-ring: 0 100% 50%;
   }
-  
+
   /* Dark High Contrast Variables */
   .dark.high-contrast {
     --background: 0 0% 0%;   /* Black */
@@ -191,7 +191,7 @@ body {
     --sidebar-border: 0 0% 100%;
     --sidebar-ring: 60 100% 50%;
   }
-  
+
   .high-contrast input,
   .high-contrast textarea,
   .high-contrast select {
@@ -281,4 +281,24 @@ body {
 
 .high-contrast .cursor-dot-interactive {
   border: 2px solid hsl(var(--ring)); /* Use ring color for interactive border in HC */
+}
+
+/* Easter Egg Animation */
+@keyframes pulse-easter-egg {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    background-color: hsl(var(--accent));
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(2.8);
+    background-color: hsl(var(--destructive));
+  }
+}
+
+.cursor-dot-easter-egg {
+  animation: pulse-easter-egg 0.8s ease-in-out;
+  /* Override normal size during animation if interactive style is also active */
+  width: 8px !important;
+  height: 8px !important;
+  border-width: 0px !important; /* Temporarily remove border if interactive */
 }

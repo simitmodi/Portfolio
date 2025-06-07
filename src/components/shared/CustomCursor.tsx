@@ -1,17 +1,18 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 const CustomCursor = () => {
   const cursorDotRef = useRef<HTMLDivElement>(null);
+  const [isEasterEggActive, setIsEasterEggActive] = useState(false);
 
   useEffect(() => {
     const dot = cursorDotRef.current;
 
     if (!dot) return;
 
-    // Make cursor visible once mounted and ready
     dot.style.opacity = '1';
 
     const onMouseMove = (e: MouseEvent) => {
@@ -33,7 +34,7 @@ const CustomCursor = () => {
     const onInputMouseOutOrBlur = () => {
       dot.style.opacity = '1';
     };
-    
+
     document.addEventListener('mousemove', onMouseMove);
 
     const interactiveElements = document.querySelectorAll(
@@ -52,6 +53,17 @@ const CustomCursor = () => {
       el.addEventListener('blur', onInputMouseOutOrBlur);
     });
 
+    // Easter egg event listener
+    const handleTriggerEasterEgg = () => {
+      setIsEasterEggActive(true);
+      setTimeout(() => {
+        setIsEasterEggActive(false);
+      }, 1000); // Duration of the easter egg effect + small buffer
+    };
+
+    document.addEventListener('trigger-cursor-easter-egg', handleTriggerEasterEgg);
+
+
     return () => {
       document.removeEventListener('mousemove', onMouseMove);
       interactiveElements.forEach(el => {
@@ -64,12 +76,19 @@ const CustomCursor = () => {
         el.removeEventListener('focus', onInputMouseOverOrFocus);
         el.removeEventListener('blur', onInputMouseOutOrBlur);
       });
+      document.removeEventListener('trigger-cursor-easter-egg', handleTriggerEasterEgg);
     };
   }, []);
 
   return (
     <>
-      <div ref={cursorDotRef} className="cursor-dot"></div>
+      <div
+        ref={cursorDotRef}
+        className={cn(
+          "cursor-dot",
+          isEasterEggActive && "cursor-dot-easter-egg"
+        )}
+      ></div>
     </>
   );
 };
