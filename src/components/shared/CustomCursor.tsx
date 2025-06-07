@@ -5,42 +5,33 @@ import { useEffect, useRef } from 'react';
 
 const CustomCursor = () => {
   const cursorDotRef = useRef<HTMLDivElement>(null);
-  const cursorAuraRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const dot = cursorDotRef.current;
-    const aura = cursorAuraRef.current;
 
-    if (!dot || !aura) return;
+    if (!dot) return;
 
-    // Make cursors visible once mounted and ready
+    // Make cursor visible once mounted and ready
     dot.style.opacity = '1';
-    aura.style.opacity = '1';
 
     const onMouseMove = (e: MouseEvent) => {
       dot.style.left = `${e.clientX}px`;
       dot.style.top = `${e.clientY}px`;
-      aura.style.left = `${e.clientX}px`;
-      aura.style.top = `${e.clientY}px`;
     };
 
     const onMouseOverInteractive = () => {
       dot.classList.add('cursor-dot-interactive');
-      aura.classList.add('cursor-aura-interactive');
     };
     const onMouseOutInteractive = () => {
       dot.classList.remove('cursor-dot-interactive');
-      aura.classList.remove('cursor-aura-interactive');
     };
 
     const onInputMouseOverOrFocus = () => {
       dot.style.opacity = '0';
-      aura.style.opacity = '0';
     };
 
     const onInputMouseOutOrBlur = () => {
       dot.style.opacity = '1';
-      aura.style.opacity = '1';
     };
     
     document.addEventListener('mousemove', onMouseMove);
@@ -79,7 +70,6 @@ const CustomCursor = () => {
   return (
     <>
       <div ref={cursorDotRef} className="cursor-dot"></div>
-      <div ref={cursorAuraRef} className="cursor-aura"></div>
     </>
   );
 };
