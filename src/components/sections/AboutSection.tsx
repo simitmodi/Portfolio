@@ -13,7 +13,7 @@ const AboutSection = () => {
   const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
 
   return (
-    <section id="about" className="bg-secondary/30">
+    <section id="about" className="bg-background">
       <div className="container mx-auto px-6">
         <SectionTitle>About Me</SectionTitle>
         <div className="grid md:grid-cols-5 gap-12 items-center">
@@ -59,7 +59,7 @@ const AboutSection = () => {
                     <Badge 
                       key={index} 
                       variant="default" 
-                      className="px-4 py-2 text-sm shadow-md hover:bg-primary/90 transform hover:scale-105 transition-all duration-200 ease-out" // Enhanced hover
+                      className="px-4 py-2 text-sm shadow-md hover:bg-primary/90 transform hover:scale-105 transition-all duration-200 ease-out"
                     >
                       {skill.icon && <skill.icon className="mr-2 h-4 w-4" />}
                       {skill.name}

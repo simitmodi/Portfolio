@@ -16,7 +16,7 @@ const HeroSection = () => {
 
 
   return (
-    <section id="hero" className="py-20 md:py-32 bg-gradient-to-br from-background to-secondary/30"> 
+    <section id="hero" className="py-20 md:py-32 bg-background"> 
       <div className="container mx-auto px-6 text-center">
         <div className="max-w-3xl mx-auto">
           <div
