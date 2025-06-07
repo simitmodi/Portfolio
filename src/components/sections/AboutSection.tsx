@@ -1,20 +1,33 @@
+
+'use client';
 import Image from 'next/image';
 import { portfolioConfig } from '@/data/portfolioConfig';
 import SectionTitle from '@/components/shared/SectionTitle';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2 } from 'lucide-react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { cn } from '@/lib/utils';
 
 const AboutSection = () => {
+  const [imageContainerRef, isImageInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.2 });
+  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.2 });
+
   return (
     <section id="about" className="bg-secondary/30">
       <div className="container mx-auto px-6">
         <SectionTitle>About Me</SectionTitle>
         <div className="grid md:grid-cols-5 gap-12 items-center">
-          <div className="md:col-span-2 animate-slide-in-left">
+          <div
+            ref={imageContainerRef}
+            className={cn(
+              "md:col-span-2",
+              "opacity-0",
+              isImageInView && "animate-slide-in-left"
+            )}
+          >
             <div className="relative aspect-square max-w-md mx-auto md:max-w-none rounded-lg overflow-hidden shadow-2xl">
               <Image
-                src="https://placehold.co/500x500.png" // Replace with your professional image
+                src="https://placehold.co/500x500.png"
                 alt={portfolioConfig.name}
                 data-ai-hint="professional person"
                 layout="fill"
@@ -23,7 +36,14 @@ const AboutSection = () => {
               />
             </div>
           </div>
-          <div className="md:col-span-3 animate-slide-in-right" style={{ animationDelay: '0.2s' }}>
+          <div
+            ref={cardRef}
+            className={cn(
+              "md:col-span-3",
+              "opacity-0",
+              isCardInView && "animate-slide-in-right"
+            )}
+          >
             <Card className="shadow-xl">
               <CardHeader>
                 <CardTitle className="text-3xl font-headline text-primary">{portfolioConfig.name}</CardTitle>

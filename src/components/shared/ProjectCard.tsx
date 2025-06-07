@@ -1,3 +1,5 @@
+
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,15 +7,26 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { Project } from '@/types';
 import { ExternalLink, Github } from 'lucide-react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { cn } from '@/lib/utils';
 
 interface ProjectCardProps {
   project: Project;
-  index: number;
+  index: number; // Index can be used for staggered animation if needed, or remove if not
 }
 
 const ProjectCard = ({ project, index }: ProjectCardProps) => {
+  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.15 });
+
   return (
-    <Card className="flex flex-col h-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.1 + 0.2}s` }}>
+    <Card
+      ref={cardRef}
+      className={cn(
+        "flex flex-col h-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300",
+        "opacity-0",
+        isCardInView && "animate-fade-in" // Uses a general fade-in, can be more specific
+      )}
+    >
       <CardHeader className="p-0">
         <div className="aspect-video relative w-full overflow-hidden">
           <Image

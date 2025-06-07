@@ -1,20 +1,34 @@
+
+'use client';
 import ContactForm from '@/components/forms/ContactForm';
 import SectionTitle from '@/components/shared/SectionTitle';
 import { portfolioConfig } from '@/data/portfolioConfig';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { cn } from '@/lib/utils';
 
 const ContactSection = () => {
+  const [leftContentRef, isLeftContentInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.2 });
+  // ContactForm will handle its own animation
+
   return (
     <section id="contact" className="bg-background">
       <div className="container mx-auto px-6">
         <SectionTitle>Contact Me</SectionTitle>
         <div className="grid md:grid-cols-2 gap-12 items-start">
-          <div className="space-y-8 animate-slide-in-left">
+          <div
+            ref={leftContentRef}
+            className={cn(
+              "space-y-8",
+              "opacity-0",
+              isLeftContentInView && "animate-slide-in-left"
+            )}
+          >
             <h3 className="text-2xl font-headline font-semibold text-primary">Let's Connect!</h3>
             <p className="text-foreground/80 leading-relaxed">
-              I'm always excited to discuss new projects, creative ideas, or opportunities to collaborate. 
+              I'm always excited to discuss new projects, creative ideas, or opportunities to collaborate.
               Feel free to reach out through the form or connect with me on social media.
             </p>
             <div className="space-y-4">
@@ -38,7 +52,8 @@ const ContactSection = () => {
               </Link>
             </div>
           </div>
-          <div className="animate-slide-in-right" style={{ animationDelay: '0.2s' }}>
+          {/* ContactForm component animates itself */}
+          <div className="animate-slide-in-right-placeholder"> {/* This div is mainly for grid structure; animation is in ContactForm */}
             <ContactForm />
           </div>
         </div>

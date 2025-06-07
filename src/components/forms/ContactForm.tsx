@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,6 +12,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Send } from 'lucide-react';
 import { useState } from 'react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { cn } from '@/lib/utils';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -23,6 +26,8 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 const ContactForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: true, threshold: 0.1 });
+
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -35,7 +40,6 @@ const ContactForm = () => {
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
     setIsSubmitting(true);
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     console.log('Form submitted:', data);
@@ -48,7 +52,14 @@ const ContactForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-xl mx-auto shadow-xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
+    <Card
+      ref={cardRef}
+      className={cn(
+        "w-full max-w-xl mx-auto shadow-xl",
+        "opacity-0",
+        isCardInView && "animate-fade-in" // Changed from slide-in-right to fade-in for variety
+      )}
+    >
       <CardHeader>
         <CardTitle className="text-3xl font-headline text-primary">Get In Touch</CardTitle>
         <CardDescription>

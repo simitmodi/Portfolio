@@ -1,12 +1,24 @@
+
+'use client';
 import { portfolioConfig } from '@/data/portfolioConfig';
 import { Code2, Github, Linkedin, Mail } from 'lucide-react';
 import Link from 'next/link';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { cn } from '@/lib/utils';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [footerRef, isFooterInView] = useScrollAnimation<HTMLElement>({ triggerOnce: true, threshold: 0.05 });
 
   return (
-    <footer className="bg-secondary/50 border-t border-border/40 py-12">
+    <footer
+      ref={footerRef}
+      className={cn(
+        "bg-secondary/50 border-t border-border/40 py-12",
+        "opacity-0",
+        isFooterInView && "animate-fade-in"
+      )}
+    >
       <div className="container mx-auto px-6 text-center text-foreground/70">
         <div className="flex justify-center items-center space-x-2 mb-4">
           <Code2 className="h-6 w-6 text-primary" />
