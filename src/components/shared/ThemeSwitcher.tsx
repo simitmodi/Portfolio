@@ -6,10 +6,34 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useTheme } from '@/contexts/ThemeContext';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
 
 const ThemeSwitcher = () => {
   const { theme, toggleTheme, isHighContrast, toggleHighContrast } = useTheme();
   const isDarkMode = theme === 'dark';
+
+  const [animateDarkMode, setAnimateDarkMode] = useState(false);
+  const [animateHighContrast, setAnimateHighContrast] = useState(false);
+
+  const handleDarkModeToggle = (isChecked: boolean) => {
+    toggleTheme();
+    // Animate if the new state (derived from isChecked) is "on" (dark mode)
+    if (isChecked) {
+      setAnimateDarkMode(true);
+      setTimeout(() => setAnimateDarkMode(false), 600); // Duration of animation
+    }
+  };
+
+  const handleHighContrastToggle = (isChecked: boolean) => {
+    toggleHighContrast();
+    // Animate if the new state is "on" (HC on) AND dark mode is also on
+    // isChecked reflects the switch's new visual state.
+    // We also need to ensure dark mode is active for HC to be truly on.
+    if (isChecked && isDarkMode) { 
+      setAnimateHighContrast(true);
+      setTimeout(() => setAnimateHighContrast(false), 600); // Duration of animation
+    }
+  };
 
   return (
     <div className="flex flex-col space-y-3 p-3 border-t border-border/40">
@@ -21,8 +45,9 @@ const ThemeSwitcher = () => {
         <Switch
           id="dark-mode-switch"
           checked={isDarkMode}
-          onCheckedChange={toggleTheme}
+          onCheckedChange={handleDarkModeToggle}
           aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+          className={cn(animateDarkMode && 'animate-switch-on-pulse')}
         />
       </div>
       <div className="flex items-center justify-between">
@@ -30,7 +55,7 @@ const ThemeSwitcher = () => {
           htmlFor="high-contrast-switch" 
           className={cn(
             "flex items-center text-sm cursor-pointer",
-            isDarkMode ? "text-foreground/70" : "text-muted-foreground cursor-not-allowed", // Dim if not in dark mode
+            isDarkMode ? "text-foreground/70" : "text-muted-foreground cursor-not-allowed", 
             isHighContrast && isDarkMode && "text-primary font-semibold"
           )}
         >
@@ -39,10 +64,11 @@ const ThemeSwitcher = () => {
         </Label>
         <Switch
           id="high-contrast-switch"
-          checked={isHighContrast && isDarkMode} // Checked only if both are true
-          onCheckedChange={toggleHighContrast}
-          disabled={!isDarkMode} // Disable switch if not in dark mode
+          checked={isHighContrast && isDarkMode} 
+          onCheckedChange={handleHighContrastToggle}
+          disabled={!isDarkMode} 
           aria-label={isHighContrast ? 'Disable high contrast mode' : 'Enable high contrast mode (requires dark mode)'}
+          className={cn(animateHighContrast && 'animate-switch-on-pulse')}
         />
       </div>
     </div>

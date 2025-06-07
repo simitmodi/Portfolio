@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -106,7 +107,11 @@ export default {
         'slide-in-right': {
           '0%': { opacity: '0', transform: 'translateX(30px)' },
           '100%': { opacity: '1', transform: 'translateX(0)' },
-        }
+        },
+        'switch-on-pulse': {
+          '0%, 100%': { boxShadow: '0 0 0 0px hsl(var(--primary) / 0)' },
+          '50%': { boxShadow: '0 0 0 4px hsl(var(--primary) / 0.3)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -114,6 +119,7 @@ export default {
         'fade-in': 'fade-in 0.7s ease-out forwards',
         'slide-in-left': 'slide-in-left 0.7s ease-out forwards',
         'slide-in-right': 'slide-in-right 0.7s ease-out forwards',
+        'switch-on-pulse': 'switch-on-pulse 0.6s ease-out 1',
       },
     },
   },
