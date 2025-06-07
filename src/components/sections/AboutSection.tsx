@@ -53,7 +53,7 @@ const AboutSection = () => {
                 <p className="text-foreground/80 mb-6 text-justify leading-relaxed">
                   {portfolioConfig.bio}
                 </p>
-                <h3 className="text-xl font-semibold font-headline mb-4 text-primary">My Skills</h3>
+                <h3 className="text-xl font-semibold font-headline mb-4 text-accent">My Skills</h3>
                 <div className="flex flex-wrap gap-3">
                   {portfolioConfig.skills.map((skill, index) => (
                     <Badge 

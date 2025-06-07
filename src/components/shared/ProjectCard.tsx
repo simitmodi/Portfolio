@@ -40,7 +40,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         </div>
       </CardHeader>
       <CardContent className="flex-grow p-6">
-        <CardTitle className="text-2xl font-headline mb-2 text-primary">{project.title}</CardTitle>
+        <CardTitle className="text-2xl font-headline mb-2 text-accent">{project.title}</CardTitle>
         <p className="text-sm text-foreground/80 mb-4 line-clamp-3">{project.description}</p>
         <div className="flex flex-wrap gap-2 mb-4">
           {project.tags.map((tag) => (

@@ -7,20 +7,19 @@ import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
-import { useState } from 'react'; // Added useState
+import { useState } from 'react';
 
 const ContactSection = () => {
   const [leftContentRef, isLeftContentInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
-  const [connectTitleClickCount, setConnectTitleClickCount] = useState(0); // Added for Easter Egg
+  const [connectTitleClickCount, setConnectTitleClickCount] = useState(0);
 
-  // Easter Egg Handler
   const handleConnectTitleClick = () => {
     const newClickCount = connectTitleClickCount + 1;
     setConnectTitleClickCount(newClickCount);
 
     if (newClickCount >= 7) {
       document.dispatchEvent(new CustomEvent('trigger-cursor-easter-egg'));
-      setConnectTitleClickCount(0); // Reset counter
+      setConnectTitleClickCount(0); 
     }
   };
 
@@ -38,9 +37,9 @@ const ContactSection = () => {
             )}
           >
             <h3
-              className="text-2xl font-headline font-semibold text-primary cursor-pointer" // Added cursor-pointer
-              onClick={handleConnectTitleClick} // Added onClick handler
-              title="Psst, try clicking me a few times!" // Added title for discoverability
+              className="text-2xl font-headline font-semibold text-accent cursor-pointer" 
+              onClick={handleConnectTitleClick} 
+              title="Psst, try clicking me a few times!" 
             >
               Let's Connect!
             </h3>

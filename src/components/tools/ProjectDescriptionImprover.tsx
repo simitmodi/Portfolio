@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, type ChangeEvent, type FormEvent } from 'react';
@@ -53,7 +54,7 @@ const ProjectDescriptionImprover = () => {
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-lg animate-fade-in" style={{ animationDelay: '0.6s' }}>
       <CardHeader>
-        <CardTitle className="flex items-center text-2xl font-headline text-primary">
+        <CardTitle className="flex items-center text-2xl font-headline text-accent">
           <Wand2 className="mr-2 h-6 w-6" />
           AI Project Description Improver
         </CardTitle>

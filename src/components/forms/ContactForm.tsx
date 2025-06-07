@@ -61,7 +61,7 @@ const ContactForm = () => {
       )}
     >
       <CardHeader>
-        <CardTitle className="text-3xl font-headline text-primary">Get In Touch</CardTitle>
+        <CardTitle className="text-3xl font-headline text-accent">Get In Touch</CardTitle>
         <CardDescription>
           Have a project in mind or just want to say hi? Fill out the form below.
         </CardDescription>
