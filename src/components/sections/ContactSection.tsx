@@ -3,17 +3,13 @@
 import ContactForm from '@/components/forms/ContactForm';
 import SectionTitle from '@/components/shared/SectionTitle';
 import { portfolioConfig } from '@/data/portfolioConfig';
-import { Github, Linkedin, Mail } from 'lucide-react';
-import Link from 'next/link';
+import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 
 const ContactSection = () => {
   const [leftContentRef, isLeftContentInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
-  // ContactForm handles its own animation internally, we don't need a separate ref for its container here if we're okay with its current behavior.
-  // If we wanted to animate the container of ContactForm specifically, we'd add:
-  // const [formContainerRef, isFormContainerInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
 
   return (
     <section id="contact" className="bg-background">
@@ -31,39 +27,20 @@ const ContactSection = () => {
             <h3 className="text-2xl font-headline font-semibold text-primary">Let's Connect!</h3>
             <p className="text-foreground/80 leading-relaxed">
               I'm always excited to discuss new projects, creative ideas, or opportunities to collaborate.
-              Feel free to reach out through the form or connect with me on social media.
+              The best way to reach me is via email or the contact form on this page.
             </p>
             <div className="space-y-4">
-              <a href={`mailto:${portfolioConfig.contact.email}`} className="flex items-center space-x-3 group">
-                <Button variant="outline" size="icon" className="rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-200 ease-out transform group-hover:scale-110">
-                  <Mail className="h-5 w-5" />
+              <a href={`mailto:${portfolioConfig.contact.email}`} className="inline-block">
+                <Button size="lg" className="transition-transform duration-200 ease-out hover:-translate-y-0.5">
+                  <Mail className="mr-2 h-5 w-5" />
+                  Send an Email
                 </Button>
-                <span className="text-foreground/90 group-hover:text-accent transition-colors">{portfolioConfig.contact.email}</span>
               </a>
-              <Link href={portfolioConfig.contact.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 group">
-                 <Button variant="outline" size="icon" className="rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-200 ease-out transform group-hover:scale-110">
-                   <Linkedin className="h-5 w-5" />
-                 </Button>
-                <span className="text-foreground/90 group-hover:text-accent transition-colors">LinkedIn Profile</span>
-              </Link>
-              <Link href={portfolioConfig.contact.github} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 group">
-                <Button variant="outline" size="icon" className="rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-200 ease-out transform group-hover:scale-110">
-                  <Github className="h-5 w-5" />
-                </Button>
-                <span className="text-foreground/90 group-hover:text-accent transition-colors">GitHub Profile</span>
-              </Link>
+              <p className="text-sm text-muted-foreground">
+                You can also find my LinkedIn and GitHub profiles in the footer.
+              </p>
             </div>
           </div>
-          {/* 
-            If we were animating the form's container specifically:
-            <div ref={formContainerRef} className={cn("opacity-0", isFormContainerInView && "animate-slide-in-right")}>
-              <ContactForm />
-            </div> 
-            But ContactForm already animates itself with 'animate-fade-in'.
-            If a different animation (like slide-in-right) is desired for the form,
-            remove the internal animation from ContactForm and use the container animation here.
-            For now, ContactForm handles its own fade-in.
-          */}
           <div className="animate-slide-in-right-placeholder"> 
             <ContactForm />
           </div>
