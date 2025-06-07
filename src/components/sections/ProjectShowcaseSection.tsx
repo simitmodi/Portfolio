@@ -9,7 +9,7 @@ const ProjectShowcaseSection = () => {
   const displayedProjects = projectsData.slice(0, 2);
 
   return (
-    <section id="projects" className="container mx-auto px-6">
+    <section id="projects" className="container mx-auto px-6 bg-background">
       <SectionTitle>Featured Projects</SectionTitle>
       {displayedProjects.length > 0 ? (
         <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-12 mb-16 justify-items-center">
@@ -28,3 +28,4 @@ const ProjectShowcaseSection = () => {
 };
 
 export default ProjectShowcaseSection;
+

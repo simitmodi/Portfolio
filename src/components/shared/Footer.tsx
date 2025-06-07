@@ -14,7 +14,7 @@ const Footer = () => {
     <footer
       ref={footerRef}
       className={cn(
-        "bg-secondary/50 border-t border-border/40 py-12",
+        "bg-background border-t border-border/40 py-12", // Changed from bg-secondary/50
         "opacity-0",
         isFooterInView && "animate-fade-in"
       )}
@@ -44,3 +44,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
