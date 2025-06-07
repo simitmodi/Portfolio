@@ -11,6 +11,9 @@ const navItems = [
   { name: 'Home', href: '#hero', id: 'hero' },
   { name: 'Projects', href: '#projects', id: 'projects' },
   { name: 'About', href: '#about', id: 'about' },
+  { name: 'Academics', href: '#academics', id: 'academics' }, // New
+  { name: 'Achievements', href: '#achievements', id: 'achievements' }, // New
+  { name: 'Extra-Curriculars', href: '#extracurriculars', id: 'extracurriculars' }, // New
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
@@ -21,29 +24,25 @@ const SideNavigationBar = () => {
 
   const handleScroll = useCallback(() => {
     let currentSection = sectionIds[0];
-    const scrollThresholdRatio = 0.3; // Determines how much of the section needs to be in the "middle" of the viewport
+    const scrollThresholdRatio = 0.3; 
 
     for (const id of sectionIds) {
       const element = document.getElementById(id);
       if (element) {
         const rect = element.getBoundingClientRect();
-        // Define the "middle" portion of the viewport
         const viewportMiddleTop = window.innerHeight * (0.5 - scrollThresholdRatio / 2);
         const viewportMiddleBottom = window.innerHeight * (0.5 + scrollThresholdRatio / 2);
 
-        // Check if the section is within this middle portion
         if (rect.top <= viewportMiddleBottom && rect.bottom >= viewportMiddleTop) {
           currentSection = id;
           break; 
         }
-        // Fallback for sections that might be larger than the viewport or at edges
         if (rect.top < window.innerHeight && rect.bottom > 0 && rect.top < (document.getElementById(currentSection)?.getBoundingClientRect().top || Infinity)) {
              currentSection = id;
         }
       }
     }
-    // Ensure 'hero' is active if scrolled to the very top
-    if (window.scrollY < 50) { // A small threshold for "very top"
+    if (window.scrollY < 50) {
         currentSection = 'hero';
     }
 
@@ -51,7 +50,6 @@ const SideNavigationBar = () => {
   }, []);
 
   useEffect(() => {
-    // Initial call with a slight delay to ensure layout is stable
     const timer = setTimeout(handleScroll, 100); 
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -65,12 +63,10 @@ const SideNavigationBar = () => {
   }, [handleScroll]);
 
   const handleLinkClick = (id: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
-    if (event) event.preventDefault(); // Prevent default anchor behavior
+    if (event) event.preventDefault(); 
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
-      // Manually set active section on click for immediate feedback, then scroll handler will confirm
-      // setActiveSection(id); // Optionally, set active section immediately
     }
   };
 

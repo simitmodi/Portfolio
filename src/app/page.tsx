@@ -2,20 +2,25 @@
 import HeroSection from '@/components/sections/HeroSection';
 import ProjectShowcaseSection from '@/components/sections/ProjectShowcaseSection';
 import AboutSection from '@/components/sections/AboutSection';
+import AcademicSection from '@/components/sections/AcademicSection'; // New import
+import AchievementsSection from '@/components/sections/AchievementsSection'; // New import
+import ExtracurricularSection from '@/components/sections/ExtracurricularSection'; // New import
 import ContactSection from '@/components/sections/ContactSection';
 import Footer from '@/components/shared/Footer';
-import SideNavigationBar from '@/components/shared/SideNavigationBar'; // New import
+import SideNavigationBar from '@/components/shared/SideNavigationBar';
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col md:flex-row min-h-screen"> {/* Changed to flex-row on md */}
-      <SideNavigationBar /> {/* Add the new sidebar */}
-      <div className="flex-grow flex flex-col md:ml-48 bg-background"> {/* Add margin for sidebar on md and bg-background */}
-        {/* Remove old NavigationBar if it was here */}
+    <div className="flex flex-col md:flex-row min-h-screen">
+      <SideNavigationBar />
+      <div className="flex-grow flex flex-col md:ml-48 bg-background">
         <main className="flex-grow">
           <HeroSection />
           <ProjectShowcaseSection />
           <AboutSection />
+          <AcademicSection />
+          <AchievementsSection />
+          <ExtracurricularSection />
           <ContactSection />
         </main>
         <Footer />
@@ -23,4 +28,3 @@ export default function HomePage() {
     </div>
   );
 }
-
