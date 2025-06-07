@@ -7,9 +7,9 @@ import { cn } from '@/lib/utils';
 import { portfolioConfig } from '@/data/portfolioConfig';
 
 const navItems = [
-  { name: 'Home', href: '#hero', id: 'hero' }, // Added Home
-  { name: 'About', href: '#about', id: 'about' },
+  { name: 'Home', href: '#hero', id: 'hero' },
   { name: 'Projects', href: '#projects', id: 'projects' },
+  { name: 'About', href: '#about', id: 'about' },
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
