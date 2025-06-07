@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -114,12 +115,77 @@ body {
   * {
     @apply border-border;
   }
+  html {
+    cursor: none; /* Hide default cursor globally */
+  }
   body {
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    cursor: none; /* Ensure default cursor is hidden */
   }
   section {
     @apply py-16 sm:py-20 md:py-24;
   }
+
+  /* Restore text cursor for specific input elements */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  textarea,
+  [contenteditable="true"] {
+    cursor: text;
+  }
+
+  /* Restore pointer cursor for elements that should behave like links/buttons but aren't captured by JS selector */
+  .cursor-pointer {
+    cursor: pointer;
+  }
+}
+
+/* Custom Cursor Styles */
+.cursor-dot {
+  position: fixed;
+  /* top: 0; left: 0; JS will set these */
+  width: 8px;
+  height: 8px;
+  background-color: hsl(var(--primary));
+  border-radius: 50%;
+  pointer-events: none; /* Allows clicking through the dot */
+  transform: translate(-50%, -50%); /* Center the dot on the actual cursor position */
+  transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
+  z-index: 10000; /* Highest z-index */
+  opacity: 0; /* Start hidden, JS will make it visible */
+}
+
+.cursor-aura {
+  position: fixed;
+  /* top: 0; left: 0; JS will set these */
+  width: 40px;
+  height: 40px;
+  border: 2px solid hsl(var(--primary) / 0.5); /* Primary color with opacity */
+  border-radius: 50%;
+  pointer-events: none; /* Allows clicking through the aura */
+  transform: translate(-50%, -50%); /* Center the aura */
+  /* Slower transition for aura makes it feel like it's 'trailing' or 'catching up' */
+  transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1), width 0.3s ease, height 0.3s ease, border-color 0.3s ease, opacity 0.2s ease;
+  z-index: 9999; /* Just behind the dot */
+  opacity: 0; /* Start hidden, JS will make it visible */
+}
+
+.cursor-dot-interactive {
+  width: 12px;
+  height: 12px;
+  background-color: hsl(var(--accent)); /* Change to accent color on hover */
+}
+
+.cursor-aura-interactive {
+  width: 50px;
+  height: 50px;
+  border-color: hsl(var(--accent) / 0.7); /* Change to accent color with more opacity */
+  /* Make aura's transform faster when interactive to feel more responsive */
+  transition-duration: 0.1s, 0.2s, 0.2s, 0.2s, 0.2s; /* transform, width, height, border-color, opacity */
 }
