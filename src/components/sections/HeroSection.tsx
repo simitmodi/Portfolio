@@ -12,13 +12,13 @@ import TypingAnimation from '@/components/shared/TypingAnimation';
 const HeroSection = () => {
   const [imageRef, isImageInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
   const [jobTitleRef, isJobTitleInView] = useScrollAnimation<HTMLParagraphElement>({ triggerOnce: false, threshold: 0.2 });
-  const [taglineRef, isTaglineInView] = useScrollAnimation<HTMLParagraphElement>({ triggerOnce: false, threshold: 0.2, rootMargin: '-50px 0px 0px 0px' }); // Adjusted rootMargin
+  const [taglineRef, isTaglineInView] = useScrollAnimation<HTMLParagraphElement>({ triggerOnce: false, threshold: 0.2, rootMargin: '-50px 0px 0px 0px' });
   const [buttonsRef, isButtonsInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
 
 
   return (
-    <section id="hero" className="py-20 md:py-32 bg-background">
-      <div className="container mx-auto px-6 text-center">
+    <section id="hero" className="bg-background">
+      <div className="container mx-auto text-center">
         <div className="max-w-3xl mx-auto">
           <div
             ref={imageRef}
@@ -46,7 +46,7 @@ const HeroSection = () => {
           <p
             ref={jobTitleRef}
             className={cn(
-              "text-xl md:text-2xl text-foreground/80 mb-6", // Reduced bottom margin
+              "text-xl md:text-2xl text-foreground/80 mb-6", 
               "opacity-0",
               isJobTitleInView && "animate-fade-in"
             )}
@@ -56,29 +56,29 @@ const HeroSection = () => {
           <p
             ref={taglineRef}
             className={cn(
-              "text-md md:text-lg text-foreground/70 mb-8 max-w-2xl mx-auto", // Added max-width and mx-auto
+              "text-md md:text-lg text-foreground/70 mb-8 max-w-2xl mx-auto", 
               "opacity-0",
               isTaglineInView && "animate-fade-in"
             )}
-            style={{ animationDelay: isTaglineInView ? '0.2s' : '0s' }} // Slight delay for tagline
+            style={{ animationDelay: isTaglineInView ? '0.2s' : '0s' }} 
           >
             {portfolioConfig.tagline}
           </p>
           <div
             ref={buttonsRef}
             className={cn(
-              "space-x-4",
+              "flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center items-center mt-8",
               "opacity-0",
               isButtonsInView && "animate-fade-in"
             )}
-            style={{ animationDelay: isButtonsInView ? '0.4s' : '0s' }} // Slight delay for buttons
+            style={{ animationDelay: isButtonsInView ? '0.4s' : '0s' }}
           >
-            <Button size="lg" asChild className="transition-transform duration-200 ease-out hover:-translate-y-0.5">
+            <Button size="lg" asChild className="w-full max-w-xs sm:w-auto transition-transform duration-200 ease-out hover:-translate-y-0.5">
               <Link href="#projects">
                 View Projects <ArrowDown className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" asChild className="transition-transform duration-200 ease-out hover:-translate-y-0.5">
+            <Button size="lg" variant="outline" asChild className="w-full max-w-xs sm:w-auto transition-transform duration-200 ease-out hover:-translate-y-0.5">
               <a href="https://1drv.ms/w/c/edcf171ff47652aa/EapSdvQfF88ggO2PCgAAAAABFWPewLA9-Cctwp-2KCuCqQ?e=99wL1N" target="_blank" rel="noopener noreferrer">
                 Download CV <Download className="ml-2 h-5 w-5" />
               </a>

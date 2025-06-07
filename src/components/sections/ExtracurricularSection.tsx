@@ -12,17 +12,17 @@ const ExtracurricularSection = () => {
   const { extracurricular } = portfolioConfig;
 
   if (!extracurricular || extracurricular.length === 0) {
-    return null; // Don't render section if no activities
+    return null; 
   }
 
   return (
     <section id="extracurriculars" className="bg-background">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto">
         <SectionTitle>Extra-Curricular Activities</SectionTitle>
         <div
           ref={containerRef}
           className={cn(
-            "grid gap-8 md:grid-cols-1 lg:grid-cols-1", // Adjust grid columns
+            "grid gap-8 md:grid-cols-1 lg:grid-cols-1", 
             "opacity-0",
             isContainerInView && "animate-fade-in"
           )}
@@ -33,7 +33,6 @@ const ExtracurricularSection = () => {
             <Card 
               key={index} 
               className="shadow-lg w-full max-w-2xl mx-auto hover:shadow-xl transition-shadow duration-300"
-              // style={{ animationDelay: `${index * 0.1}s` }}
             >
               <CardHeader className="flex flex-row items-center space-x-4">
                  <IconComponent className="h-8 w-8 text-accent flex-shrink-0" />

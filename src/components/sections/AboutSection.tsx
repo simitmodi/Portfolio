@@ -14,7 +14,7 @@ const AboutSection = () => {
 
   return (
     <section id="about" className="bg-background">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto">
         <SectionTitle>About Me</SectionTitle>
         <div className="grid md:grid-cols-5 gap-12 items-center">
           <div

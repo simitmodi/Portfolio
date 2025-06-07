@@ -25,7 +25,7 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="bg-background">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto">
         <SectionTitle>Contact Me</SectionTitle>
         <div className="grid md:grid-cols-2 gap-12 items-start">
           <div
@@ -59,7 +59,7 @@ const ContactSection = () => {
               </p>
             </div>
           </div>
-          <div className="animate-slide-in-right-placeholder">
+          <div className="animate-slide-in-right-placeholder"> {/* This class might need to be updated if it's for animation that's now handled by useScrollAnimation */}
             <ContactForm />
           </div>
         </div>

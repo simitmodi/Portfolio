@@ -231,7 +231,7 @@ body {
     cursor: none; /* Ensure default cursor is hidden */
   }
   section {
-    @apply py-16 sm:py-20 md:py-24;
+    @apply py-12 sm:py-16 md:py-20; /* Updated responsive vertical padding */
   }
 
   /* Restore text cursor for specific input elements */

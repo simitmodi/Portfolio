@@ -14,7 +14,7 @@ const AcademicSection = () => {
 
   return (
     <section id="academics" className="bg-background">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto">
         <SectionTitle>Academics</SectionTitle>
         <div
           ref={cardRef}

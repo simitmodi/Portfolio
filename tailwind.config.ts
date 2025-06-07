@@ -11,14 +11,18 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: {
+        DEFAULT: '1rem', // Padding for mobile
+        sm: '1.5rem',    // Padding for small screens and up
+        md: '2rem',      // Padding for medium screens and up
+      },
       screens: {
         "2xl": "1400px",
       },
     },
     extend: {
       fontFamily: {
-        headline: ['"Roboto Mono"', 'monospace'], // Changed to Roboto Mono
+        headline: ['"Roboto Mono"', 'monospace'],
         body: ['"Roboto Mono"', 'monospace'],
         code: ['monospace', 'monospace'],
       },
@@ -112,7 +116,7 @@ export default {
           '0%, 100%': { boxShadow: '0 0 0 0px hsl(var(--primary) / 0)' },
           '50%': { boxShadow: '0 0 0 4px hsl(var(--primary) / 0.3)' },
         },
-        'blink': { // Added blink animation
+        'blink': { 
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0' },
         }
@@ -124,7 +128,7 @@ export default {
         'slide-in-left': 'slide-in-left 0.7s ease-out forwards',
         'slide-in-right': 'slide-in-right 0.7s ease-out forwards',
         'switch-on-pulse': 'switch-on-pulse 0.6s ease-out 1',
-        'blink': 'blink 1s step-end infinite', // Added blink animation utility
+        'blink': 'blink 1s step-end infinite',
       },
     },
   },
