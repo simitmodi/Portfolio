@@ -38,9 +38,6 @@ const Footer = () => {
         <p className="text-sm">
           &copy; {currentYear} {portfolioConfig.name}. All rights reserved.
         </p>
-        <p className="text-xs mt-2">
-          Built with Next.js, Tailwind CSS, and ShadCN UI.
-        </p>
       </div>
     </footer>
   );
