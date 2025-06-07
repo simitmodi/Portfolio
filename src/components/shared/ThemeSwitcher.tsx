@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useTheme } from '@/contexts/ThemeContext';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const ThemeSwitcher = () => {
   const { theme, toggleTheme, isHighContrast, toggleHighContrast } = useTheme();
@@ -14,31 +14,34 @@ const ThemeSwitcher = () => {
 
   const [animateDarkMode, setAnimateDarkMode] = useState(false);
   const [animateHighContrast, setAnimateHighContrast] = useState(false);
+  const [prevIsHighContrast, setPrevIsHighContrast] = useState(isHighContrast);
+
+  useEffect(() => {
+    // Detect when isHighContrast changes from true to false (potentially due to Dark Mode turning off)
+    if (prevIsHighContrast && !isHighContrast) {
+      setAnimateHighContrast(true);
+      setTimeout(() => setAnimateHighContrast(false), 600);
+    }
+    setPrevIsHighContrast(isHighContrast);
+  }, [isHighContrast, prevIsHighContrast]);
+
 
   const handleDarkModeToggle = (isChecked: boolean) => { // isChecked is the new state of the dark mode switch
-    const wasHighContrastActive = isHighContrast && isDarkMode; // HC was truly active if both were true
-    
+    // const hcIntentBeforeThemeChange = isHighContrast; // Capture HC intent
+
     toggleTheme(); // This updates theme in context, which might update isHighContrast
 
     if (isChecked) { // Dark mode is turning ON
       setAnimateDarkMode(true);
       setTimeout(() => setAnimateDarkMode(false), 600);
-    } else { // Dark mode is turning OFF (isChecked is false for the dark mode switch)
-      // If high contrast was active before turning dark mode off, it will now be turned off by the context.
-      // We animate the HC switch to indicate this change.
-      if (wasHighContrastActive) {
-        setAnimateHighContrast(true);
-        setTimeout(() => setAnimateHighContrast(false), 600);
-      }
     }
+    // Animation for HC turning off due to DM disabling is now handled by the useEffect above
   };
 
-  const handleHighContrastToggle = (isChecked: boolean) => { // isChecked is the visual new state of the HC switch
+  const handleHighContrastToggle = (isChecked: boolean) => { // isChecked is the new visual state of the HC switch
     toggleHighContrast(); // Context handles the logic of whether HC can actually be enabled
 
-    // Animate if the switch is visually turning ON (isChecked is true)
-    // AND dark mode is active (meaning HC is *actually* being enabled).
-    if (isChecked && isDarkMode) { 
+    if (isChecked) { // Animate if HC is being turned ON
       setAnimateHighContrast(true);
       setTimeout(() => setAnimateHighContrast(false), 600);
     }
@@ -60,11 +63,11 @@ const ThemeSwitcher = () => {
         />
       </div>
       <div className="flex items-center justify-between">
-        <Label 
-          htmlFor="high-contrast-switch" 
+        <Label
+          htmlFor="high-contrast-switch"
           className={cn(
-            "flex items-center text-sm cursor-pointer text-foreground/70", // Always appears enabled
-            isHighContrast && isDarkMode && "text-primary font-semibold" // Style when truly active
+            "flex items-center text-sm cursor-pointer",
+            isHighContrast ? "text-primary font-semibold" : "text-foreground/70"
           )}
         >
           <Contrast className="mr-2 h-4 w-4" />
@@ -72,10 +75,9 @@ const ThemeSwitcher = () => {
         </Label>
         <Switch
           id="high-contrast-switch"
-          checked={isHighContrast && isDarkMode} // Visually "on" only if HC and Dark Mode are both active
+          checked={isHighContrast} // Visually "on" based on isHighContrast state directly
           onCheckedChange={handleHighContrastToggle}
-          // No longer disabled
-          aria-label={isHighContrast && isDarkMode ? 'Disable high contrast mode' : 'Enable high contrast mode (requires dark mode)'}
+          aria-label={isHighContrast ? 'Disable high contrast mode' : 'Enable high contrast mode'}
           className={cn(animateHighContrast && 'animate-switch-on-pulse')}
         />
       </div>
