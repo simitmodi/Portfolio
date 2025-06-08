@@ -1,7 +1,7 @@
 
 'use client';
 import { portfolioConfig } from '@/data/portfolioConfig';
-import { Code2, Github, Linkedin, Mail } from 'lucide-react';
+import { Code2, Github, Linkedin, Mail, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
@@ -34,6 +34,11 @@ const Footer = () => {
           <Link href={portfolioConfig.contact.github} target="_blank" rel="noopener noreferrer" title="GitHub" className="hover:text-primary transition-all duration-200 ease-out transform hover:scale-110">
             <Github className="h-6 w-6" />
           </Link>
+          {portfolioConfig.contact.instagram && (
+            <Link href={portfolioConfig.contact.instagram} target="_blank" rel="noopener noreferrer" title="Instagram" className="hover:text-primary transition-all duration-200 ease-out transform hover:scale-110">
+              <Instagram className="h-6 w-6" />
+            </Link>
+          )}
         </div>
         <p className="text-sm">
           &copy; {currentYear} {portfolioConfig.name}. All rights reserved.
@@ -44,4 +49,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

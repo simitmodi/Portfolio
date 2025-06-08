@@ -11,6 +11,7 @@ export const portfolioConfig = {
     email: "simitjmodi@gmail.com",
     linkedin: "https://www.linkedin.com/in/simitmodi/",
     github: "https://github.com/simitmodi",
+    instagram: "https://www.instagram.com/simit.io/",
   },
   skills: [
     { name: "Java", icon: Code },
