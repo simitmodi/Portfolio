@@ -8,6 +8,10 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 export const metadata: Metadata = {
   title: 'Simit Modi',
   description: 'Showcasing projects and skills.',
+  icons: {
+    icon: '/s-logo.png', // Or '/s-logo.ico' if you create an ICO file
+    // apple: '/apple-touch-icon.png', // Example for Apple touch icon
+  },
 };
 
 export default function RootLayout({
