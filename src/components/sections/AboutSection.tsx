@@ -27,12 +27,12 @@ const AboutSection = () => {
           >
             <div className="relative aspect-square max-w-md mx-auto md:max-w-none rounded-lg overflow-hidden shadow-2xl">
               <Image
-                src="https://placehold.co/400x400.png" 
-                alt="About me placeholder"
+                src="/about-me.png"
+                alt="Simit Modi - About Me"
                 layout="fill"
                 objectFit="cover"
                 className="rounded-lg"
-                data-ai-hint="person portrait"
+                data-ai-hint="person professional"
               />
             </div>
           </div>
