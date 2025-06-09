@@ -4,16 +4,17 @@
 import Link from 'next/link';
 import { useEffect, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
-import { portfolioConfig } from '@/data/portfolioConfig';
+// portfolioConfig import might be removable if not used elsewhere after logo change, but let's keep it for now.
+import { portfolioConfig } from '@/data/portfolioConfig'; 
 import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
 
 const navItems = [
   { name: 'Home', href: '#hero', id: 'hero' },
   { name: 'Projects', href: '#projects', id: 'projects' },
   { name: 'About', href: '#about', id: 'about' },
-  { name: 'Academics', href: '#academics', id: 'academics' }, // New
-  { name: 'Achievements', href: '#achievements', id: 'achievements' }, // New
-  { name: 'Extra-Curriculars', href: '#extracurriculars', id: 'extracurriculars' }, // New
+  { name: 'Academics', href: '#academics', id: 'academics' },
+  { name: 'Achievements', href: '#achievements', id: 'achievements' },
+  { name: 'Extra-Curriculars', href: '#extracurriculars', id: 'extracurriculars' },
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
@@ -74,8 +75,9 @@ const SideNavigationBar = () => {
   return (
     <aside className="fixed left-0 top-0 h-screen w-48 bg-background text-foreground p-6 pt-16 hidden md:flex flex-col space-y-6 z-40">
       <Link href="#hero" onClick={(e) => handleLinkClick('hero', e)} className="mb-6 block group">
-        <h2 className="text-2xl font-headline font-bold text-primary group-hover:text-accent transition-colors">{portfolioConfig.name.split(' ')[0]}</h2>
-        <p className="text-sm text-muted-foreground group-hover:text-accent/80 transition-colors">{portfolioConfig.jobTitle}</p>
+        <div className="flex items-center justify-center h-16 w-16 rounded-full bg-primary text-primary-foreground text-4xl font-bold font-headline group-hover:bg-accent transition-colors">
+          S
+        </div>
       </Link>
       <nav className="flex flex-col space-y-1 flex-grow">
         {navItems.map((item) => (

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { portfolioConfig } from '@/data/portfolioConfig';
-import { Code2 } from 'lucide-react';
+// Code2 icon is removed as it's replaced by the 'S' logo.
 
 const NavigationBar = () => {
   const navItems = [
@@ -14,9 +14,10 @@ const NavigationBar = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center">
-        <Link href="/" className="mr-auto flex items-center space-x-2">
-          <Code2 className="h-6 w-6 text-primary" />
-          <span className="font-bold font-headline text-lg">{portfolioConfig.name.split(' ')[0]}'s Profolio</span>
+        <Link href="/" className="mr-auto flex items-center">
+          <div className="flex items-center justify-center h-10 w-10 rounded-md bg-primary text-primary-foreground text-2xl font-bold font-headline hover:bg-accent transition-colors">
+            S
+          </div>
         </Link>
         <nav className="flex items-center space-x-6 text-sm font-medium">
           {navItems.map((item) => (

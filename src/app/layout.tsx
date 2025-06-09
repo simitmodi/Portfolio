@@ -6,7 +6,7 @@ import CustomCursor from '@/components/shared/CustomCursor';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 
 export const metadata: Metadata = {
-  title: 'Profolio - Your Professional Portfolio',
+  title: 'Simit Modi',
   description: 'Showcasing projects and skills.',
 };
 
