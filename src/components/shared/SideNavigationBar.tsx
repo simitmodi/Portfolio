@@ -4,8 +4,7 @@
 import Link from 'next/link';
 import { useEffect, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
-// portfolioConfig import might be removable if not used elsewhere after logo change, but let's keep it for now.
-import { portfolioConfig } from '@/data/portfolioConfig'; 
+import { portfolioConfig } from '@/data/portfolioConfig';
 import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
 
 const navItems = [
@@ -73,10 +72,15 @@ const SideNavigationBar = () => {
 
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-48 bg-background text-foreground p-6 pt-16 hidden md:flex flex-col space-y-6 z-40">
-      <Link href="#hero" onClick={(e) => handleLinkClick('hero', e)} className="mb-6 block group">
-        <div className="flex items-center justify-center h-16 w-16 rounded-full bg-primary text-primary-foreground text-4xl font-bold font-headline group-hover:bg-accent transition-colors">
-          S
+    <aside className="fixed left-0 top-0 h-screen w-48 bg-background text-foreground p-6 pt-8 hidden md:flex flex-col space-y-6 z-40">
+      <Link href="#hero" onClick={(e) => handleLinkClick('hero', e)} className="mb-4 block group">
+        <div className="flex flex-col items-center text-center py-2">
+          <span className="font-bold font-headline text-2xl text-primary group-hover:text-accent transition-colors">
+            {portfolioConfig.name}
+          </span>
+          <span className="text-sm text-muted-foreground group-hover:text-accent/80 transition-colors">
+            Portfolio
+          </span>
         </div>
       </Link>
       <nav className="flex flex-col space-y-1 flex-grow">
