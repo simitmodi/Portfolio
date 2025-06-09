@@ -29,7 +29,7 @@ const HeroSection = () => {
             )}
           >
             <Image
-              src="/profile.jpg" // Updated to use image from public folder
+              src="/profile.png" 
               alt={portfolioConfig.name}
               layout="fill"
               objectFit="cover"

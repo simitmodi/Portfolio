@@ -27,11 +27,12 @@ const AboutSection = () => {
           >
             <div className="relative aspect-square max-w-md mx-auto md:max-w-none rounded-lg overflow-hidden shadow-2xl">
               <Image
-                src="/profile.jpg" // Updated to use image from public folder
-                alt={portfolioConfig.name}
+                src="https://placehold.co/400x400.png" 
+                alt="About me placeholder"
                 layout="fill"
                 objectFit="cover"
                 className="rounded-lg"
+                data-ai-hint="person portrait"
               />
             </div>
           </div>
