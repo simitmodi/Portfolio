@@ -78,9 +78,6 @@ const SideNavigationBar = () => {
           <span className="font-bold font-headline text-2xl text-primary group-hover:text-accent transition-colors">
             {portfolioConfig.name}
           </span>
-          <span className="text-sm text-muted-foreground group-hover:text-accent/80 transition-colors">
-            Portfolio
-          </span>
         </div>
       </Link>
       <nav className="flex flex-col space-y-1 flex-grow">
