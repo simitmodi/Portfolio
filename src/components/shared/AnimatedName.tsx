@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useRef } from 'react';
@@ -18,7 +19,11 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     if (!svg) return;
 
     // Function to get the current primary color from CSS variables
-    const getPrimaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+    const getPrimaryColor = () => {
+        // Ensure this runs client-side only
+        if (typeof window === 'undefined') return 'hsl(0, 0%, 0%)';
+        return getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+    }
     
     // Function to set the colors on the SVG text elements
     const updateColors = () => {
@@ -26,8 +31,9 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
         const color = `hsl(${getPrimaryColor()})`;
         const textElements = svg.querySelectorAll('.animated-text');
         textElements.forEach(el => {
-            (el as HTMLElement).style.stroke = color;
-            (el as HTMLElement).style.fill = color;
+            const htmlEl = el as HTMLElement;
+            htmlEl.style.stroke = color;
+            htmlEl.style.fill = color;
         });
     };
     
@@ -39,8 +45,8 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
 
     // Split text and create SVG text elements
     const textParts = text.split(' ');
-    const firstName = textParts[0];
-    const lastName = textParts.slice(1).join(' ');
+    const firstName = textParts[0] || '';
+    const lastName = textParts.slice(1).join(' ') || '';
 
     svg.innerHTML = `
       <style>
@@ -67,6 +73,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     animationInstance.current = anime.timeline({
       loop: true,
       direction: 'alternate',
+      duration: 4000, // Total duration for one way
     })
     .add({
       targets: textElements,
@@ -80,18 +87,13 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
       fillOpacity: [0, 1],
       easing: 'easeInOutSine',
       duration: 800,
-    }, '-=500')
+    }, '-=500') // Overlap with the end of the drawing animation
     .add({
-      targets: textElements,
-      fillOpacity: [1, 0],
-      strokeDashoffset: [0, anime.setDashoffset],
-      easing: 'easeInOutSine',
-      duration: 1500,
-      delay: anime.stagger(250, {start: 2000}),
+      // Hold with the filled text for a bit
+      duration: 2000,
     });
 
     // --- Dynamic Color Update Logic ---
-    // Use a MutationObserver to detect when the `class` on the <html> element changes (e.g., 'dark' is added/removed)
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
