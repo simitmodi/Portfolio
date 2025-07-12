@@ -7,7 +7,7 @@ import { ArrowDown, Download } from 'lucide-react';
 import Image from 'next/image';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
-import TypingAnimation from '@/components/shared/TypingAnimation';
+import AnimatedName from '@/components/shared/AnimatedName';
 
 const HeroSection = () => {
   const [imageRef, isImageInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
@@ -37,10 +37,10 @@ const HeroSection = () => {
           </div>
           <h1
             className={cn(
-              "text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-primary mb-4 min-h-[1.2em] sm:min-h-[1.5em] md:min-h-[1.5em]"
+              "text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-primary mb-4 h-20 sm:h-24 md:h-28" // Set a fixed height
             )}
           >
-            <TypingAnimation text={portfolioConfig.name} speed={100} />
+             <AnimatedName text={portfolioConfig.name} />
           </h1>
           <p
             ref={jobTitleRef}
