@@ -16,7 +16,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
 
   useEffect(() => {
     const svg = svgRef.current;
-    if (!svg) return;
+    if (!svg || !text) return; // Add check for text prop
 
     // Function to get the current primary color from CSS variables
     const getPrimaryColor = () => {
