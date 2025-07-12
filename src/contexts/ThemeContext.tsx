@@ -2,7 +2,7 @@
 'use client';
 
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -18,63 +18,74 @@ interface ThemeContextProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>('light'); // Default to light, will be updated
+  const [theme, setTheme] = useState<Theme>('light'); // Default to light, will be updated by effect
   const [isHighContrast, setIsHighContrast] = useState<boolean>(false);
 
-  useEffect(() => {
-    // Initialize states from localStorage or time of day on mount
-    const storedTheme = localStorage.getItem('theme') as Theme | null;
-    const storedIsHighContrast = localStorage.getItem('isHighContrast') === 'true';
-
-    if (storedTheme) {
-      setTheme(storedTheme); // User's explicit choice takes precedence
-    } else {
-      // No explicit theme choice in localStorage, determine by time of day
-      const currentHour = new Date().getHours();
-      const SUNRISE_HOUR = 6; // 6 AM
-      const SUNSET_HOUR = 18; // 6 PM (adjust as needed)
-      
-      let determinedTheme: Theme = 'light'; 
-      if (currentHour >= SUNRISE_HOUR && currentHour < SUNSET_HOUR) {
-        determinedTheme = 'light';
-      } else {
-        determinedTheme = 'dark';
-      }
-      setTheme(determinedTheme);
-      // The theme state change will trigger the other useEffect to save it to localStorage.
-    }
-    setIsHighContrast(storedIsHighContrast); // Initialize HC state from localStorage
-  }, []); // Runs once on mount
-
-  useEffect(() => {
-    // Effect for theme changes (DOM class and localStorage for theme)
-    localStorage.setItem('theme', theme);
-    if (theme === 'dark') {
+  const applyTheme = useCallback((newTheme: Theme) => {
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    if (newTheme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
-      // If theme changes to light, and high contrast was active (likely with dark mode),
-      // turn off high contrast for light mode unless user re-enables it.
-      if (isHighContrast) {
-        // setIsHighContrast(false); // Let user manage HC independently, remove auto-disable for now
-      }
     }
-  }, [theme]);
+  }, []);
+  
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme') as Theme | null;
+    const storedIsHighContrast = localStorage.getItem('isHighContrast') === 'true';
+    setIsHighContrast(storedIsHighContrast);
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      // Only apply system theme if no user preference is stored
+      if (!localStorage.getItem('theme')) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    };
+
+    if (storedTheme) {
+      // If user has a preference, apply it
+      applyTheme(storedTheme);
+    } else {
+      // Otherwise, apply the current system theme
+      applyTheme(mediaQuery.matches ? 'dark' : 'light');
+    }
+    
+    // Listen for changes in the system theme
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    };
+  }, [applyTheme]);
+
 
   useEffect(() => {
     // Effect for isHighContrast changes (localStorage for HC intent, and DOM class)
     localStorage.setItem('isHighContrast', String(isHighContrast));
 
-    if (theme === 'dark' && isHighContrast) { // HC is primarily designed for dark theme
+    if (isHighContrast) {
       document.documentElement.classList.add('high-contrast');
     } else {
       document.documentElement.classList.remove('high-contrast');
     }
-  }, [isHighContrast, theme]);
+  }, [isHighContrast]);
 
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme((prevTheme) => {
+      const newTheme = prevTheme === 'light' ? 'dark' : 'light';
+      // When user toggles, this becomes their preference
+      localStorage.setItem('theme', newTheme);
+      if (newTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      return newTheme;
+    });
   };
 
   const toggleHighContrast = () => {
