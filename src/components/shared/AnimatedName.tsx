@@ -22,18 +22,24 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     const getPrimaryColor = () => {
         // Ensure this runs client-side only
         if (typeof window === 'undefined') return 'hsl(0, 0%, 0%)';
-        return getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+        const style = getComputedStyle(document.documentElement);
+        const primaryHsl = style.getPropertyValue('--primary').trim();
+        // Convert HSL string to a usable color value for anime.js
+        return `hsl(${primaryHsl})`;
     }
     
     // Function to set the colors on the SVG text elements
     const updateColors = () => {
         if (!svg) return;
-        const color = `hsl(${getPrimaryColor()})`;
+        const color = getPrimaryColor();
         const textElements = svg.querySelectorAll('.animated-text');
         textElements.forEach(el => {
             const htmlEl = el as HTMLElement;
-            htmlEl.style.stroke = color;
-            htmlEl.style.fill = color;
+            if (htmlEl) {
+              htmlEl.style.stroke = color;
+              // Reset fill for the animation to take over
+              htmlEl.style.fill = 'transparent'; 
+            }
         });
     };
     
@@ -52,7 +58,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
       <style>
         .animated-text {
           stroke-width: 1;
-          stroke-dasharray: 1000;
+          stroke-dasharray: 1000; /* A large value to cover any path length */
           stroke-dashoffset: 1000;
           fill-opacity: 0;
           font-family: inherit;
@@ -69,35 +75,48 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     // Set initial colors
     updateColors();
 
-    // Start the animation
-    animationInstance.current = anime.timeline({
-      loop: true,
-      direction: 'alternate',
-      duration: 4000, // Total duration for one way
-    })
-    .add({
-      targets: textElements,
-      strokeDashoffset: [anime.setDashoffset, 0],
-      easing: 'easeInOutSine',
-      duration: 1500,
-      delay: anime.stagger(250),
-    })
-    .add({
-      targets: textElements,
-      fillOpacity: [0, 1],
-      easing: 'easeInOutSine',
-      duration: 800,
-    }, '-=500') // Overlap with the end of the drawing animation
-    .add({
-      // Hold with the filled text for a bit
-      duration: 2000,
-    });
+    const createAnimation = () => {
+        if (animationInstance.current) {
+            anime.remove(animationInstance.current.targets);
+        }
+        
+        const color = getPrimaryColor();
+
+        animationInstance.current = anime.timeline({
+          loop: true,
+          direction: 'alternate',
+        })
+        .add({
+          targets: textElements,
+          strokeDashoffset: [anime.setDashoffset, 0],
+          easing: 'easeInOutSine',
+          duration: 1500,
+          delay: anime.stagger(250),
+        })
+        .add({
+          targets: textElements,
+          fill: color, // Animate fill to the primary color
+          fillOpacity: [0, 1],
+          easing: 'easeInOutSine',
+          duration: 800,
+        }, '-=800') // Overlap with the end of the drawing animation
+        .add({
+          // Hold the filled state
+          duration: 2000,
+        });
+    }
+
+    createAnimation();
 
     // --- Dynamic Color Update Logic ---
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          updateColors();
+        if (mutation.type === 'attributes' && (mutation.attributeName === 'class' || mutation.attributeName === 'style')) {
+          if(document.documentElement.classList.contains('dark') || !document.documentElement.classList.contains('dark')){
+            updateColors();
+            // Re-create the animation with the new color
+            createAnimation();
+          }
         }
       }
     });
