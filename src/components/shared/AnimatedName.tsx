@@ -12,25 +12,60 @@ interface AnimatedNameProps {
 
 const AnimatedName = ({ text, className }: AnimatedNameProps) => {
   const svgRef = useRef<SVGSVGElement>(null);
+  const animationInstance = useRef<anime.AnimeInstance | null>(null);
 
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
 
-    // Split text into two parts for staggering
+    // Function to get the current primary color from CSS variables
+    const getPrimaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+    
+    // Function to set the colors on the SVG text elements
+    const updateColors = () => {
+        if (!svg) return;
+        const color = `hsl(${getPrimaryColor()})`;
+        const textElements = svg.querySelectorAll('.animated-text');
+        textElements.forEach(el => {
+            (el as HTMLElement).style.stroke = color;
+            (el as HTMLElement).style.fill = color;
+        });
+    };
+    
+    // Clear previous content and animation
+    if (animationInstance.current) {
+      anime.remove(animationInstance.current.targets);
+    }
+    svg.innerHTML = ''; 
+
+    // Split text and create SVG text elements
     const textParts = text.split(' ');
     const firstName = textParts[0];
     const lastName = textParts.slice(1).join(' ');
 
-    // Clear previous animations and content
     svg.innerHTML = `
+      <style>
+        .animated-text {
+          stroke-width: 1;
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 1000;
+          fill-opacity: 0;
+          font-family: inherit;
+          font-size: inherit;
+          font-weight: inherit;
+        }
+      </style>
       <text class="animated-text first-name" x="50%" y="50%" dominant-baseline="central" text-anchor="end" dx="-0.2em">${firstName}</text>
       <text class="animated-text last-name" x="50%" y="50%" dominant-baseline="central" text-anchor="start" dx="0.2em">${lastName}</text>
     `;
 
     const textElements = svg.querySelectorAll('.animated-text');
 
-    anime.timeline({
+    // Set initial colors
+    updateColors();
+
+    // Start the animation
+    animationInstance.current = anime.timeline({
       loop: true,
       direction: 'alternate',
     })
@@ -39,40 +74,46 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
       strokeDashoffset: [anime.setDashoffset, 0],
       easing: 'easeInOutSine',
       duration: 1500,
-      delay: (el, i) => i * 250,
+      delay: anime.stagger(250),
     })
     .add({
       targets: textElements,
       fillOpacity: [0, 1],
       easing: 'easeInOutSine',
       duration: 800,
-    }, '-=500') // Start fill animation before stroke animation finishes
+    }, '-=500')
     .add({
       targets: textElements,
       fillOpacity: [1, 0],
       strokeDashoffset: [0, anime.setDashoffset],
       easing: 'easeInOutSine',
       duration: 1500,
-      delay: (el, i) => i * 250 + 2000, // Wait 2 seconds before reversing
+      delay: anime.stagger(250, {start: 2000}),
     });
 
+    // --- Dynamic Color Update Logic ---
+    // Use a MutationObserver to detect when the `class` on the <html> element changes (e.g., 'dark' is added/removed)
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          updateColors();
+        }
+      }
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+
+    // Cleanup function
+    return () => {
+      observer.disconnect();
+      if (animationInstance.current) {
+        anime.remove(animationInstance.current.targets);
+      }
+    };
   }, [text]);
 
   return (
     <div className={cn("w-full h-full", className)}>
-      <style jsx>{`
-        .animated-text {
-          stroke: hsl(var(--primary));
-          stroke-width: 1;
-          stroke-dasharray: 1000; /* A large value */
-          stroke-dashoffset: 1000; /* A large value */
-          fill: hsl(var(--primary));
-          fill-opacity: 0;
-          font-family: inherit;
-          font-size: inherit;
-          font-weight: inherit;
-        }
-      `}</style>
       <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 400 100" preserveAspectRatio="xMidYMid meet"></svg>
     </div>
   );
