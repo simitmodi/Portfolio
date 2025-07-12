@@ -63,23 +63,23 @@ body {
 
   .dark {
     /* Dark Theme Variables */
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 95%;
+    --background: 0 0% 0%; /* Pure Black */
+    --foreground: 0 0% 95%; /* Light Gray */
 
-    --card: 240 10% 10%;
+    --card: 0 0% 7%; /* Very Dark Gray for cards */
     --card-foreground: 0 0% 95%;
 
-    --popover: 240 10% 10%;
+    --popover: 0 0% 7%; /* Very Dark Gray for popovers */
     --popover-foreground: 0 0% 95%;
 
     /* Primary: Lighter Deep Blue for dark mode */
     --primary: 231 48% 60%;
     --primary-foreground: 0 0% 10%;
 
-    --secondary: 240 5% 15%;
+    --secondary: 0 0% 12%; /* Dark Gray for secondary elements */
     --secondary-foreground: 0 0% 95%;
 
-    --muted: 240 5% 20%;
+    --muted: 0 0% 15%; /* Slightly lighter gray for muted elements */
     --muted-foreground: 0 0% 60%;
 
     /* Accent: Lighter Teal for dark mode */
@@ -89,8 +89,8 @@ body {
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 5% 25%;
-    --input: 240 5% 25%;
+    --border: 0 0% 18%; /* Dark Gray for borders */
+    --input: 0 0% 18%;  /* Dark Gray for input background */
     --ring: 231 48% 60%; /* Primary color for rings */
 
     --chart-1: 220 70% 50%;
