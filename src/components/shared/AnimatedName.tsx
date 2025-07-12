@@ -16,7 +16,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
 
   useEffect(() => {
     const svg = svgRef.current;
-    if (!svg || !text) return; // Add check for text prop
+    if (!svg || !text) return;
 
     // Function to get the current primary color from CSS variables
     const getPrimaryColor = () => {
@@ -24,8 +24,8 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
         if (typeof window === 'undefined') return 'hsl(0, 0%, 0%)';
         const style = getComputedStyle(document.documentElement);
         const primaryHsl = style.getPropertyValue('--primary').trim();
-        // Convert HSL string to a usable color value for anime.js
-        return `hsl(${primaryHsl})`;
+        // Convert space-separated HSL from CSS variable to comma-separated HSL for anime.js
+        return `hsl(${primaryHsl.split(' ').join(', ')})`;
     }
     
     // Function to set the colors on the SVG text elements
