@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { portfolioConfig } from '@/data/portfolioConfig';
 import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
@@ -17,50 +17,44 @@ const navItems = [
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
-const sectionIds = navItems.map(item => item.id);
-
 const SideNavigationBar = () => {
   const [activeSection, setActiveSection] = useState<string>('hero');
-
-  const handleScroll = useCallback(() => {
-    let currentSection = sectionIds[0];
-    const scrollThresholdRatio = 0.3; 
-
-    for (const id of sectionIds) {
-      const element = document.getElementById(id);
-      if (element) {
-        const rect = element.getBoundingClientRect();
-        const viewportMiddleTop = window.innerHeight * (0.5 - scrollThresholdRatio / 2);
-        const viewportMiddleBottom = window.innerHeight * (0.5 + scrollThresholdRatio / 2);
-
-        if (rect.top <= viewportMiddleBottom && rect.bottom >= viewportMiddleTop) {
-          currentSection = id;
-          break; 
-        }
-        if (rect.top < window.innerHeight && rect.bottom > 0 && rect.top < (document.getElementById(currentSection)?.getBoundingClientRect().top || Infinity)) {
-             currentSection = id;
-        }
-      }
-    }
-    if (window.scrollY < 50) {
-        currentSection = 'hero';
-    }
-
-    setActiveSection(currentSection);
-  }, []);
+  const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(handleScroll, 100); 
+    // Disconnect previous observer if it exists
+    if (observer.current) {
+      observer.current.disconnect();
+    }
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
+    // Create a new Intersection Observer
+    observer.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        root: document.querySelector('.snap-container'), // Observe within the snap container
+        rootMargin: '-50% 0px -50% 0px', // Trigger when the section is in the middle of the viewport
+        threshold: 0,
+      }
+    );
 
+    // Observe each section
+    const sections = navItems.map((item) => document.getElementById(item.id)).filter(Boolean);
+    sections.forEach((section) => {
+      if(section) observer.current?.observe(section);
+    });
+
+    // Cleanup on unmount
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      observer.current?.disconnect();
     };
-  }, [handleScroll]);
+  }, []);
+
 
   const handleLinkClick = (id: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
     if (event) event.preventDefault(); 
