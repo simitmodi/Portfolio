@@ -66,8 +66,8 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
           font-weight: inherit;
         }
       </style>
-      <text class="animated-text first-name" x="50%" y="50%" dominant-baseline="central" text-anchor="end" dx="-0.2em">${firstName}</text>
-      <text class="animated-text last-name" x="50%" y="50%" dominant-baseline="central" text-anchor="start" dx="0.2em">${lastName}</text>
+      <text class="animated-text first-name" x="50%" y="50%" dominant-baseline="central" text-anchor="end" dx="-0.1em">${firstName}</text>
+      <text class="animated-text last-name" x="50%" y="50%" dominant-baseline="central" text-anchor="start" dx="0.1em">${lastName}</text>
     `;
 
     const textElements = svg.querySelectorAll('.animated-text');
