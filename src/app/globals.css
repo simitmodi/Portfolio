@@ -302,3 +302,28 @@ body {
   height: 8px !important;
   border-width: 0px !important; /* Temporarily remove border if interactive */
 }
+
+
+@layer utilities {
+  .snap-container {
+    scroll-snap-type: y mandatory;
+    height: 100vh; /* Use 100dvh if you need dynamic viewport height */
+    overflow-y: scroll;
+  }
+  .snap-section {
+    scroll-snap-align: start;
+    height: 100vh; /* Use 100dvh if you need dynamic viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .snap-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Webkit browsers */
+  }
+  .snap-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
+    

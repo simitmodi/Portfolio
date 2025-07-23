@@ -13,7 +13,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <SideNavigationBar />
-      <div className="flex-grow flex flex-col md:ml-48 bg-background">
+      <div className="flex-grow flex flex-col md:ml-48 bg-background snap-container">
         <main className="flex-grow">
           <HeroSection />
           <ProjectShowcaseSection />
@@ -28,3 +28,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
