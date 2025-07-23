@@ -53,6 +53,11 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     const firstName = textParts[0] || '';
     const lastName = textParts.slice(1).join(' ') || '';
 
+    if (!firstName) {
+      console.error("AnimatedName: First name is missing from the text prop.");
+      return;
+    }
+
     svg.innerHTML = `
       <style>
         .animated-text {
@@ -65,8 +70,8 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
           font-weight: inherit;
         }
       </style>
-      <text class="animated-text first-name" x="50%" y="50%" dominant-baseline="central" text-anchor="end" dx="-0.1em">${firstName}</text>
-      <text class="animated-text last-name" x="50%" y="50%" dominant-baseline="central" text-anchor="start" dx="0.1em">${lastName}</text>
+      <text class="animated-text first-name" x="50%" y="50%" dominant-baseline="central" text-anchor="end">${firstName}</text>
+      <text class="animated-text last-name" x="50%" y="50%" dominant-baseline="central" text-anchor="start">${lastName}</text>
     `;
 
     const textElements = svg.querySelectorAll('.animated-text');
