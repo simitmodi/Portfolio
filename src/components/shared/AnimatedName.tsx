@@ -37,8 +37,9 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     };
     
     // Create text elements for animation
-    const textElements = text.split('').map((letter, i) => {
-      return `<tspan class="letter" dx="${i === 0 ? 0 : '0.1em'}">${letter === ' ' ? '\u00A0' : letter}</tspan>`;
+    const textElements = text.split('').map((letter) => {
+      // Use non-breaking space for spaces to ensure they are rendered and have width
+      return `<tspan class="letter">${letter === ' ' ? '\u00A0' : letter}</tspan>`;
     }).join('');
     
     svg.innerHTML = `
