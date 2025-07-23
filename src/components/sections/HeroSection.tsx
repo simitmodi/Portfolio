@@ -4,13 +4,11 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { portfolioConfig } from '@/data/portfolioConfig';
 import { ArrowDown, Download } from 'lucide-react';
-import Image from 'next/image';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 import AnimatedName from '@/components/shared/AnimatedName';
 
 const HeroSection = () => {
-  const [imageRef, isImageInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
   const [jobTitleRef, isJobTitleInView] = useScrollAnimation<HTMLParagraphElement>({ triggerOnce: false, threshold: 0.2 });
   const [taglineRef, isTaglineInView] = useScrollAnimation<HTMLParagraphElement>({ triggerOnce: false, threshold: 0.2, rootMargin: '-50px 0px 0px 0px' });
   const [buttonsRef, isButtonsInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
@@ -21,21 +19,6 @@ const HeroSection = () => {
       <section id="hero" className="bg-background">
         <div className="container mx-auto text-center">
           <div className="max-w-3xl mx-auto">
-            <div
-              ref={imageRef}
-              className={cn(
-                "relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-8 rounded-full overflow-hidden shadow-xl border-4 border-primary",
-                "opacity-0",
-                isImageInView && "animate-fade-in"
-              )}
-            >
-              <Image
-                src="/profile.png" 
-                alt={portfolioConfig.name}
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
             <h1
               className={cn(
                 "text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-primary mb-4 h-20 sm:h-24 md:h-28" // Set a fixed height

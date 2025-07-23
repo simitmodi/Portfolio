@@ -2,8 +2,6 @@ export interface Project {
   id: string;
   title: string;
   description: string;
-  imageUrl: string;
-  dataAiHint?: string;
   projectUrl?: string;
   githubUrl?: string;
   tags: string[];
