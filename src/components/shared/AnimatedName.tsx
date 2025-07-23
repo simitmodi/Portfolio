@@ -25,7 +25,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
         const style = getComputedStyle(document.documentElement);
         const primaryHsl = style.getPropertyValue('--primary').trim();
         // Convert space-separated HSL from CSS variable to comma-separated HSL for anime.js
-        return `hsl(${primaryHsl.split(' ').join(', ')})`;
+        return `hsl(${primaryHsl.split(' ').join(',')})`;
     }
     
     // Function to set the colors on the SVG text elements
@@ -133,9 +133,12 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
   }, [text]);
 
   return (
-    <div className={cn("w-full h-full", className)}>
-      <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 400 100" preserveAspectRatio="xMidYMid meet"></svg>
-    </div>
+    <svg 
+      ref={svgRef} 
+      className={cn("w-full h-full", className)} 
+      viewBox="0 0 400 100" 
+      preserveAspectRatio="xMidYMid meet"
+    ></svg>
   );
 };
 

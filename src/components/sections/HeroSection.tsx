@@ -21,10 +21,10 @@ const HeroSection = () => {
           <div className="max-w-3xl mx-auto">
             <h1
               className={cn(
-                "text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-primary mb-4 h-20 sm:h-24 md:h-28" // Set a fixed height
+                "text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-primary mb-4 h-20 sm:h-24 md:h-28 flex justify-center items-center" // Set a fixed height and center content
               )}
             >
-               <AnimatedName text={portfolioConfig.name} />
+               <AnimatedName text={portfolioConfig.name} className="w-full h-full"/>
             </h1>
             <p
               ref={jobTitleRef}
@@ -75,5 +75,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
-    
