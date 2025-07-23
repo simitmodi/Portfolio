@@ -23,15 +23,24 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
       const primaryHsl = style.getPropertyValue('--primary').trim() || '0 0% 0%';
       return `hsl(${primaryHsl.split(' ').join(',')})`;
     };
+    
+    const getForegroundColor = () => {
+        if (typeof window === 'undefined') return 'hsl(0, 0%, 100%)';
+        const style = getComputedStyle(document.documentElement);
+        const foregroundHsl = style.getPropertyValue('--foreground').trim() || '0 0% 100%';
+        return `hsl(${foregroundHsl.split(' ').join(',')})`;
+    }
 
     const updateColors = () => {
       if (!svg) return;
-      const color = getPrimaryColor();
+      const primaryColor = getPrimaryColor();
+      const foregroundColor = getForegroundColor();
       const textElements = svg.querySelectorAll('.letter');
       textElements.forEach(el => {
         const htmlEl = el as HTMLElement;
         if (htmlEl) {
-          htmlEl.style.fill = color;
+          htmlEl.style.fill = primaryColor;
+          htmlEl.style.stroke = foregroundColor;
         }
       });
     };
@@ -42,6 +51,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
       return `<tspan class="letter">${letter === ' ' ? '\u00A0' : letter}</tspan>`;
     }).join('');
     
+    // Set up the SVG structure
     svg.innerHTML = `
       <style>
         .letter {
@@ -49,17 +59,19 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
           font-size: inherit;
           font-weight: inherit;
           stroke-width: 1;
-          stroke: hsl(var(--foreground));
           fill-opacity: 0;
           stroke-dasharray: 100;
           stroke-dashoffset: 100;
         }
       </style>
-      <text class="animated-text" x="50%" y="50%" dominant-baseline="central" text-anchor="middle">${textElements}</text>
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="animated-text">
+        ${textElements}
+      </text>
     `;
 
     updateColors();
 
+    // Create the animation timeline
     anime.timeline({
       loop: false,
       direction: 'normal',
@@ -68,15 +80,16 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
       strokeDashoffset: [anime.setDashoffset, 0],
       easing: 'easeInOutSine',
       duration: 700,
-      delay: (el, i) => i * 100
+      delay: anime.stagger(100)
     }).add({
       targets: '.animated-text .letter',
       fillOpacity: [0, 1],
       easing: 'easeOutQuad',
       duration: 500,
-    }, '-=300');
+    }, '-=300'); // Start this animation 300ms before the previous one ends
 
 
+    // Watch for theme changes to update colors
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
         if (mutation.type === 'attributes' && (mutation.attributeName === 'class' || mutation.attributeName === 'style')) {
@@ -96,7 +109,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     <svg
       ref={svgRef}
       className={cn("w-full h-full", className)}
-      viewBox="0 0 400 100"
+      viewBox="0 0 400 100" // Adjust viewBox as needed
       preserveAspectRatio="xMidYMid meet"
     ></svg>
   );
