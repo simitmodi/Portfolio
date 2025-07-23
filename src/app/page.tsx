@@ -6,7 +6,6 @@ import AcademicSection from '@/components/sections/AcademicSection'; // New impo
 import AchievementsSection from '@/components/sections/AchievementsSection'; // New import
 import ExtracurricularSection from '@/components/sections/ExtracurricularSection'; // New import
 import ContactSection from '@/components/sections/ContactSection';
-import Footer from '@/components/shared/Footer';
 import SideNavigationBar from '@/components/shared/SideNavigationBar';
 
 export default function HomePage() {
@@ -23,10 +22,7 @@ export default function HomePage() {
           <ExtracurricularSection />
           <ContactSection />
         </main>
-        <Footer />
       </div>
     </div>
   );
 }
-
-    
