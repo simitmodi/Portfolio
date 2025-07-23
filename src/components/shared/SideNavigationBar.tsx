@@ -74,7 +74,7 @@ const SideNavigationBar = () => {
           </span>
         </div>
       </Link>
-      <nav className="flex flex-col space-y-1 flex-grow">
+      <nav className="flex flex-col space-y-1 flex-grow justify-center">
         {navItems.map((item) => (
           <a
             key={item.name}
