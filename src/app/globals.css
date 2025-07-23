@@ -231,7 +231,7 @@ body {
     cursor: none; /* Ensure default cursor is hidden */
   }
   section {
-    @apply py-12 sm:py-16 md:py-20; /* Updated responsive vertical padding */
+    @apply py-16 sm:py-20 md:py-24 lg:py-28 min-h-screen flex items-center justify-center;
   }
 
   /* Restore text cursor for specific input elements */
@@ -302,26 +302,6 @@ body {
   height: 8px !important;
   border-width: 0px !important; /* Temporarily remove border if interactive */
 }
+    
 
-
-@layer utilities {
-  .snap-container {
-    scroll-snap-type: y mandatory;
-    height: 100vh; /* Use 100dvh if you need dynamic viewport height */
-    overflow-y: scroll;
-    scrollbar-width: none; /* For Firefox */
-    -ms-overflow-style: none; /* For Internet Explorer and Edge */
-  }
-  .snap-container::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Opera */
-  }
-  .snap-section {
-    scroll-snap-align: start;
-    height: 100vh; /* Use 100dvh if you need dynamic viewport height */
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
     

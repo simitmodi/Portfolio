@@ -15,7 +15,7 @@ export default function HomePage() {
       <SideNavigationBar />
       <LiveClock />
       <div className="flex-grow flex flex-col md:ml-48 bg-background">
-        <main className="flex-grow snap-container">
+        <main className="flex-grow">
           <HeroSection />
           <ProjectShowcaseSection />
           <AboutSection />
@@ -28,3 +28,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    

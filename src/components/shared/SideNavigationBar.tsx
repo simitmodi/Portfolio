@@ -21,49 +21,47 @@ const SideNavigationBar = () => {
   const [activeSection, setActiveSection] = useState<string>('hero');
   const observer = useRef<IntersectionObserver | null>(null);
 
+  const handleLinkClick = (id: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
+    if (event) event.preventDefault(); 
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   useEffect(() => {
     // Disconnect previous observer if it exists
     if (observer.current) {
       observer.current.disconnect();
     }
 
-    // Create a new Intersection Observer
-    observer.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      {
-        root: document.querySelector('.snap-container'), // Observe within the snap container
-        rootMargin: '-50% 0px -50% 0px', // Trigger when the section is in the middle of the viewport
-        threshold: 0,
-      }
-    );
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            // Check if the intersecting element is the one we want to set active
+            // This is a simple check, more complex logic might be needed depending on scroll direction
+            if (entry.intersectionRatio > 0.5) { // 50% of the element is visible
+                setActiveSection(entry.target.id);
+            }
+        }
+      });
+    };
 
-    // Observe each section
+    observer.current = new IntersectionObserver(handleIntersect, {
+      root: null, // Observing relative to the viewport
+      rootMargin: '0px',
+      threshold: [0.1, 0.5, 0.9], // Trigger at different visibility percentages
+    });
+
     const sections = navItems.map((item) => document.getElementById(item.id)).filter(Boolean);
     sections.forEach((section) => {
       if(section) observer.current?.observe(section);
     });
 
-    // Cleanup on unmount
     return () => {
       observer.current?.disconnect();
     };
   }, []);
-
-
-  const handleLinkClick = (id: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
-    if (event) event.preventDefault(); 
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-48 bg-background/70 backdrop-blur-lg text-foreground p-6 pt-8 hidden md:flex flex-col space-y-6 z-40 shadow-2xl">
@@ -103,3 +101,5 @@ const SideNavigationBar = () => {
 };
 
 export default SideNavigationBar;
+
+    
