@@ -66,7 +66,7 @@ const SideNavigationBar = () => {
 
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-48 bg-background/80 backdrop-blur-md text-foreground p-6 pt-8 hidden md:flex flex-col space-y-6 z-40">
+    <aside className="fixed left-0 top-0 h-screen w-48 bg-background/70 backdrop-blur-lg text-foreground p-6 pt-8 hidden md:flex flex-col space-y-6 z-40 shadow-2xl border-r border-white/10">
       <Link href="#hero" onClick={(e) => handleLinkClick('hero', e)} className="mb-4 block group">
         <div className="flex flex-col items-center text-center py-2">
           <span className="font-bold font-headline text-2xl text-primary group-hover:text-accent transition-colors">
