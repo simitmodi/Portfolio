@@ -11,39 +11,57 @@ interface AnimatedNameProps {
 
 const AnimatedName = ({ text, className }: AnimatedNameProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const animationInstance = useRef<anime.AnimeTimelineInstance | null>(null);
   const letters = text.split('');
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    // Ensure we have spans to animate
     const spans = container.querySelectorAll('span');
     if (spans.length === 0) return;
 
+    // Clear any previous animation instance
+    if (animationInstance.current) {
+      animationInstance.current.pause();
+      anime.remove(spans);
+    }
+
     const timeline = anime.timeline({
-      loop: true,
-      delay: (_, i) => i * 50,
+      // Do not loop here, we will handle it manually
+      loop: false,
+      autoplay: false, // Start manually
+      complete: () => {
+        // When the animation completes, wait 3 seconds then play again
+        setTimeout(() => {
+          timeline.play();
+        }, 3000);
+      }
     });
 
     timeline.add({
       targets: spans,
-      // Property keyframes
       translateY: [
-        { value: '-1.75rem', easing: 'easeOutExpo', duration: 600 },
+        { value: '-2.75rem', easing: 'easeOutExpo', duration: 600 },
         { value: 0, easing: 'easeOutBounce', duration: 800, delay: 100 }
       ],
-      // Property specific parameters
       rotate: {
         value: '1turn',
         duration: 1200,
-        easing: 'easeInCubic'
+        easing: 'inOutCubic'
       },
-      loopDelay: 3000,
+      delay: anime.stagger(50),
     });
+    
+    // Store the instance and start it
+    animationInstance.current = timeline;
+    timeline.play();
       
     return () => {
-      timeline.pause();
+      // Cleanup on component unmount
+      if (animationInstance.current) {
+        animationInstance.current.pause();
+      }
       anime.remove(spans);
     };
   }, [text]); // Rerun effect if text prop changes
