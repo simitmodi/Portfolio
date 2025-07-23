@@ -1,4 +1,3 @@
-
 'use client';
 import ContactForm from '@/components/forms/ContactForm';
 import SectionTitle from '@/components/shared/SectionTitle';
@@ -35,7 +34,7 @@ const ContactSection = () => {
   };
 
   return (
-    <div className="snap-section flex flex-col">
+    <div className="snap-section flex flex-col h-screen">
       <section id="contact" className="bg-background flex-grow w-full flex flex-col justify-center">
         <div className="container mx-auto">
           <SectionTitle>Contact Me</SectionTitle>
@@ -65,9 +64,6 @@ const ContactSection = () => {
                     Send an Email
                   </Button>
                 </a>
-                <p className="text-sm text-muted-foreground">
-                  You can also find my LinkedIn and GitHub profiles in the footer.
-                </p>
               </div>
             </div>
             <div>
