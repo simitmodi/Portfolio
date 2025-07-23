@@ -27,37 +27,36 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
       anime.remove(spans);
     }
     
-    // Define the timeline in a variable
-    const timeline = anime.timeline({
-      loop: false,
-      autoplay: false,
-      complete: () => {
-        // Use a timeout to create a pause before restarting
-        setTimeout(() => {
-          timeline.play();
-        }, 3000);
-      },
-    });
+    const playAnimation = () => {
+      const timeline = anime.timeline({
+        loop: false,
+        autoplay: false,
+        complete: () => {
+          setTimeout(() => {
+            playAnimation();
+          }, 3000);
+        },
+      });
 
-    // Add animations to the timeline
-    timeline.add({
-      targets: spans,
-      translateY: [
-        { value: '-2.75rem', easing: 'easeOutExpo', duration: 600 },
-        { value: 0, easing: 'easeOutBounce', duration: 800, delay: 100 },
-      ],
-      rotate: {
-        value: '1turn',
-        duration: 1200,
-        easing: 'inOutCubic',
-      },
-      delay: anime.stagger(50),
-    });
+      timeline.add({
+        targets: spans,
+        translateY: [
+          { value: '-2.75rem', easing: 'easeOutExpo', duration: 600 },
+          { value: 0, easing: 'easeOutBounce', duration: 800, delay: 100 },
+        ],
+        rotate: {
+          value: '1turn',
+          duration: 1200,
+          easing: 'inOutCubic',
+        },
+        delay: anime.stagger(50),
+      });
+
+      animationInstance.current = timeline;
+      timeline.play();
+    };
     
-    animationInstance.current = timeline; // Store instance for cleanup
-    
-    // Start the animation for the first time
-    timeline.play();
+    playAnimation();
       
     // Cleanup function
     return () => {
