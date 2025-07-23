@@ -23,7 +23,7 @@ export const portfolioConfig = {
   ] as Skill[],
   academics: {
     degree: "Bachelor of Engineering (B.E.) in Computer Engineering",
-    institution: "SAL Institute of technology and engineering research",
+    institution: "SAL Institute of Technology and Engineering Research",
     duration: "2023 - 2027 (Expected)",
     icon: GraduationCap,
   },
