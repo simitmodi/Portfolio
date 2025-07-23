@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect, useRef } from 'react';
@@ -40,7 +39,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
         duration: 1200,
         easing: 'easeInCubic'
       },
-      loopDelay: 1000,
+      loopDelay: 3000,
     });
       
     return () => {
