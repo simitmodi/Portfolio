@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useRef } from 'react';
@@ -38,17 +39,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
         });
     };
 
-    const textParts = text.split(' ');
-    const firstName = textParts[0] || '';
-    // Add a leading space to the last name to create the visual gap
-    const lastName = textParts.length > 1 ? ` ${textParts.slice(1).join(' ')}` : '';
-
-    if (!firstName) {
-      console.error("AnimatedName: First name is missing from the text prop.");
-      return;
-    }
-
-    // Simplified static SVG structure
+    // Simplified static SVG structure using a single text element
     svg.innerHTML = `
       <style>
         .static-text {
@@ -57,8 +48,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
           font-weight: inherit;
         }
       </style>
-      <text class="static-text first-name" x="50%" y="50%" dominant-baseline="central" text-anchor="end">${firstName}</text>
-      <text class="static-text last-name" x="50%" y="50%" dominant-baseline="central" text-anchor="start">${lastName}</text>
+      <text class="static-text" x="50%" y="50%" dominant-baseline="central" text-anchor="middle">${text}</text>
     `;
 
     updateColors();
