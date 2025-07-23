@@ -52,8 +52,8 @@ const LiveClock = () => {
     // Fetch weather data
     const fetchWeather = async () => {
       try {
-        // Using Open-Meteo API for Mumbai, India. No API key needed.
-        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=19.07&longitude=72.88&current_weather=true');
+        // Using Open-Meteo API for Ahmedabad, India. No API key needed.
+        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.02&longitude=72.57&current_weather=true');
         const data = await response.json();
         if (data && data.current_weather) {
             setWeather({
