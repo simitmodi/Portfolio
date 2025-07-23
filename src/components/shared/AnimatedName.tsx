@@ -11,85 +11,56 @@ interface AnimatedNameProps {
 }
 
 const AnimatedName = ({ text, className }: AnimatedNameProps) => {
-  const textRef = useRef<SVGTextElement>(null);
+  const containerRef = useRef<HTMLHeadingElement>(null);
   const letters = text.split('');
 
   useEffect(() => {
-    const textElement = textRef.current;
-    if (!textElement) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    // Ensure we have tspans to animate
-    const tspans = textElement.querySelectorAll('tspan');
-    if (tspans.length === 0) return;
-
-    // Get primary color from CSS variables for the animation
-    const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
-    const primaryHSL = `hsl(${primaryColor.split(' ').join(',')})`;
+    // Ensure we have spans to animate
+    const spans = container.querySelectorAll('span');
+    if (spans.length === 0) return;
 
     const timeline = anime.timeline({
-      loop: true,
-      direction: 'alternate',
-      duration: 3000,
+        loop: true,
+        delay: (_, i) => i * 50,
     });
 
-    timeline
-      .add({
-        targets: tspans,
-        color: [
-          { value: primaryHSL, duration: 100 },
-        ],
-        opacity: [
-          { value: 0, duration: 100, delay: anime.stagger(25) },
-          { value: 1, duration: 500, delay: anime.stagger(25) },
-        ],
-        easing: 'easeOutSine',
-      })
-      .add({
-        targets: tspans,
-        opacity: [
-          { value: 1, duration: 500 },
-          { value: 0, duration: 1000, delay: anime.stagger(25) },
-        ],
-        delay: 2000, // Hold the visible text for 2 seconds before fading out
-        easing: 'easeInSine',
-      });
+    timeline.add({
+      targets: spans,
+      // Property keyframes
+      translateY: [
+        { value: '-1.75rem', easing: 'easeOutExpo', duration: 600 },
+        { value: 0, easing: 'easeOutBounce', duration: 800, delay: 100 }
+      ],
+      // Property specific parameters
+      rotate: {
+        value: '1turn',
+        duration: 1200,
+        easing: 'easeInCubic'
+      },
+      loopDelay: 1000,
+    });
       
     return () => {
       timeline.pause();
+      anime.remove(spans);
     };
-  }, [letters.join('')]); // Rerun effect if text prop changes
+  }, [text]); // Rerun effect if text prop changes
 
   return (
-    <svg
-      className={cn("w-full h-full", className)}
-      viewBox="0 0 400 100" 
-      preserveAspectRatio="xMidYMid meet"
+    <h1
+      ref={containerRef}
+      className={cn("flex justify-center items-center overflow-hidden", className)}
+      style={{ whiteSpace: 'pre' }} // Preserve spaces
     >
-       <style>
-        {`
-          .animated-name {
-            font-family: inherit;
-            font-size: inherit;
-            font-weight: inherit;
-          }
-        `}
-      </style>
-      <text
-        ref={textRef}
-        className="animated-name"
-        x="50%"
-        y="50%"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        fill="hsl(var(--primary))"
-      >
-        {letters.map((letter, index) => (
-          <tspan key={index} style={{ opacity: 0 }}>
-            {letter === ' ' ? '\u00A0' : letter}
-          </tspan>
-        ))}
-      </text>
-    </svg>
+      {letters.map((letter, index) => (
+        <span key={index} style={{ display: 'inline-block' }}>
+          {letter}
+        </span>
+      ))}
+    </h1>
   );
 };
 
