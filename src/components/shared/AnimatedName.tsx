@@ -11,7 +11,7 @@ interface AnimatedNameProps {
 }
 
 const AnimatedName = ({ text, className }: AnimatedNameProps) => {
-  const containerRef = useRef<HTMLHeadingElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const letters = text.split('');
 
   useEffect(() => {
@@ -23,8 +23,8 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     if (spans.length === 0) return;
 
     const timeline = anime.timeline({
-        loop: true,
-        delay: (_, i) => i * 50,
+      loop: true,
+      delay: (_, i) => i * 50,
     });
 
     timeline.add({
@@ -50,7 +50,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
   }, [text]); // Rerun effect if text prop changes
 
   return (
-    <h1
+    <div
       ref={containerRef}
       className={cn("flex justify-center items-center overflow-hidden", className)}
       style={{ whiteSpace: 'pre' }} // Preserve spaces
@@ -60,7 +60,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
           {letter}
         </span>
       ))}
-    </h1>
+    </div>
   );
 };
 
