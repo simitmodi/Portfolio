@@ -32,7 +32,7 @@ const AboutSection = () => {
               "opacity-0"
             )}
           >
-            <Card className="shadow-xl">
+            <Card className="shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-out">
               <CardHeader>
                 <CardTitle className="text-3xl font-headline text-primary">{portfolioConfig.name}</CardTitle>
                 <p className="text-lg text-accent">{portfolioConfig.jobTitle}</p>

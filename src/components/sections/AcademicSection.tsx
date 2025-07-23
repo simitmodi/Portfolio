@@ -34,7 +34,7 @@ const AcademicSection = () => {
               "opacity-0"
             )}
           >
-            <Card className="shadow-xl w-full">
+            <Card className="shadow-xl w-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-out">
               <CardHeader className="flex flex-row items-center space-x-4">
                 <IconComponent className="h-10 w-10 text-accent" />
                 <div>

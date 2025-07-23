@@ -43,7 +43,7 @@ const AchievementsSection = () => {
               return (
                 <Card 
                   key={index}
-                  className="shadow-lg w-full max-w-2xl mx-auto hover:shadow-xl transition-shadow duration-300 achievement-card opacity-0"
+                  className="shadow-lg w-full max-w-2xl mx-auto hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-out achievement-card opacity-0"
                 >
                   <CardHeader className="flex flex-row items-center space-x-4">
                     <IconComponent className="h-8 w-8 text-accent flex-shrink-0" />
