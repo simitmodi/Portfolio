@@ -87,6 +87,9 @@ const ContactSection = () => {
                 <p className="text-sm text-foreground/70">
                   &copy; {currentYear} {portfolioConfig.name}. All rights reserved.
                 </p>
+                <p className="text-sm text-foreground/70 mt-2">
+                  Proudly visualized and made in India 🇮🇳
+                </p>
               </div>
 
             </div>
