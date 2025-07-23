@@ -53,7 +53,7 @@ const LiveClock = () => {
     const fetchWeather = async () => {
       try {
         // Using Open-Meteo API for Ahmedabad, India. No API key needed.
-        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.02&longitude=72.57&current_weather=true');
+        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.03&longitude=72.58&current_weather=true');
         const data = await response.json();
         if (data && data.current_weather) {
             setWeather({
@@ -83,8 +83,8 @@ const LiveClock = () => {
 
   return (
     <div className={cn(
-      "fixed top-4 right-4 z-50 p-3 rounded-lg shadow-2xl border border-white/10",
-      "bg-background/50 backdrop-blur-xl",
+      "fixed top-4 right-4 z-50 p-3 rounded-lg shadow-2xl border border-white/20",
+      "bg-background/30 backdrop-blur-2xl",
       "text-foreground text-sm font-mono text-right"
     )}>
       {time ? (
