@@ -21,44 +21,45 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     const spans = container.querySelectorAll('span');
     if (spans.length === 0) return;
 
+    // Clean up previous animation instance
     if (animationInstance.current) {
       animationInstance.current.pause();
       anime.remove(spans);
     }
-
-    let timeline: anime.AnimeTimelineInstance | null = null;
-
-    const playAnimation = () => {
-      if (timeline) {
-        timeline.play();
-      }
-    };
     
-    timeline = anime.timeline({
+    // Define the timeline in a variable
+    const timeline = anime.timeline({
       loop: false,
       autoplay: false,
       complete: () => {
-        setTimeout(playAnimation, 3000);
-      }
+        // Use a timeout to create a pause before restarting
+        setTimeout(() => {
+          timeline.play();
+        }, 3000);
+      },
     });
 
+    // Add animations to the timeline
     timeline.add({
       targets: spans,
       translateY: [
         { value: '-2.75rem', easing: 'easeOutExpo', duration: 600 },
-        { value: 0, easing: 'easeOutBounce', duration: 800, delay: 100 }
+        { value: 0, easing: 'easeOutBounce', duration: 800, delay: 100 },
       ],
       rotate: {
         value: '1turn',
         duration: 1200,
-        easing: 'inOutCubic'
+        easing: 'inOutCubic',
       },
       delay: anime.stagger(50),
     });
     
-    animationInstance.current = timeline;
-    playAnimation();
+    animationInstance.current = timeline; // Store instance for cleanup
+    
+    // Start the animation for the first time
+    timeline.play();
       
+    // Cleanup function
     return () => {
       if (animationInstance.current) {
         animationInstance.current.pause();
