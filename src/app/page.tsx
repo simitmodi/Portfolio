@@ -7,7 +7,6 @@ import AchievementsSection from '@/components/sections/AchievementsSection'; // 
 import ExtracurricularSection from '@/components/sections/ExtracurricularSection'; // New import
 import ContactSection from '@/components/sections/ContactSection';
 import SideNavigationBar from '@/components/shared/SideNavigationBar';
-import Footer from '@/components/shared/Footer';
 
 export default function HomePage() {
   return (
@@ -23,7 +22,6 @@ export default function HomePage() {
           <ExtracurricularSection />
           <ContactSection />
         </main>
-        <Footer />
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import anime from 'animejs';
+import Footer from '@/components/shared/Footer';
 
 const ContactSection = () => {
   const [leftContentRef, isLeftContentInView] = useScrollAnimation<HTMLDivElement>({ 
@@ -34,8 +35,8 @@ const ContactSection = () => {
   };
 
   return (
-    <div className="snap-section">
-      <section id="contact" className="bg-background">
+    <div className="snap-section flex flex-col">
+      <section id="contact" className="bg-background flex-grow w-full flex flex-col justify-center">
         <div className="container mx-auto">
           <SectionTitle>Contact Me</SectionTitle>
           <div className="grid md:grid-cols-2 gap-12 items-start">
@@ -75,6 +76,7 @@ const ContactSection = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

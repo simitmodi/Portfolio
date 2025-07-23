@@ -309,21 +309,19 @@ body {
     scroll-snap-type: y mandatory;
     height: 100vh; /* Use 100dvh if you need dynamic viewport height */
     overflow-y: scroll;
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  }
+  .snap-container::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
   }
   .snap-section {
     scroll-snap-align: start;
     height: 100vh; /* Use 100dvh if you need dynamic viewport height */
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-  }
-  .snap-container::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Webkit browsers */
-  }
-  .snap-container {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
   }
 }
     

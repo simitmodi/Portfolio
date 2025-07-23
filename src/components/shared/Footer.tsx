@@ -14,7 +14,7 @@ const Footer = () => {
     <footer
       ref={footerRef}
       className={cn(
-        "bg-background border-t border-border/40 py-12", // Changed from bg-secondary/50
+        "bg-background border-t border-border/40 py-8", // Adjusted padding
         "opacity-0",
         isFooterInView && "animate-fade-in"
       )}
