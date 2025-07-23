@@ -83,7 +83,7 @@ const SideNavigationBar = () => {
               handleLinkClick(item.id, e);
             }}
             className={cn(
-              "group flex items-center justify-center space-x-3 rounded-md px-3 py-2 text-sm font-medium text-foreground/70 hover:text-primary transition-all duration-200 ease-out",
+              "group flex items-center space-x-3 rounded-md px-3 py-2 text-sm font-medium text-foreground/70 hover:text-primary transition-all duration-200 ease-out",
               activeSection === item.id && "text-primary font-semibold"
             )}
           >
@@ -95,7 +95,7 @@ const SideNavigationBar = () => {
           </a>
         ))}
       </nav>
-      <div className="mt-auto pt-4">
+      <div className="mt-auto">
         <ThemeSwitcher />
       </div>
     </aside>
