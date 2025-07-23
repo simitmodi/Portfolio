@@ -7,13 +7,14 @@ import AchievementsSection from '@/components/sections/AchievementsSection'; // 
 import ExtracurricularSection from '@/components/sections/ExtracurricularSection'; // New import
 import ContactSection from '@/components/sections/ContactSection';
 import SideNavigationBar from '@/components/shared/SideNavigationBar';
+import Footer from '@/components/shared/Footer';
 
 export default function HomePage() {
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <SideNavigationBar />
-      <div className="flex-grow flex flex-col md:ml-48 bg-background snap-container">
-        <main className="flex-grow">
+      <div className="flex-grow flex flex-col md:ml-48 bg-background">
+        <main className="flex-grow snap-container">
           <HeroSection />
           <ProjectShowcaseSection />
           <AboutSection />
@@ -22,6 +23,7 @@ export default function HomePage() {
           <ExtracurricularSection />
           <ContactSection />
         </main>
+        <Footer />
       </div>
     </div>
   );
