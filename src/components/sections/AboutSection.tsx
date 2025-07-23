@@ -6,9 +6,19 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
+import anime from 'animejs';
 
 const AboutSection = () => {
-  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
+  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ 
+    triggerOnce: false, 
+    threshold: 0.2,
+    animation: {
+      translateX: [-50, 0],
+      opacity: [0, 1],
+      duration: 1000,
+      easing: 'easeOutExpo'
+    }
+  });
 
   return (
     <div className="snap-section">
@@ -19,8 +29,7 @@ const AboutSection = () => {
             ref={cardRef}
             className={cn(
               "max-w-3xl mx-auto",
-              "opacity-0",
-              isCardInView && "animate-fade-in"
+              "opacity-0"
             )}
           >
             <Card className="shadow-xl">
@@ -55,5 +64,3 @@ const AboutSection = () => {
 };
 
 export default AboutSection;
-
-    

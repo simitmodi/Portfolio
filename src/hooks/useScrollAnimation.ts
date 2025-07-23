@@ -2,12 +2,15 @@
 'use client';
 
 import { type RefObject, useEffect, useRef, useState } from 'react';
+import anime from 'animejs';
+import type { AnimationParams } from 'animejs';
 
 interface IntersectionObserverOptions {
   threshold?: number | number[];
   root?: Element | null;
   rootMargin?: string;
   triggerOnce?: boolean;
+  animation?: AnimationParams; // Allow passing anime.js parameters
 }
 
 export function useScrollAnimation<T extends HTMLElement>(
@@ -29,6 +32,15 @@ export function useScrollAnimation<T extends HTMLElement>(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
+          
+          // Trigger anime.js animation if provided
+          if (options?.animation) {
+            anime({
+              targets: element,
+              ...options.animation,
+            });
+          }
+
           if (options?.triggerOnce && observerRef.current) {
             observerRef.current.unobserve(element);
           }
@@ -54,7 +66,7 @@ export function useScrollAnimation<T extends HTMLElement>(
         observerRef.current = null;
       }
     };
-  }, [options?.threshold, options?.root, options?.rootMargin, options?.triggerOnce, elementRef]);
+  }, [options, elementRef]);
 
   return [elementRef, isInView];
 }

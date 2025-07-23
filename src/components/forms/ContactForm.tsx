@@ -14,6 +14,7 @@ import { Loader2, Send } from 'lucide-react';
 import { useState } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
+import anime from 'animejs';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -26,7 +27,16 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 const ContactForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.1 });
+  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ 
+    triggerOnce: false, 
+    threshold: 0.1,
+    animation: {
+      translateX: [50, 0],
+      opacity: [0, 1],
+      duration: 1000,
+      easing: 'easeOutExpo'
+    }
+  });
 
 
   const form = useForm<ContactFormValues>({
@@ -81,8 +91,7 @@ const ContactForm = () => {
       ref={cardRef}
       className={cn(
         "w-full max-w-xl mx-auto shadow-xl",
-        "opacity-0",
-        isCardInView && "animate-fade-in" 
+        "opacity-0"
       )}
     >
       <CardHeader>

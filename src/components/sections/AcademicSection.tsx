@@ -6,9 +6,19 @@ import { portfolioConfig } from '@/data/portfolioConfig';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 import { GraduationCap } from 'lucide-react';
+import anime from 'animejs';
 
 const AcademicSection = () => {
-  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
+  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ 
+    triggerOnce: false, 
+    threshold: 0.2,
+    animation: {
+      translateY: [50, 0],
+      opacity: [0, 1],
+      duration: 1000,
+      easing: 'easeOutExpo'
+    }
+  });
   const { academics } = portfolioConfig;
   const IconComponent = academics.icon || GraduationCap;
 
@@ -21,8 +31,7 @@ const AcademicSection = () => {
             ref={cardRef}
             className={cn(
               "max-w-2xl mx-auto",
-              "opacity-0",
-              isCardInView && "animate-fade-in"
+              "opacity-0"
             )}
           >
             <Card className="shadow-xl w-full">
@@ -48,5 +57,3 @@ const AcademicSection = () => {
 };
 
 export default AcademicSection;
-
-    

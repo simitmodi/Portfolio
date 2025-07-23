@@ -8,9 +8,19 @@ import { Button } from '@/components/ui/button';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import anime from 'animejs';
 
 const ContactSection = () => {
-  const [leftContentRef, isLeftContentInView] = useScrollAnimation<HTMLDivElement>({ triggerOnce: false, threshold: 0.2 });
+  const [leftContentRef, isLeftContentInView] = useScrollAnimation<HTMLDivElement>({ 
+    triggerOnce: false, 
+    threshold: 0.2,
+    animation: {
+      translateX: [-50, 0],
+      opacity: [0, 1],
+      duration: 1000,
+      easing: 'easeOutExpo'
+    }
+  });
   const [connectTitleClickCount, setConnectTitleClickCount] = useState(0);
 
   const handleConnectTitleClick = () => {
@@ -33,8 +43,7 @@ const ContactSection = () => {
               ref={leftContentRef}
               className={cn(
                 "space-y-8",
-                "opacity-0",
-                isLeftContentInView && "animate-slide-in-left"
+                "opacity-0"
               )}
             >
               <h3
@@ -60,7 +69,7 @@ const ContactSection = () => {
                 </p>
               </div>
             </div>
-            <div className="animate-slide-in-right-placeholder"> {/* This class might need to be updated if it's for animation that's now handled by useScrollAnimation */}
+            <div>
               <ContactForm />
             </div>
           </div>
@@ -71,5 +80,3 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
-
-    
