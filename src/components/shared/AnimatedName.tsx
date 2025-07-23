@@ -19,7 +19,6 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
 
     // Function to get the current primary color from CSS variables
     const getPrimaryColor = () => {
-        // Ensure this runs client-side only
         if (typeof window === 'undefined') return 'hsl(0, 0%, 0%)';
         const style = getComputedStyle(document.documentElement);
         const primaryHsl = style.getPropertyValue('--primary').trim();
@@ -36,22 +35,20 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
             const htmlEl = el as HTMLElement;
             if (htmlEl) {
               htmlEl.style.stroke = color;
-              // Reset fill for the animation to take over
               htmlEl.style.fill = 'transparent'; 
             }
         });
     };
     
-    // Clear previous content and animation
     if (animationInstance.current) {
       anime.remove(animationInstance.current.targets);
     }
     svg.innerHTML = ''; 
 
-    // Split text and create SVG text elements
     const textParts = text.split(' ');
     const firstName = textParts[0] || '';
-    const lastName = textParts.slice(1).join(' ') || '';
+    // Add a leading space to the last name to create the visual gap
+    const lastName = textParts.length > 1 ? ` ${textParts.slice(1).join(' ')}` : '';
 
     if (!firstName) {
       console.error("AnimatedName: First name is missing from the text prop.");
@@ -62,7 +59,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
       <style>
         .animated-text {
           stroke-width: 1;
-          stroke-dasharray: 1000; /* A large value to cover any path length */
+          stroke-dasharray: 1000;
           stroke-dashoffset: 1000;
           fill-opacity: 0;
           font-family: inherit;
@@ -75,8 +72,6 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     `;
 
     const textElements = svg.querySelectorAll('.animated-text');
-
-    // Set initial colors
     updateColors();
 
     const createAnimation = () => {
@@ -99,26 +94,23 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
         })
         .add({
           targets: textElements,
-          fill: color, // Animate fill to the primary color
+          fill: color, 
           fillOpacity: [0, 1],
           easing: 'easeInOutSine',
           duration: 800,
-        }, '-=800') // Overlap with the end of the drawing animation
+        }, '-=800')
         .add({
-          // Hold the filled state
           duration: 2000,
         });
     }
 
     createAnimation();
 
-    // --- Dynamic Color Update Logic ---
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
         if (mutation.type === 'attributes' && (mutation.attributeName === 'class' || mutation.attributeName === 'style')) {
           if(document.documentElement.classList.contains('dark') || !document.documentElement.classList.contains('dark')){
             updateColors();
-            // Re-create the animation with the new color
             createAnimation();
           }
         }
@@ -127,7 +119,6 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
 
     observer.observe(document.documentElement, { attributes: true });
 
-    // Cleanup function
     return () => {
       observer.disconnect();
       if (animationInstance.current) {
