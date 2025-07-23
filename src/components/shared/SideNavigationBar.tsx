@@ -95,7 +95,7 @@ const SideNavigationBar = () => {
           </a>
         ))}
       </nav>
-      <div className="mt-auto border-t border-border/40 pt-3">
+      <div className="mt-auto">
         <ThemeSwitcher />
       </div>
     </aside>
