@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true,
-g  },
+  },
   images: {
     unoptimized: true,
     remotePatterns: [],
