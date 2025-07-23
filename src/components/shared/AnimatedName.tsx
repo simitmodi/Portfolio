@@ -21,21 +21,24 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
     const spans = container.querySelectorAll('span');
     if (spans.length === 0) return;
 
-    // Clear any previous animation instance
     if (animationInstance.current) {
       animationInstance.current.pause();
       anime.remove(spans);
     }
 
-    const timeline = anime.timeline({
-      // Do not loop here, we will handle it manually
+    let timeline: anime.AnimeTimelineInstance | null = null;
+
+    const playAnimation = () => {
+      if (timeline) {
+        timeline.play();
+      }
+    };
+    
+    timeline = anime.timeline({
       loop: false,
-      autoplay: false, // Start manually
+      autoplay: false,
       complete: () => {
-        // When the animation completes, wait 3 seconds then play again
-        setTimeout(() => {
-          timeline.play();
-        }, 3000);
+        setTimeout(playAnimation, 3000);
       }
     });
 
@@ -53,28 +56,26 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
       delay: anime.stagger(50),
     });
     
-    // Store the instance and start it
     animationInstance.current = timeline;
-    timeline.play();
+    playAnimation();
       
     return () => {
-      // Cleanup on component unmount
       if (animationInstance.current) {
         animationInstance.current.pause();
       }
       anime.remove(spans);
     };
-  }, [text]); // Rerun effect if text prop changes
+  }, [text]);
 
   return (
     <div
       ref={containerRef}
       className={cn("flex justify-center items-center overflow-hidden", className)}
-      style={{ whiteSpace: 'pre' }} // Preserve spaces
+      style={{ whiteSpace: 'pre' }}
     >
       {letters.map((letter, index) => (
         <span key={index} style={{ display: 'inline-block' }}>
-          {letter}
+          {letter === ' ' ? '\u00A0' : letter}
         </span>
       ))}
     </div>
