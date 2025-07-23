@@ -3,14 +3,14 @@
 
 import { type RefObject, useEffect, useRef, useState } from 'react';
 import anime from 'animejs';
-import type { AnimationParams } from 'animejs';
+import type { AnimeParams } from 'animejs';
 
 interface IntersectionObserverOptions {
   threshold?: number | number[];
   root?: Element | null;
   rootMargin?: string;
   triggerOnce?: boolean;
-  animation?: AnimationParams; // Allow passing anime.js parameters
+  animation?: AnimeParams; // Allow passing anime.js parameters
 }
 
 export function useScrollAnimation<T extends HTMLElement>(
