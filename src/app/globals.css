@@ -303,31 +303,17 @@ body {
   border-width: 0px !important; /* Temporarily remove border if interactive */
 }
 
-/* Custom Scrollbar Styles */
+/* Custom Scrollbar Styles - Permanently Hidden */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--primary) / 0.7);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(var(--primary));
+  display: none;
 }
 
 /* For Firefox */
 html {
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--primary)) transparent;
+  scrollbar-width: none;
 }
     
 
     
+
 
