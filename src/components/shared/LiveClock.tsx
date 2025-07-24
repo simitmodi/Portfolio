@@ -11,17 +11,16 @@ interface WeatherData {
 }
 
 const WeatherIcon = ({ weathercode }: { weathercode: number }) => {
-  if (weathercode === 0) return <Sun className="w-5 h-5" />; // Clear sky
-  if (weathercode >= 1 && weathercode <= 3) return <Cloud className="w-5 h-5" />; // Mainly clear, partly cloudy, and overcast
-  if ((weathercode >= 51 && weathercode <= 67) || (weathercode >= 80 && weathercode <= 82)) return <CloudRain className="w-5 h-5" />; // Drizzle, Rain, and Showers
-  if (weathercode >= 71 && weathercode <= 77) return <CloudSnow className="w-5 h-5" />; // Snow
-  if (weathercode >= 95 && weathercode <= 99) return <CloudLightning className="w-5 h-5" />; // Thunderstorm
-  return <Haze className="w-5 h-5" />; // Default for fog, etc.
+  if (weathercode === 0) return <Sun className="w-4 h-4" />; // Clear sky
+  if (weathercode >= 1 && weathercode <= 3) return <Cloud className="w-4 h-4" />; // Mainly clear, partly cloudy, and overcast
+  if ((weathercode >= 51 && weathercode <= 67) || (weathercode >= 80 && weathercode <= 82)) return <CloudRain className="w-4 h-4" />; // Drizzle, Rain, and Showers
+  if (weathercode >= 71 && weathercode <= 77) return <CloudSnow className="w-4 h-4" />; // Snow
+  if (weathercode >= 95 && weathercode <= 99) return <CloudLightning className="w-4 h-4" />; // Thunderstorm
+  return <Haze className="w-4 h-4" />; // Default for fog, etc.
 }
 
 const LiveClock = () => {
   const [time, setTime] = useState('');
-  const [date, setDate] = useState('');
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
   useEffect(() => {
@@ -33,20 +32,10 @@ const LiveClock = () => {
         timeZone: 'Asia/Kolkata',
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit',
         hour12: false,
-      };
-      
-      const dateOptions: Intl.DateTimeFormatOptions = {
-        timeZone: 'Asia/Kolkata',
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
       };
 
       setTime(now.toLocaleTimeString('en-IN', timeOptions));
-      setDate(now.toLocaleDateString('en-IN', dateOptions));
     };
     
     // Fetch weather data
@@ -83,27 +72,21 @@ const LiveClock = () => {
 
   return (
     <div className={cn(
-      "fixed top-4 right-4 z-40 p-3 rounded-full shadow-2xl border border-border/40",
-      "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-      "text-foreground text-sm font-mono text-right",
-      "md:top-4 mt-20 md:mt-0"
+      "text-foreground text-xs font-mono text-right"
     )}>
       {time ? (
-        <>
-          <div className="flex items-center justify-end gap-2">
-            {weather && (
-              <>
-                <WeatherIcon weathercode={weather.weathercode} />
-                <span>{Math.round(weather.temperature)}°C</span>
-                <span>|</span>
-              </>
-            )}
-            <span>{time}</span>
-          </div>
-          <div className="text-xs opacity-80 mt-1">{date}</div>
-        </>
+        <div className="flex items-center justify-end gap-2">
+          {weather && (
+            <>
+              <WeatherIcon weathercode={weather.weathercode} />
+              <span>{Math.round(weather.temperature)}°C</span>
+              <span className="hidden sm:inline">|</span>
+            </>
+          )}
+          <span className="hidden sm:inline">{time}</span>
+        </div>
       ) : (
-        <div className="text-xs opacity-80">Loading...</div>
+        <div className="text-xs opacity-80 h-5 w-20 bg-muted/50 rounded-md animate-pulse" />
       )}
     </div>
   );

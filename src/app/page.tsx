@@ -7,7 +7,6 @@ import AchievementsSection from '@/components/sections/AchievementsSection'; // 
 import ExtracurricularSection from '@/components/sections/ExtracurricularSection'; // New import
 import ContactSection from '@/components/sections/ContactSection';
 import SideNavigationBar from '@/components/shared/SideNavigationBar';
-import LiveClock from '@/components/shared/LiveClock';
 import MobileNavigationBar from '@/components/shared/MobileNavigationBar';
 
 export default function HomePage() {
@@ -15,7 +14,6 @@ export default function HomePage() {
     <div className="flex flex-col md:flex-row min-h-screen">
       <SideNavigationBar />
       <MobileNavigationBar />
-      <LiveClock />
       <div className="flex-grow flex flex-col md:ml-48 bg-background mt-16 md:mt-0">
         <main className="flex-grow">
           <HeroSection />
