@@ -36,7 +36,7 @@ const MobileNavigationBar = () => {
   return (
     <div className="fixed top-4 left-4 right-4 z-50 flex items-start justify-between md:hidden">
       {/* Left Side: Name Pill */}
-      <Link href="/" className="group h-10 flex items-center px-4 rounded-full shadow-2xl bg-background/5 backdrop-blur-xl border border-border/40">
+      <Link href="/" className="group h-10 flex items-center px-4 rounded-full shadow-ultimate bg-background/5 backdrop-blur-xl border border-border/40">
         <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
             {portfolioConfig.name}
         </span>
@@ -49,7 +49,7 @@ const MobileNavigationBar = () => {
             <LiveTime />
             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-border/40 bg-background/5 backdrop-blur-xl shadow-2xl">
+                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-border/40 bg-background/5 backdrop-blur-xl shadow-ultimate">
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Open menu</span>
                 </Button>
