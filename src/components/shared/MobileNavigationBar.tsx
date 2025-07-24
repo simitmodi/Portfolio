@@ -34,17 +34,17 @@ const MobileNavigationBar = () => {
   };
 
   return (
-    <div className="fixed top-4 left-4 right-4 z-50 flex flex-col items-end md:hidden">
-      {/* Top Row */}
-      <div className="flex w-full items-center justify-between">
-        {/* Left Side */}
-        <Link href="/" className="group h-10 flex items-center px-4 rounded-full shadow-lg bg-background/5 backdrop-blur-xl border border-border/40">
-          <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
-              {portfolioConfig.name}
-          </span>
-        </Link>
-        
-        {/* Right Side */}
+    <div className="fixed top-4 left-4 right-4 z-50 flex items-start justify-between md:hidden">
+      {/* Left Side: Name Pill */}
+      <Link href="/" className="group h-10 flex items-center px-4 rounded-full shadow-lg bg-background/5 backdrop-blur-xl border border-border/40">
+        <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
+            {portfolioConfig.name}
+        </span>
+      </Link>
+      
+      {/* Right Side: Icons Container */}
+      <div className="flex flex-col items-end gap-2">
+        {/* Top Row of Icons */}
         <div className="flex items-center gap-2">
             <LiveTime />
             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -78,11 +78,11 @@ const MobileNavigationBar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
         </div>
-      </div>
-      
-      {/* Second Row */}
-      <div className="flex">
-        <LiveWeather />
+        
+        {/* Second Row of Icons */}
+        <div className="flex">
+          <LiveWeather />
+        </div>
       </div>
     </div>
   );
