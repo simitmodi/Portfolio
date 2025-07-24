@@ -38,7 +38,7 @@ const ContactSection = () => {
     <section id="contact" className="bg-background w-full">
       <div className="container mx-auto">
         <SectionTitle>Contact Me</SectionTitle>
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+        <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
           <div
             ref={leftContentRef}
             className={cn(
@@ -65,37 +65,36 @@ const ContactSection = () => {
                 </Button>
               </a>
             </div>
-
-            {/* Footer Content Integrated Here */}
-            <div className="pt-6 border-t border-border/40 text-center md:text-left">
-              <div className="flex justify-center md:justify-start space-x-6 mb-4">
-                <Link href={`mailto:${portfolioConfig.contact.email}`} title="Email" className="text-foreground/70 hover:text-primary transition-all duration-200 ease-out transform hover:scale-110">
-                  <Mail className="h-6 w-6" />
-                </Link>
-                <Link href={portfolioConfig.contact.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="text-foreground/70 hover:text-primary transition-all duration-200 ease-out transform hover:scale-110">
-                  <Linkedin className="h-6 w-6" />
-                </Link>
-                <Link href={portfolioConfig.contact.github} target="_blank" rel="noopener noreferrer" title="GitHub" className="text-foreground/70 hover:text-primary transition-all duration-200 ease-out transform hover:scale-110">
-                  <Github className="h-6 w-6" />
-                </Link>
-                {portfolioConfig.contact.instagram && (
-                  <Link href={portfolioConfig.contact.instagram} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-foreground/70 hover:text-primary transition-all duration-200 ease-out transform hover:scale-110">
-                    <Instagram className="h-6 w-6" />
-                  </Link>
-                )}
-              </div>
-              <p className="text-sm text-foreground/70">
-                &copy; {currentYear} {portfolioConfig.name}. All rights reserved.
-              </p>
-              <p className="text-sm text-foreground/70 mt-2">
-                Proudly visualized and made in India 🇮🇳
-              </p>
-            </div>
-
           </div>
           <div>
             <ContactForm />
           </div>
+        </div>
+
+        {/* Footer Content Moved Here */}
+        <div className="pt-8 mt-12 border-t border-border/40 text-center">
+          <div className="flex justify-center space-x-6 mb-4">
+            <Link href={`mailto:${portfolioConfig.contact.email}`} title="Email" className="text-foreground/70 hover:text-primary transition-all duration-200 ease-out transform hover:scale-110">
+              <Mail className="h-6 w-6" />
+            </Link>
+            <Link href={portfolioConfig.contact.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="text-foreground/70 hover:text-primary transition-all duration-200 ease-out transform hover:scale-110">
+              <Linkedin className="h-6 w-6" />
+            </Link>
+            <Link href={portfolioConfig.contact.github} target="_blank" rel="noopener noreferrer" title="GitHub" className="text-foreground/70 hover:text-primary transition-all duration-200 ease-out transform hover:scale-110">
+              <Github className="h-6 w-6" />
+            </Link>
+            {portfolioConfig.contact.instagram && (
+              <Link href={portfolioConfig.contact.instagram} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-foreground/70 hover:text-primary transition-all duration-200 ease-out transform hover:scale-110">
+                <Instagram className="h-6 w-6" />
+              </Link>
+            )}
+          </div>
+          <p className="text-sm text-foreground/70">
+            &copy; {currentYear} {portfolioConfig.name}. All rights reserved.
+          </p>
+          <p className="text-sm text-foreground/70 mt-2">
+            Proudly visualized and made in India 🇮🇳
+          </p>
         </div>
       </div>
     </section>
@@ -103,5 +102,3 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
-
-    
