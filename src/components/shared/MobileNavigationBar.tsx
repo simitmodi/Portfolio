@@ -26,7 +26,7 @@ const MobileNavigationBar = () => {
         setIsOpen(false);
     }
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-4 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:hidden">
+    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-4 border-b border-border/40 bg-background/80 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60 md:hidden">
       <Link href="/" className="flex items-center group">
         <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
           {portfolioConfig.name}

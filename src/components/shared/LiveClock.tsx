@@ -83,9 +83,10 @@ const LiveClock = () => {
 
   return (
     <div className={cn(
-      "fixed top-4 right-4 z-50 p-3 rounded-lg shadow-2xl border border-white/20",
+      "fixed top-20 right-4 z-40 p-3 rounded-lg shadow-2xl border border-white/20", // z-40 so it's below mobile nav
       "bg-background/30 backdrop-blur-xl",
-      "text-foreground text-sm font-mono text-right"
+      "text-foreground text-sm font-mono text-right",
+      "md:top-4" // Reset top position for desktop
     )}>
       {time ? (
         <>
