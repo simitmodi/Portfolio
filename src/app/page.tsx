@@ -9,6 +9,7 @@ import ContactSection from '@/components/sections/ContactSection';
 import SideNavigationBar from '@/components/shared/SideNavigationBar';
 import MobileNavigationBar from '@/components/shared/MobileNavigationBar';
 import MobileThemeSwitcher from '@/components/shared/MobileThemeSwitcher';
+import { LiveTime, LiveWeather } from '@/components/shared/LiveClock';
 
 export default function HomePage() {
   return (
@@ -16,6 +17,13 @@ export default function HomePage() {
       <SideNavigationBar />
       <MobileNavigationBar />
       <MobileThemeSwitcher />
+
+      {/* Desktop-only Live Clock in top right */}
+      <div className="hidden md:flex fixed top-4 right-4 z-50 items-center gap-2">
+        <LiveTime />
+        <LiveWeather />
+      </div>
+
       <div className="flex-grow flex flex-col md:ml-48 bg-background">
         <main className="flex-grow">
           <HeroSection />
