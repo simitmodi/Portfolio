@@ -20,8 +20,8 @@ export default function HomePage() {
 
       {/* Desktop-only Live Clock in top right */}
       <div className="hidden md:flex fixed top-4 right-4 z-50 items-center gap-2">
-        <LiveTime />
         <LiveWeather />
+        <LiveTime />
       </div>
 
       <div className="flex-grow flex flex-col md:ml-48 bg-background">

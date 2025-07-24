@@ -22,7 +22,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        headline: ['"Playfair Display"', 'serif'],
+        headline: ['"Roboto Mono"', 'monospace'],
         body: ['"Roboto Mono"', 'monospace'],
         code: ['monospace', 'monospace'],
       },
