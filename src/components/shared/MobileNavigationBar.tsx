@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -33,7 +32,7 @@ const MobileNavigationBar = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-4 border-b border-border/40 bg-background/5 backdrop-blur-xl supports-[backdrop-filter]:bg-background/5 md:hidden">
+    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-4 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:hidden">
       <Link href="/" className="flex items-center group">
         <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
           {portfolioConfig.name}
@@ -48,12 +47,8 @@ const MobileNavigationBar = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent 
           align="end" 
-          className="w-56 bg-transparent border-none shadow-none"
+          className="w-56"
         >
-           <div className={cn(
-             "rounded-md border border-border/40 p-1",
-             "bg-background/5 backdrop-blur-xl" // Corrected 5% opacity
-           )}>
              <DropdownMenuItem asChild>
                <Link href="/" className="font-bold font-headline text-lg text-primary" onClick={handleLinkClick}>
                   {portfolioConfig.name}
@@ -71,7 +66,6 @@ const MobileNavigationBar = () => {
                 </Link>
               </DropdownMenuItem>
             ))}
-          </div>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
