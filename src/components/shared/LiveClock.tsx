@@ -19,77 +19,71 @@ const WeatherIcon = ({ weathercode }: { weathercode: number }) => {
   return <Haze className="w-4 h-4" />; // Default for fog, etc.
 }
 
-const LiveClock = () => {
-  const [time, setTime] = useState('');
-  const [weather, setWeather] = useState<WeatherData | null>(null);
+export const LiveTime = () => {
+    const [time, setTime] = useState('');
 
-  useEffect(() => {
-    // Clock update logic
-    const updateClock = () => {
-      const now = new Date();
-      
-      const timeOptions: Intl.DateTimeFormatOptions = {
-        timeZone: 'Asia/Kolkata',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      };
-
-      setTime(now.toLocaleTimeString('en-IN', timeOptions));
-    };
-    
-    // Fetch weather data
-    const fetchWeather = async () => {
-      try {
-        // Using Open-Meteo API for Ahmedabad, India. No API key needed.
-        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.03&longitude=72.58&current_weather=true');
-        const data = await response.json();
-        if (data && data.current_weather) {
-            setWeather({
-                temperature: data.current_weather.temperature,
-                weathercode: data.current_weather.weathercode,
-            });
+    useEffect(() => {
+        const updateClock = () => {
+            const now = new Date();
+            const timeOptions: Intl.DateTimeFormatOptions = {
+                timeZone: 'Asia/Kolkata',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+            };
+            setTime(now.toLocaleTimeString('en-IN', timeOptions));
+        };
+        
+        if (typeof window !== 'undefined') {
+            updateClock();
+            const timerId = setInterval(updateClock, 1000);
+            return () => clearInterval(timerId);
         }
-      } catch (error) {
-        console.error("Failed to fetch weather data:", error);
-      }
-    };
+    }, []);
 
-
-    if (typeof window !== 'undefined') {
-      updateClock(); // Set initial time
-      fetchWeather(); // Fetch initial weather
-
-      const clockTimerId = setInterval(updateClock, 1000); // Update clock every second
-      const weatherTimerId = setInterval(fetchWeather, 60 * 15 * 1000); // Update weather every 15 minutes
-
-      return () => {
-        clearInterval(clockTimerId);
-        clearInterval(weatherTimerId);
-      };
-    }
-  }, []);
-
-  return (
-    <div className={cn(
-      "text-foreground text-xs font-mono text-right"
-    )}>
-      {time ? (
-        <div className="flex items-center justify-end gap-2">
-          {weather && (
-            <>
-              <WeatherIcon weathercode={weather.weathercode} />
-              <span>{Math.round(weather.temperature)}°C</span>
-              <span className="hidden sm:inline">|</span>
-            </>
-          )}
-          <span className="hidden sm:inline">{time}</span>
+    return (
+        <div className="flex h-10 items-center justify-center rounded-full border border-border/40 bg-background/95 backdrop-blur-xl px-4 text-xs font-mono">
+            {time ? <span>{time}</span> : <div className="h-4 w-10 bg-muted/50 rounded-md animate-pulse" />}
         </div>
-      ) : (
-        <div className="text-xs opacity-80 h-5 w-20 bg-muted/50 rounded-md animate-pulse" />
-      )}
-    </div>
-  );
+    );
 };
 
-export default LiveClock;
+export const LiveWeather = () => {
+    const [weather, setWeather] = useState<WeatherData | null>(null);
+
+    useEffect(() => {
+        const fetchWeather = async () => {
+            try {
+                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.03&longitude=72.58&current_weather=true');
+                const data = await response.json();
+                if (data && data.current_weather) {
+                    setWeather({
+                        temperature: data.current_weather.temperature,
+                        weathercode: data.current_weather.weathercode,
+                    });
+                }
+            } catch (error) {
+                console.error("Failed to fetch weather data:", error);
+            }
+        };
+
+        if (typeof window !== 'undefined') {
+            fetchWeather();
+            const timerId = setInterval(fetchWeather, 60 * 15 * 1000); // Update every 15 mins
+            return () => clearInterval(timerId);
+        }
+    }, []);
+    
+    return (
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border/40 bg-background/95 backdrop-blur-xl text-xs font-mono">
+           {weather ? (
+                <div className="flex items-center gap-1">
+                    <WeatherIcon weathercode={weather.weathercode} />
+                    <span>{Math.round(weather.temperature)}</span>
+                </div>
+            ) : (
+                <div className="h-4 w-6 bg-muted/50 rounded-md animate-pulse" />
+            )}
+        </div>
+    );
+};
