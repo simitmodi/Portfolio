@@ -34,7 +34,7 @@ const MobileNavigationBar = () => {
   };
 
   return (
-    <div className="fixed top-4 left-0 right-4 z-50 flex flex-col items-end gap-2 md:hidden">
+    <div className="fixed top-4 left-0 right-4 z-50 flex flex-col items-end md:hidden">
       {/* Top Row */}
       <div className="flex w-full items-center justify-between">
         <Link href="/" className="group h-10 flex items-center px-4 rounded-full shadow-lg bg-background/95 backdrop-blur-xl border border-border/40">

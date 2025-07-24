@@ -11,12 +11,12 @@ interface WeatherData {
 }
 
 const WeatherIcon = ({ weathercode }: { weathercode: number }) => {
-  if (weathercode === 0) return <Sun className="w-4 h-4" />; // Clear sky
-  if (weathercode >= 1 && weathercode <= 3) return <Cloud className="w-4 h-4" />; // Mainly clear, partly cloudy, and overcast
-  if ((weathercode >= 51 && weathercode <= 67) || (weathercode >= 80 && weathercode <= 82)) return <CloudRain className="w-4 h-4" />; // Drizzle, Rain, and Showers
-  if (weathercode >= 71 && weathercode <= 77) return <CloudSnow className="w-4 h-4" />; // Snow
-  if (weathercode >= 95 && weathercode <= 99) return <CloudLightning className="w-4 h-4" />; // Thunderstorm
-  return <Haze className="w-4 h-4" />; // Default for fog, etc.
+  if (weathercode === 0) return <Sun className="w-5 h-5" />; // Clear sky
+  if (weathercode >= 1 && weathercode <= 3) return <Cloud className="w-5 h-5" />; // Mainly clear, partly cloudy, and overcast
+  if ((weathercode >= 51 && weathercode <= 67) || (weathercode >= 80 && weathercode <= 82)) return <CloudRain className="w-5 h-5" />; // Drizzle, Rain, and Showers
+  if (weathercode >= 71 && weathercode <= 77) return <CloudSnow className="w-5 h-5" />; // Snow
+  if (weathercode >= 95 && weathercode <= 99) return <CloudLightning className="w-5 h-5" />; // Thunderstorm
+  return <Haze className="w-5 h-5" />; // Default for fog, etc.
 }
 
 export const LiveTime = () => {
@@ -75,14 +75,14 @@ export const LiveWeather = () => {
     }, []);
     
     return (
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border/40 bg-background/95 backdrop-blur-xl text-xs font-mono">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border/40 bg-background/95 backdrop-blur-xl text-sm font-mono">
            {weather ? (
                 <div className="flex items-center gap-1">
                     <WeatherIcon weathercode={weather.weathercode} />
                     <span>{Math.round(weather.temperature)}</span>
                 </div>
             ) : (
-                <div className="h-4 w-6 bg-muted/50 rounded-md animate-pulse" />
+                <div className="h-5 w-8 bg-muted/50 rounded-md animate-pulse" />
             )}
         </div>
     );
