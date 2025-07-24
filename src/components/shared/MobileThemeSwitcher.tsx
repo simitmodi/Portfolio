@@ -17,7 +17,7 @@ const MobileThemeSwitcher = () => {
         variant="ghost"
         size="icon"
         onClick={toggleTheme}
-        className="h-12 w-12 rounded-full border border-border/40 bg-background/5 backdrop-blur-xl shadow-lg"
+        className="h-12 w-12 rounded-full border border-border/40 bg-background/5 backdrop-blur-xl shadow-2xl"
         aria-label="Toggle theme"
       >
         {theme === 'light' ? (

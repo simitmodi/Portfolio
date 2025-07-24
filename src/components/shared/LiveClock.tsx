@@ -42,7 +42,7 @@ export const LiveTime = () => {
     }, []);
 
     return (
-        <div className="flex h-10 items-center justify-center rounded-full border border-border/40 bg-background/5 backdrop-blur-xl px-4 text-xs font-mono shadow-lg">
+        <div className="flex h-10 items-center justify-center rounded-full border border-border/40 bg-background/5 backdrop-blur-xl px-4 text-xs font-mono shadow-2xl">
             {time ? <span>{time}</span> : <div className="h-4 w-10 bg-muted/50 rounded-md animate-pulse" />}
         </div>
     );
@@ -75,7 +75,7 @@ export const LiveWeather = () => {
     }, []);
     
     return (
-        <div className="flex h-12 w-16 items-center justify-center rounded-full border border-border/40 bg-background/5 backdrop-blur-xl text-sm font-mono px-2 shadow-lg">
+        <div className="flex h-12 w-16 items-center justify-center rounded-full border border-border/40 bg-background/5 backdrop-blur-xl text-sm font-mono px-2 shadow-2xl">
            {weather ? (
                 <div className="flex items-center gap-1">
                     <WeatherIcon weathercode={weather.weathercode} />
