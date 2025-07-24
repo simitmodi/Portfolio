@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -82,7 +83,7 @@ const LiveClock = () => {
 
   return (
     <div className={cn(
-      "fixed top-4 right-4 z-40 p-3 rounded-lg shadow-2xl border border-border/40",
+      "fixed top-4 right-4 z-40 p-3 rounded-full shadow-2xl border border-border/40",
       "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
       "text-foreground text-sm font-mono text-right",
       "md:top-4 mt-16 md:mt-0"
