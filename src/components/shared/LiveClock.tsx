@@ -83,8 +83,8 @@ const LiveClock = () => {
 
   return (
     <div className={cn(
-      "fixed top-20 right-4 z-40 p-3 rounded-lg shadow-2xl border border-border/40",
-      "bg-background/95 backdrop-blur-xl",
+      "fixed top-4 right-4 z-40 p-3 rounded-lg shadow-2xl border border-border/40",
+      "bg-background/5 backdrop-blur-xl", // Corrected 5% opacity
       "text-foreground text-sm font-mono text-right",
       "md:top-4"
     )}>
