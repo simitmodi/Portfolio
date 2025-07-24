@@ -33,19 +33,19 @@ const MobileNavigationBar = () => {
 
   return (
     <div className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between md:hidden">
-        <div className="flex-1">
-            <Link href="/" className="group">
-                <div className={cn(
-                    "inline-flex items-center px-4 h-16 border border-border/40 rounded-full shadow-lg",
-                    "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-                )}>
-                    <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
-                        {portfolioConfig.name}
-                    </span>
-                </div>
-            </Link>
-        </div>
+        {/* Name Pill */}
+        <Link href="/" className="group">
+            <div className={cn(
+                "inline-flex items-center px-4 h-16 border border-border/40 rounded-full shadow-lg",
+                "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+            )}>
+                <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
+                    {portfolioConfig.name}
+                </span>
+            </div>
+        </Link>
 
+      {/* Menu Pill */}
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="h-16 w-16 rounded-full border border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg">
