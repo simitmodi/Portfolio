@@ -75,7 +75,7 @@ export const LiveWeather = () => {
     }, []);
     
     return (
-        <div className="flex h-12 w-16 items-center justify-center rounded-full border border-border/40 bg-background/5 backdrop-blur-xl text-sm font-mono px-2 shadow-ultimate">
+        <div className="flex h-10 w-16 items-center justify-center rounded-full border border-border/40 bg-background/5 backdrop-blur-xl text-sm font-mono px-2 shadow-ultimate">
            {weather ? (
                 <div className="flex items-center gap-1">
                     <WeatherIcon weathercode={weather.weathercode} />

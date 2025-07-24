@@ -6,6 +6,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { portfolioConfig } from '@/data/portfolioConfig';
 import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
+import { LiveTime, LiveWeather } from './LiveClock';
 
 const navItems = [
   { name: 'Home', href: '#hero', id: 'hero' },
@@ -93,7 +94,13 @@ const SideNavigationBar = () => {
           </a>
         ))}
       </nav>
-      <div className="mt-auto">
+      <div className="mt-auto flex flex-col gap-4">
+        <div className="flex items-center justify-center gap-2">
+            <LiveTime />
+        </div>
+        <div className="flex items-center justify-center gap-2">
+            <LiveWeather />
+        </div>
         <ThemeSwitcher />
       </div>
     </aside>
@@ -101,5 +108,3 @@ const SideNavigationBar = () => {
 };
 
 export default SideNavigationBar;
-
-    
