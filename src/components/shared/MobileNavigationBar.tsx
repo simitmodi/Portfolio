@@ -12,6 +12,7 @@ import {
 import { Menu } from 'lucide-react';
 import { portfolioConfig } from '@/data/portfolioConfig';
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 const navItems = [
   { name: 'Home', href: '#hero' },
@@ -31,22 +32,35 @@ const MobileNavigationBar = () => {
   };
 
   return (
-    <header className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between h-16 px-4 border border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:hidden rounded-full shadow-lg">
-      <Link href="/" className="flex items-center group">
-        <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
-          {portfolioConfig.name}
-        </span>
-      </Link>
+    <div className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between md:hidden">
+        <div className="flex-1">
+            <Link href="/" className="group">
+                <div className={cn(
+                    "inline-flex items-center px-4 h-16 border border-border/40 rounded-full shadow-lg",
+                    "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+                )}>
+                    <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
+                        {portfolioConfig.name}
+                    </span>
+                </div>
+            </Link>
+        </div>
+
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="h-16 w-16 rounded-full border border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg">
             <Menu className="h-6 w-6" />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent 
           align="end" 
-          className="w-56 rounded-xl"
+          className="w-56 rounded-xl mt-2 border-border/40 bg-transparent backdrop-blur-xl shadow-lg"
+          style={{
+             backgroundColor: 'hsl(var(--background) / 0.95)',
+             backdropFilter: 'blur(16px)',
+             WebkitBackdropFilter: 'blur(16px)',
+          }}
         >
              <DropdownMenuItem asChild>
                <Link href="/" className="font-bold font-headline text-lg text-primary" onClick={handleLinkClick}>
@@ -67,7 +81,7 @@ const MobileNavigationBar = () => {
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
-    </header>
+    </div>
   );
 };
 
