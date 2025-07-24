@@ -33,7 +33,7 @@ const MobileNavigationBar = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-4 border-b border-border/40 bg-background/95 backdrop-blur-xl supports-[backdrop-filter]:bg-background/95 md:hidden">
+    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-4 border-b border-border/40 bg-background/30 backdrop-blur-xl supports-[backdrop-filter]:bg-background/30 md:hidden">
       <Link href="/" className="flex items-center group">
         <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
           {portfolioConfig.name}
@@ -52,7 +52,7 @@ const MobileNavigationBar = () => {
         >
            <div className={cn(
              "rounded-md border border-border/40 p-1",
-             "bg-background/95 backdrop-blur-xl"
+             "bg-background/30 backdrop-blur-xl"
            )}>
              <DropdownMenuItem asChild>
                <Link href="/" className="font-bold font-headline text-lg text-primary" onClick={handleLinkClick}>
