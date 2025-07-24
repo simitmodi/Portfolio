@@ -8,13 +8,15 @@ import ExtracurricularSection from '@/components/sections/ExtracurricularSection
 import ContactSection from '@/components/sections/ContactSection';
 import SideNavigationBar from '@/components/shared/SideNavigationBar';
 import MobileNavigationBar from '@/components/shared/MobileNavigationBar';
+import MobileThemeSwitcher from '@/components/shared/MobileThemeSwitcher';
 
 export default function HomePage() {
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <SideNavigationBar />
       <MobileNavigationBar />
-      <div className="flex-grow flex flex-col md:ml-48 bg-background mt-16 md:mt-0">
+      <MobileThemeSwitcher />
+      <div className="flex-grow flex flex-col md:ml-48 bg-background">
         <main className="flex-grow">
           <HeroSection />
           <ProjectShowcaseSection />
@@ -28,5 +30,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    

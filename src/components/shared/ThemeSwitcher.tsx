@@ -48,7 +48,7 @@ const ThemeSwitcher = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-3 p-3 border-t border-border/40">
+    <div className="flex flex-col space-y-3 p-3 border-t border-border/40 md:border-t-0">
       <div className="flex items-center justify-between">
         <Label htmlFor="dark-mode-switch" className="flex items-center text-sm text-foreground/70 cursor-pointer">
           {theme === 'light' ? <Moon className="mr-2 h-4 w-4" /> : <Sun className="mr-2 h-4 w-4" />}
