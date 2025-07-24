@@ -44,24 +44,26 @@ const MobileNavigationBar = () => {
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56 bg-background/95 backdrop-blur-xl">
-           <DropdownMenuItem asChild>
-             <Link href="/" className="font-bold font-headline text-lg text-primary" onClick={handleLinkClick}>
-                {portfolioConfig.name}
-              </Link>
-           </DropdownMenuItem>
-           <DropdownMenuSeparator />
-          {navItems.map((item) => (
-            <DropdownMenuItem key={item.name} asChild>
-              <Link
-                href={item.href}
-                onClick={handleLinkClick}
-                className="text-foreground/80 hover:text-primary transition-colors w-full"
-              >
-                {item.name}
-              </Link>
-            </DropdownMenuItem>
-          ))}
+        <DropdownMenuContent align="end" className="w-56 bg-transparent border-none shadow-none">
+           <div className="bg-background/95 backdrop-blur-xl rounded-md border border-border/40 p-1">
+             <DropdownMenuItem asChild>
+               <Link href="/" className="font-bold font-headline text-lg text-primary" onClick={handleLinkClick}>
+                  {portfolioConfig.name}
+                </Link>
+             </DropdownMenuItem>
+             <DropdownMenuSeparator />
+            {navItems.map((item) => (
+              <DropdownMenuItem key={item.name} asChild>
+                <Link
+                  href={item.href}
+                  onClick={handleLinkClick}
+                  className="text-foreground/80 hover:text-primary transition-colors w-full"
+                >
+                  {item.name}
+                </Link>
+              </DropdownMenuItem>
+            ))}
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
