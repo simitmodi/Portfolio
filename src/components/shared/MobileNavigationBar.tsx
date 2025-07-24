@@ -36,14 +36,14 @@ const MobileNavigationBar = () => {
   return (
     <div className="fixed top-4 left-0 right-4 z-50 flex flex-col items-end md:hidden">
       {/* Top Row */}
-      <div className="flex w-full items-center justify-between">
-        <Link href="/" className="group h-10 flex items-center px-4 rounded-full shadow-lg bg-background/95 backdrop-blur-xl border border-border/40">
-          <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
-              {portfolioConfig.name}
-          </span>
-        </Link>
-
+      <div className="flex w-full items-center">
+        <div className="flex-grow" />
         <div className="flex items-center gap-2">
+            <Link href="/" className="group h-10 flex items-center px-4 rounded-full shadow-lg bg-background/95 backdrop-blur-xl border border-border/40">
+              <span className="font-bold font-headline text-xl text-primary group-hover:text-accent transition-colors">
+                  {portfolioConfig.name}
+              </span>
+            </Link>
             <LiveTime />
             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
               <DropdownMenuTrigger asChild>
