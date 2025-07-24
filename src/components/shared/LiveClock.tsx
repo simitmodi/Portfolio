@@ -75,11 +75,11 @@ export const LiveWeather = () => {
     }, []);
     
     return (
-        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border/40 bg-background/5 backdrop-blur-xl text-sm font-mono">
+        <div className="flex h-12 w-16 items-center justify-center rounded-full border border-border/40 bg-background/5 backdrop-blur-xl text-sm font-mono px-2">
            {weather ? (
                 <div className="flex items-center gap-1">
                     <WeatherIcon weathercode={weather.weathercode} />
-                    <span>{Math.round(weather.temperature)}</span>
+                    <span>{Math.round(weather.temperature)}°C</span>
                 </div>
             ) : (
                 <div className="h-5 w-8 bg-muted/50 rounded-md animate-pulse" />
