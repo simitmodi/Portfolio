@@ -6,7 +6,9 @@ import { collection, getDocs, query, where, getDoc, doc } from 'firebase/firesto
 import { db } from '@/lib/firebase';
 import type { BlogPost } from '@/types';
 
-// This function tells Next.js which pages to build at static export time
+// This function tells Next.js which pages to build at static export time.
+// It will only generate pages for "professional" posts. "Personal" posts will
+// be rendered on-demand when accessed with the correct query parameter.
 export async function generateStaticParams() {
   try {
     const postsCollection = collection(db, 'blog');
@@ -19,7 +21,6 @@ export async function generateStaticParams() {
   } catch (error) {
     console.error("Error fetching slugs for generateStaticParams:", error);
     // Return an empty array to prevent build failure.
-    // The pages will be generated on-demand at runtime if not found here.
     return [];
   }
 }
@@ -28,26 +29,37 @@ interface BlogPostPageProps {
   params: {
     slug: string;
   };
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  }
 }
 
-async function getPost(slug: string): Promise<BlogPost | null> {
+async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost | null> {
   try {
     const postsCollection = collection(db, 'blog');
-    // Firestore does not allow querying by document ID directly in a compound query.
-    // We first try to get by slug field, then fall back to ID.
     const q = query(postsCollection, where('slug', '==', slug));
     const querySnapshot = await getDocs(q);
 
+    let postDoc;
     if (!querySnapshot.empty) {
-      const postDoc = querySnapshot.docs[0];
-      const data = postDoc.data();
-      // Ensure only professional posts are publicly accessible unless the user is navigating from admin
-      // This server-side check is crucial for security/privacy.
-      if (data.category !== 'professional') {
-        // A better implementation would check for an admin auth token if passed.
-        // For now, we simply block all non-professional posts from being rendered via direct URL.
+      postDoc = querySnapshot.docs[0];
+    } else {
+      // Fallback for older posts that might use ID as slug
+      const docRef = doc(db, "blog", slug);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        postDoc = docSnap;
+      }
+    }
+    
+    if (postDoc) {
+      const data = postDoc.data() as Omit<BlogPost, 'slug'>;
+      
+      // If it's not a private view, only show professional posts
+      if (!isPrivateView && data.category !== 'professional') {
         return null; 
       }
+
       return {
         slug: data.slug || postDoc.id,
         title: data.title,
@@ -56,24 +68,6 @@ async function getPost(slug: string): Promise<BlogPost | null> {
         content: data.content,
         category: data.category,
       };
-    } else {
-        // Fallback for older posts that might use ID as slug
-        const docRef = doc(db, "blog", slug);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            if (data.category !== 'professional') {
-              return null;
-            }
-            return {
-                slug: docSnap.id,
-                title: data.title,
-                date: data.date,
-                excerpt: data.excerpt,
-                content: data.content,
-                category: data.category,
-            };
-        }
     }
     
     return null;
@@ -83,8 +77,9 @@ async function getPost(slug: string): Promise<BlogPost | null> {
   }
 }
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const post = await getPost(params.slug);
+export async function generateMetadata({ params, searchParams }: BlogPostPageProps): Promise<Metadata> {
+  const isPrivateView = searchParams.view === 'private';
+  const post = await getPost(params.slug, isPrivateView);
 
   if (!post) {
     return {
@@ -98,8 +93,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   };
 }
 
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getPost(params.slug);
+export default async function BlogPostPage({ params, searchParams }: BlogPostPageProps) {
+  const isPrivateView = searchParams.view === 'private';
+  const post = await getPost(params.slug, isPrivateView);
 
   if (!post) {
     notFound();
