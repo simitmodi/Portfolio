@@ -12,25 +12,6 @@ interface PageProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-// This function tells Next.js which blog post pages to build
-export async function generateStaticParams() {
-  try {
-    const postsCollection = collection(db, 'blog');
-    const postsSnapshot = await getDocs(postsCollection);
-    
-    // The function must return an array of objects, where each object has a 'slug' property that is a string
-    const slugs = postsSnapshot.docs.map(doc => ({
-      slug: doc.data().slug || doc.id,
-    }));
-    
-    return slugs;
-  } catch (error) {
-    console.error("Error fetching slugs for generateStaticParams:", error);
-    // Return an empty array in case of an error to prevent build failure
-    return [];
-  }
-}
-
 // This function fetches the data for a single blog post
 async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost | null> {
   try {

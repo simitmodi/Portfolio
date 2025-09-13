@@ -4,9 +4,6 @@
 import { useState, useEffect } from 'react';
 import type { BlogPost } from '@/types';
 import { format, parseISO } from 'date-fns';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 
 interface BlogPostClientProps {
   post: BlogPost;
@@ -15,10 +12,16 @@ interface BlogPostClientProps {
 export default function BlogPostClient({ post }: BlogPostClientProps) {
   const [formattedDate, setFormattedDate] = useState('');
 
+  // Safely format the date on the client side to avoid hydration errors
   useEffect(() => {
     if (post.date) {
-      const postDate = parseISO(post.date);
-      setFormattedDate(format(postDate, "MMMM d, yyyy"));
+      try {
+        const postDate = parseISO(post.date);
+        setFormattedDate(format(postDate, "MMMM d, yyyy"));
+      } catch (e) {
+        console.error("Failed to parse date:", post.date);
+        setFormattedDate("Invalid Date");
+      }
     }
   }, [post.date]);
 
