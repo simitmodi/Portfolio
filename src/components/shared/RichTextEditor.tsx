@@ -2,6 +2,7 @@
 'use client';
 
 import type { FC } from 'react';
+import { useEffect } from 'react';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -18,10 +19,11 @@ import { ListItemNode, ListNode } from '@lexical/list';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { EditorState, type LexicalEditor } from 'lexical';
 import { editorTheme } from '@/lib/lexical-theme';
 import { cn } from '@/lib/utils';
-import { $generateHtmlFromNodes } from '@lexical/html';
+import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import ToolbarPlugin from './ToolbarPlugin';
 
 interface RichTextEditorProps {
@@ -33,12 +35,38 @@ interface RichTextEditorProps {
   disabled?: boolean;
 }
 
+// Plugin to load initial HTML content
+const InitialValuePlugin = ({ initialHtml }: { initialHtml: string }) => {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    if (!initialHtml) return;
+
+    editor.update(() => {
+      if (editor.getEditorState().isEmpty()) {
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(initialHtml, 'text/html');
+        const nodes = $generateNodesFromDOM(editor, dom);
+        editor.getRoot().select();
+        editor.getRoot().clear();
+        editor.getRoot().append(...nodes);
+      }
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor, initialHtml]);
+
+  return null;
+};
+
+
 const editorConfig = {
   namespace: 'PortfolioEditor',
   theme: editorTheme,
   onError(error: Error) {
     throw error;
   },
+  // The editor will be empty on initial render, then populated by the InitialValuePlugin
+  editorState: null,
   nodes: [
     HeadingNode,
     ListNode,
@@ -97,6 +125,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
             ErrorBoundary={LexicalErrorBoundary}
           />
         </div>
+        <InitialValuePlugin initialHtml={value} />
         <OnChangePlugin onChange={handleOnChange} />
         <HistoryPlugin />
         <AutoFocusPlugin />

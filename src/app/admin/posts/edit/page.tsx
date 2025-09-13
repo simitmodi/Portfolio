@@ -142,7 +142,7 @@ function EditPostForm() {
     );
   }
 
-  if (!user || !post) {
+  if (!user) {
     return null;
   }
 
@@ -181,17 +181,16 @@ function EditPostForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="content" className="text-lg">Content</Label>
-              {post && (
-                <RichTextEditor
-                  key={post.id} 
-                  id="content"
-                  value={content}
-                  onChange={setContent}
-                  placeholder="Write your full post here..."
-                  className="bg-background"
-                  disabled={isSubmitting}
-                />
-              )}
+              {/* The key is no longer strictly necessary with the new plugin, but it doesn't hurt */}
+              <RichTextEditor
+                key={post?.id} 
+                id="content"
+                value={content}
+                onChange={setContent}
+                placeholder="Write your full post here..."
+                className="bg-background"
+                disabled={isSubmitting}
+              />
             </div>
           </CardContent>
           <CardFooter className="flex justify-between items-center border-t pt-6">
@@ -223,5 +222,3 @@ export default function EditPostPage() {
     </Suspense>
   )
 }
-
-    
