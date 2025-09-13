@@ -181,8 +181,9 @@ function EditPostForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="content" className="text-lg">Content</Label>
-              {post && content !== undefined && (
+              {post && (
                 <RichTextEditor
+                  key={post.id} 
                   id="content"
                   value={content}
                   onChange={setContent}
@@ -222,3 +223,5 @@ export default function EditPostPage() {
     </Suspense>
   )
 }
+
+    
