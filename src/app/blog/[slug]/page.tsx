@@ -6,24 +6,6 @@ import { collection, getDocs, query, where, getDoc, doc } from 'firebase/firesto
 import { db } from '@/lib/firebase';
 import type { BlogPost } from '@/types';
 
-// This function tells Next.js which pages to build at static export time.
-// It will now generate pages for ALL posts. The page logic itself will handle
-// whether a post is viewable based on its category and query params.
-export async function generateStaticParams() {
-  try {
-    const postsCollection = collection(db, 'blog');
-    const postsSnapshot = await getDocs(postsCollection);
-    const slugs = postsSnapshot.docs.map(doc => ({
-      slug: doc.data().slug || doc.id,
-    }));
-    return slugs;
-  } catch (error) {
-    console.error("Error fetching slugs for generateStaticParams:", error);
-    // Return an empty array to prevent build failure.
-    return [];
-  }
-}
-
 interface BlogPostPageProps {
   params: {
     slug: string;
