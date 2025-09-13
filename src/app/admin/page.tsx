@@ -50,13 +50,16 @@ export default function AdminDashboardPage() {
           let personalCount = 0;
           const allPosts: BlogPost[] = postsSnapshot.docs.map(doc => {
             const data = doc.data() as BlogPost;
-            if (data.category === 'professional') {
+            const category = data.category || 'professional'; // Default to professional
+            
+            if (category === 'professional') {
               professionalCount++;
             } else {
               personalCount++;
             }
             return {
               ...data,
+              category,
               slug: data.slug || doc.id,
               date: data.createdAt?.toDate().toISOString() || new Date().toISOString(),
             };
