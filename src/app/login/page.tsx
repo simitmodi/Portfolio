@@ -22,20 +22,6 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
-    // Hardcoded admin credentials for validation
-    const ADMIN_EMAIL = 'admin@profolio.com';
-    const ADMIN_PASSWORD = 'password';
-
-    if (email.toLowerCase() !== ADMIN_EMAIL) {
-        toast({
-            title: 'Invalid Credentials',
-            description: 'Please enter the correct admin email and password.',
-            variant: 'destructive',
-        });
-        setIsLoading(false);
-        return;
-    }
     
     // Attempt to sign in with Firebase
     try {
