@@ -16,7 +16,7 @@ interface BlogPostPageProps {
 }
 
 // Function to get all post slugs for static generation
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
   try {
     const postsCollection = collection(db, 'blog');
     const postsSnapshot = await getDocs(postsCollection);
