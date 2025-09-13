@@ -1,4 +1,3 @@
-
 'use client';
 import ContactForm from '@/components/forms/ContactForm';
 import SectionTitle from '@/components/shared/SectionTitle';
@@ -90,7 +89,7 @@ const ContactSection = () => {
             )}
           </div>
           <p className="text-sm text-foreground/70">
-            &copy; {currentYear} {portfolioConfig.name}. All rights reserved.
+            &copy; <Link href="/login" className="hover:text-primary transition-colors duration-200">{currentYear}</Link> {portfolioConfig.name}. All rights reserved.
           </p>
           <p className="text-sm text-foreground/70 mt-2">
             Proudly visualized and made in India 🇮🇳

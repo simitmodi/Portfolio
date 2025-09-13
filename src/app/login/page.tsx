@@ -23,11 +23,11 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Hardcoded admin credentials
+    // Hardcoded admin credentials for validation
     const ADMIN_EMAIL = 'admin@profolio.com';
     const ADMIN_PASSWORD = 'password';
 
-    if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+    if (email.toLowerCase() !== ADMIN_EMAIL) {
         toast({
             title: 'Invalid Credentials',
             description: 'Please enter the correct admin email and password.',
@@ -36,8 +36,8 @@ export default function LoginPage() {
         setIsLoading(false);
         return;
     }
-
-
+    
+    // Attempt to sign in with Firebase
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast({
@@ -46,12 +46,21 @@ export default function LoginPage() {
       });
       router.push('/inbox');
     } catch (error) {
-       // Since we're using hardcoded credentials, this part might not be hit
-       // unless there's a Firebase connection issue.
       console.error('Login error:', error);
+      let errorMessage = 'An unexpected error occurred. Please try again.';
+      // Basic error handling for common Firebase auth errors
+      if (error instanceof Error && 'code' in error) {
+        const code = (error as {code: string}).code;
+        if (code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-credential') {
+          errorMessage = 'Invalid credentials. Please check your email and password.';
+        } else if (code === 'auth/too-many-requests') {
+          errorMessage = 'Too many failed login attempts. Please try again later.';
+        }
+      }
+      
       toast({
         title: 'Login Failed',
-        description: 'An unexpected error occurred. Please try again.',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {
