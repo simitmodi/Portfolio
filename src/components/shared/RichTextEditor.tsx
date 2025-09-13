@@ -2,7 +2,6 @@
 'use client';
 
 import type { FC } from 'react';
-import { useEffect } from 'react';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -19,8 +18,7 @@ import { ListItemNode, ListNode } from '@lexical/list';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { EditorState, type LexicalEditor } from 'lexical';
+import { type EditorState, type LexicalEditor } from 'lexical';
 import { editorTheme } from '@/lib/lexical-theme';
 import { cn } from '@/lib/utils';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
@@ -35,44 +33,12 @@ interface RichTextEditorProps {
   disabled?: boolean;
 }
 
-// Plugin to load initial HTML content
-const InitialValuePlugin = ({ initialHtml }: { initialHtml: string }) => {
-  const [editor] = useLexicalComposerContext();
-
-  useEffect(() => {
-    if (!initialHtml) return;
-
-    editor.update(() => {
-      // In the browser, we can use the native DOMParser API to generate a DOM from a HTML string.
-      const parser = new DOMParser();
-      const dom = parser.parseFromString(initialHtml, "text/html");
-
-      // Once you have the DOM instance it's easy to generate LexicalNodes.
-      const nodes = $generateNodesFromDOM(editor, dom);
-
-      // Select the root
-      editor.getRoot().select();
-      
-      // Insert them at a selection.
-      editor.getRoot().clear();
-      editor.getRoot().append(...nodes);
-    });
-  // The an ESLint warning is disabled here because we only want this to run on initial mount.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return null;
-};
-
-
-const editorConfig = {
+const editorConfigBase = {
   namespace: 'PortfolioEditor',
   theme: editorTheme,
   onError(error: Error) {
     throw error;
   },
-  // The editor will be empty on initial render, then populated by the InitialValuePlugin
-  editorState: null,
   nodes: [
     HeadingNode,
     ListNode,
@@ -104,8 +70,23 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     });
   };
 
+  const initialConfig = {
+    ...editorConfigBase,
+    editorState: (editor: LexicalEditor) => {
+      if (value) {
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(value, "text/html");
+        const nodes = $generateNodesFromDOM(editor, dom);
+        editor.getRoot().select();
+        editor.getRoot().clear();
+        editor.getRoot().append(...nodes);
+      }
+      return;
+    },
+  };
+
   return (
-    <LexicalComposer initialConfig={editorConfig}>
+    <LexicalComposer initialConfig={initialConfig}>
       <div
         className={cn(
           'relative rounded-md border border-input bg-background',
@@ -131,7 +112,6 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
             ErrorBoundary={LexicalErrorBoundary}
           />
         </div>
-        <InitialValuePlugin initialHtml={value} />
         <OnChangePlugin onChange={handleOnChange} />
         <HistoryPlugin />
         <AutoFocusPlugin />
