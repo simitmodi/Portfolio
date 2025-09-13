@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import type { BlogPost } from '@/types';
 import { format, parseISO } from 'date-fns';
 import { Button } from '@/components/ui/button';
@@ -12,8 +13,14 @@ interface BlogPostClientProps {
 }
 
 export default function BlogPostClient({ post }: BlogPostClientProps) {
-  // Parse the ISO string to a Date object. parseISO handles timezones correctly.
-  const postDate = parseISO(post.date);
+  const [formattedDate, setFormattedDate] = useState('');
+
+  useEffect(() => {
+    // This code runs only on the client, after hydration.
+    // This avoids the server-client mismatch due to timezones.
+    const postDate = parseISO(post.date);
+    setFormattedDate(format(postDate, "MMMM d, yyyy"));
+  }, [post.date]);
 
   return (
     <div className="bg-background min-h-screen">
@@ -39,7 +46,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
                 {post.title}
               </h1>
               <p className="text-md text-muted-foreground mt-2">
-                Posted on {format(postDate, "MMMM d, yyyy")}
+                Posted on {formattedDate || '...'}
               </p>
             </header>
             <div
