@@ -10,6 +10,7 @@ import {
   $getSelection,
   $isRangeSelection,
   LexicalEditor,
+  INSERT_TEXT_COMMAND,
 } from 'lexical';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import {
@@ -32,10 +33,14 @@ import {
   AlignCenter,
   AlignRight,
   Quote,
+  Smile,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import EmojiPicker, { type EmojiClickData } from 'emoji-picker-react';
+
 
 const LowPriority = 1;
 
@@ -88,6 +93,11 @@ export default function ToolbarPlugin() {
     }
   }, [editor, isLink]);
 
+  const onEmojiClick = (emojiData: EmojiClickData, event: MouseEvent) => {
+    editor.dispatchCommand(INSERT_TEXT_COMMAND, emojiData.emoji);
+  };
+
+
   return (
     <div className="flex flex-wrap items-center gap-1 border-b border-input p-2 sticky top-0 bg-background z-10">
       <Button
@@ -136,6 +146,16 @@ export default function ToolbarPlugin() {
       >
         <Link className="h-4 w-4" />
       </Button>
+       <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Insert Emoji">
+            <Smile className="h-4 w-4" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="p-0 border-0">
+          <EmojiPicker onEmojiClick={onEmojiClick} />
+        </PopoverContent>
+      </Popover>
       <Separator orientation="vertical" className="h-6" />
        <Button
         variant="ghost"
