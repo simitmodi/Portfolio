@@ -1,7 +1,6 @@
 
 'use client';
 
-import 'react-quill/dist/quill.snow.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
