@@ -9,7 +9,7 @@ import { format, parseISO } from 'date-fns';
 import SectionTitle from '@/components/shared/SectionTitle';
 import { useEffect, useState } from 'react';
 import type { BlogPost } from '@/types';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 export default function BlogListPage() {
@@ -20,7 +20,11 @@ export default function BlogListPage() {
     const fetchPosts = async () => {
       try {
         const postsCollection = collection(db, 'blog');
-        const q = query(postsCollection, orderBy('date', 'desc'));
+        const q = query(
+          postsCollection, 
+          where('category', '==', 'professional'),
+          orderBy('date', 'desc')
+        );
         const querySnapshot = await getDocs(q);
         const fetchedPosts: BlogPost[] = querySnapshot.docs.map(doc => {
           const data = doc.data();
@@ -30,6 +34,7 @@ export default function BlogListPage() {
             date: data.date,
             excerpt: data.excerpt,
             content: data.content,
+            category: data.category,
           };
         });
         setPosts(fetchedPosts);

@@ -16,6 +16,7 @@ import { Loader2, ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import type { BlogPost } from '@/types';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 const RichTextEditor = dynamic(() => import('@/components/shared/RichTextEditor'), {
   ssr: false,
@@ -36,6 +37,7 @@ function EditPostForm() {
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
+  const [category, setCategory] = useState<BlogPost['category']>('professional');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingPost, setIsLoadingPost] = useState(true);
   const { toast } = useToast();
@@ -63,6 +65,7 @@ function EditPostForm() {
             setTitle(postData.title);
             setExcerpt(postData.excerpt);
             setContent(postData.content);
+            setCategory(postData.category || 'professional');
           } else {
             toast({
               title: 'Post Not Found',
@@ -111,6 +114,7 @@ function EditPostForm() {
         title,
         excerpt,
         content,
+        category,
         updatedAt: serverTimestamp(),
       };
 
@@ -167,6 +171,24 @@ function EditPostForm() {
               />
             </div>
             <div className="space-y-2">
+              <Label className="text-lg">Category</Label>
+              <RadioGroup
+                value={category}
+                onValueChange={(value: BlogPost['category']) => setCategory(value)}
+                className="flex space-x-4"
+                disabled={isSubmitting}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="professional" id="professional" />
+                  <Label htmlFor="professional">Professional</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="personal" id="personal" />
+                  <Label htmlFor="personal">Personal</Label>
+                </div>
+              </RadioGroup>
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="excerpt" className="text-lg">Excerpt</Label>
               <Textarea
                 id="excerpt"
@@ -181,16 +203,16 @@ function EditPostForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="content" className="text-lg">Content</Label>
-              {post?.content !== undefined && (
-                <RichTextEditor
-                  id="content"
-                  value={content}
-                  onChange={setContent}
-                  placeholder="Write your full post here..."
-                  className="bg-background"
-                  disabled={isSubmitting}
-                />
-              )}
+               {post?.content !== undefined && (
+                 <RichTextEditor
+                    id="content"
+                    value={content}
+                    onChange={setContent}
+                    placeholder="Write your full post here..."
+                    className="bg-background"
+                    disabled={isSubmitting}
+                  />
+               )}
             </div>
           </CardContent>
           <CardFooter className="flex justify-between items-center border-t pt-6">

@@ -10,7 +10,8 @@ import type { BlogPost } from '@/types';
 export async function generateStaticParams() {
   try {
     const postsCollection = collection(db, 'blog');
-    const postsSnapshot = await getDocs(postsCollection);
+    const q = query(postsCollection, where('category', '==', 'professional'));
+    const postsSnapshot = await getDocs(q);
     const slugs = postsSnapshot.docs.map(doc => ({
       slug: doc.data().slug || doc.id,
     }));
@@ -40,12 +41,20 @@ async function getPost(slug: string): Promise<BlogPost | null> {
     if (!querySnapshot.empty) {
       const postDoc = querySnapshot.docs[0];
       const data = postDoc.data();
+      // Ensure only professional posts are publicly accessible unless the user is navigating from admin
+      // This server-side check is crucial for security/privacy.
+      if (data.category !== 'professional') {
+        // A better implementation would check for an admin auth token if passed.
+        // For now, we simply block all non-professional posts from being rendered via direct URL.
+        return null; 
+      }
       return {
         slug: data.slug || postDoc.id,
         title: data.title,
         date: data.date,
         excerpt: data.excerpt,
         content: data.content,
+        category: data.category,
       };
     } else {
         // Fallback for older posts that might use ID as slug
@@ -53,12 +62,16 @@ async function getPost(slug: string): Promise<BlogPost | null> {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             const data = docSnap.data();
+            if (data.category !== 'professional') {
+              return null;
+            }
             return {
                 slug: docSnap.id,
                 title: data.title,
                 date: data.date,
                 excerpt: data.excerpt,
                 content: data.content,
+                category: data.category,
             };
         }
     }

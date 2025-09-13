@@ -6,7 +6,7 @@ import { ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import type { BlogPost } from '@/types';
-import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 const BlogSection = () => {
@@ -17,16 +17,22 @@ const BlogSection = () => {
     const fetchPosts = async () => {
       try {
         const postsCollection = collection(db, 'blog');
-        const q = query(postsCollection, orderBy('date', 'desc'), limit(3));
+        const q = query(
+          postsCollection, 
+          where('category', '==', 'professional'),
+          orderBy('date', 'desc'), 
+          limit(3)
+        );
         const querySnapshot = await getDocs(q);
         const posts: BlogPost[] = querySnapshot.docs.map(doc => {
           const data = doc.data();
           return {
-            slug: doc.id,
+            slug: data.slug || doc.id,
             title: data.title,
             date: data.date,
             excerpt: data.excerpt,
             content: data.content,
+            category: data.category,
           };
         });
         setLatestPosts(posts);

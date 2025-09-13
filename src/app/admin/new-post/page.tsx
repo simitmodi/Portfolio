@@ -15,6 +15,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2, ArrowLeft, Send } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import type { BlogPost } from '@/types';
 
 const RichTextEditor = dynamic(() => import('@/components/shared/RichTextEditor'), { 
   ssr: false,
@@ -38,6 +40,7 @@ export default function NewPostPage() {
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
+  const [category, setCategory] = useState<BlogPost['category']>('professional');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const { toast } = useToast();
@@ -70,6 +73,7 @@ export default function NewPostPage() {
         title,
         excerpt,
         content, // Storing as HTML from the rich text editor
+        category,
         date: new Date().toISOString(),
         slug: slug,
         createdAt: serverTimestamp(),
@@ -126,6 +130,24 @@ export default function NewPostPage() {
                 disabled={isSubmitting}
                 required
               />
+            </div>
+             <div className="space-y-2">
+              <Label className="text-lg">Category</Label>
+              <RadioGroup
+                value={category}
+                onValueChange={(value: BlogPost['category']) => setCategory(value)}
+                className="flex space-x-4"
+                disabled={isSubmitting}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="professional" id="professional" />
+                  <Label htmlFor="professional">Professional</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="personal" id="personal" />
+                  <Label htmlFor="personal">Personal</Label>
+                </div>
+              </RadioGroup>
             </div>
             <div className="space-y-2">
               <Label htmlFor="excerpt" className="text-lg">Excerpt</Label>

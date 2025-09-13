@@ -19,5 +19,6 @@ export interface BlogPost {
   excerpt: string;
   date: string;
   content: string;
+  category: 'professional' | 'personal';
   createdAt?: string;
 }

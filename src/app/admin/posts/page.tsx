@@ -15,6 +15,7 @@ import { Loader2, ArrowLeft, Edit, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
 import type { BlogPost } from '@/types';
+import { Badge } from '@/components/ui/badge';
 
 export default function ManagePostsPage() {
   const [user, loading] = useAuthState(auth);
@@ -52,6 +53,7 @@ export default function ManagePostsPage() {
           date: data.date,
           excerpt: data.excerpt,
           content: data.content,
+          category: data.category || 'professional',
           createdAt: data.createdAt?.toDate().toISOString(),
         };
       });
@@ -142,6 +144,7 @@ export default function ManagePostsPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Title</TableHead>
+                    <TableHead>Category</TableHead>
                     <TableHead className="hidden md:table-cell">Date Published</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
@@ -153,6 +156,11 @@ export default function ManagePostsPage() {
                         <Link href={`/blog/${post.slug}`} className="hover:underline" target="_blank" title="View Post">
                           {post.title}
                         </Link>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={post.category === 'personal' ? 'secondary' : 'default'}>
+                          {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
+                        </Badge>
                       </TableCell>
                       <TableCell className="hidden md:table-cell">{format(parseISO(post.date), "MMMM d, yyyy")}</TableCell>
                       <TableCell className="text-right">
