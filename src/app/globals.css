@@ -221,99 +221,20 @@ body {
   * {
     @apply border-border;
   }
-  html {
-    cursor: none; /* Hide default cursor globally */
-  }
   body {
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    cursor: none; /* Ensure default cursor is hidden */
   }
   section {
     @apply py-16 sm:py-20 md:py-24 lg:py-28 min-h-screen flex items-center justify-center;
   }
-
-  /* Restore text cursor for specific input elements */
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="search"],
-  input[type="tel"],
-  input[type="url"],
-  textarea,
-  [contenteditable="true"] {
-    cursor: text;
-  }
-
-  /* Restore pointer cursor for elements that should behave like links/buttons but aren't captured by JS selector */
-  .cursor-pointer {
-    cursor: pointer;
-  }
-}
-
-/* Custom Cursor Styles */
-.cursor-dot {
-  position: fixed;
-  /* top: 0; left: 0; JS will set these */
-  width: 8px;
-  height: 8px;
-  background-color: hsl(var(--primary));
-  border-radius: 50%;
-  pointer-events: none; /* Allows clicking through the dot */
-  transform: translate(-50%, -50%); /* Center the dot on the actual cursor position */
-  transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, opacity 0.2s ease, border 0.2s ease;
-  z-index: 10000; /* Highest z-index */
-  opacity: 0; /* Start hidden, JS will make it visible */
-  border: 0px solid transparent; /* Start with no border for transition */
-}
-
-.high-contrast .cursor-dot {
-  background-color: hsl(var(--foreground)); /* Black in light HC, White in dark HC */
-}
-
-.cursor-dot-interactive {
-  width: 28px;
-  height: 28px;
-  background-color: transparent;
-  border: 2px solid hsl(var(--accent));
-}
-
-.high-contrast .cursor-dot-interactive {
-  border: 2px solid hsl(var(--ring)); /* Use ring color for interactive border in HC */
-}
-
-/* Easter Egg Animation */
-@keyframes pulse-easter-egg {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-    background-color: hsl(var(--accent));
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(2.8);
-    background-color: hsl(var(--destructive));
-  }
-}
-
-.cursor-dot-easter-egg {
-  animation: pulse-easter-egg 0.8s ease-in-out;
-  /* Override normal size during animation if interactive style is also active */
-  width: 8px !important;
-  height: 8px !important;
-  border-width: 0px !important; /* Temporarily remove border if interactive */
-}
-
-/* Custom Scrollbar Styles - Permanently Hidden */
-::-webkit-scrollbar {
-  display: none;
-}
-
-/* For Firefox */
-html {
-  scrollbar-width: none;
 }
     
 
     
 
 
+
+
+    

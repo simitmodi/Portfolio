@@ -2,7 +2,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import CustomCursor from '@/components/shared/CustomCursor';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 
 export const metadata: Metadata = {
@@ -28,7 +27,6 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <ThemeProvider>
-          <CustomCursor />
           {children}
           <Toaster />
         </ThemeProvider>
@@ -36,3 +34,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+    

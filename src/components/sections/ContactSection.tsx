@@ -7,7 +7,6 @@ import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
 import Link from 'next/link';
 
 const ContactSection = () => {
@@ -22,17 +21,6 @@ const ContactSection = () => {
       easing: 'easeOutExpo'
     }
   });
-  const [connectTitleClickCount, setConnectTitleClickCount] = useState(0);
-
-  const handleConnectTitleClick = () => {
-    const newClickCount = connectTitleClickCount + 1;
-    setConnectTitleClickCount(newClickCount);
-
-    if (newClickCount >= 7) {
-      document.dispatchEvent(new CustomEvent('trigger-cursor-easter-egg'));
-      setConnectTitleClickCount(0);
-    }
-  };
 
   return (
     <section id="contact" className="bg-background w-full">
@@ -47,9 +35,7 @@ const ContactSection = () => {
             )}
           >
             <h3
-              className="text-2xl font-headline font-semibold text-accent cursor-pointer"
-              onClick={handleConnectTitleClick}
-              title="Psst, try clicking me a few times!"
+              className="text-2xl font-headline font-semibold text-accent"
             >
               Let's Connect!
             </h3>
@@ -102,3 +88,5 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
+
+    
