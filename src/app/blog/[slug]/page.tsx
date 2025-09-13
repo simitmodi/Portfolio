@@ -16,6 +16,8 @@ export async function generateStaticParams() {
     return slugs;
   } catch (error) {
     console.error("Error fetching slugs for generateStaticParams:", error);
+    // Return an empty array to prevent build failure.
+    // The pages will be generated on-demand at runtime if not found here.
     return [];
   }
 }
