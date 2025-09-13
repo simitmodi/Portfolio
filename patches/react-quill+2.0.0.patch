@@ -1,0 +1,128 @@
+diff --git a/node_modules/react-quill/lib/component.js b/node_modules/react-quill/lib/component.js
+index 2735d46..737f191 100644
+--- a/node_modules/react-quill/lib/component.js
++++ b/node_modules/react-quill/lib/component.js
+@@ -231,7 +231,7 @@
+ 	},
+ 
+ 	getEditor: function getEditor() {
+-		return this.quill;
++		return this.quill
+ 	},
+ 
+ 	getEditingArea: function getEditingArea() {
+@@ -239,7 +239,7 @@
+ 	},
+ 
+ 	getSelection: function getSelection() {
+-		return this.quill.getSelection();
++		return this.quill.getSelection()
+ 	},
+ 
+ 	setSelection: function setSelection(range, source) {
+@@ -279,15 +279,15 @@
+ 		var el = this.getEditingArea();
+ 		if (el) {
+ 			if (range) {
+-				return el.querySelector('.ql-editor');
++				return el.querySelector('.ql-editor')
+ 			} else {
+-				return el.querySelector('.ql-editor').firstChild;
++				return el.querySelector('.ql-editor').firstChild
+ 			}
+ 		}
+-		return null;
++		return null
+ 	},
+ 
+-	/*
++	/
+ 	Can be used to retrieve the underlying Quill instance.
+ 	*/
+ 	get Quill() {
+diff --git a/node_modules/react-quill/lib/index.js b/node_modules/react-quill/lib/index.js
+index ce84a32..854f940 100644
+--- a/node_modules/react-quill/lib/index.js
++++ b/node_modules/react-quill/lib/index.js
+@@ -1,7 +1,7 @@
+ 'use strict';
+-
+-var React = require('react');
+-var ReactDOM = require('react-dom');
++var React = require('react')
++// var ReactDOM = require('react-dom');
++var ReactDOM
+ var Quill = require('quill');
+ var PropTypes = require('prop-types');
+ var QuillMixin = require('./mixin');
+@@ -10,13 +10,15 @@
+ 
+ // FIXME: Remove in the next major version
+ function createReactQuill() {
++	// Delay import of react-dom until needed.
++	if (!ReactDOM) { ReactDOM = require('react-dom') }
+ 	var component = React.createClass({
+ 		displayName: 'ReactQuill',
+-		mixins: [ QuillMixin, ToolbarMixin ],
++		mixins: [QuillMixin, ToolbarMixin],
+ 
+ 		propTypes: {
+ 			id: PropTypes.string,
+-			className: PropTypes.string,
++			className: PropTypes.string
+ 		},
+ 
+ 		/*
+@@ -24,24 +26,24 @@
+ 		*/
+ 		getDefaultProps: function() {
+ 			return {
+-				className: '',
++				className: ''
+ 			};
+-		},
++		}
+ 	});
+ 
+ 	/*
+ 	We can't require `react-dom` in environments where it's not available,
+ 	like React-Native. So we will only expose `findDOMNode` as a static method
+ 	if `react-dom` is available.
+-	*/
+-	if (ReactDOM) {
++	 */
++	if (ReactDOM && ReactDOM.findDOMNode) {
+ 		component.findDOMNode = ReactDOM.findDOMNode;
+ 	}
+ 
+-	return component;
++	return component
+ }
+ 
+-module.exports = createReactQuill();
++module.exports = createReactQuill()
+ module.exports.Quill = Quill;
+ module.exports.Toolbar = require('./toolbar');
+ module.exports.Mixin = QuillMixin;
+diff --git a/node_modules/react-quill/lib/mixin.js b/node_modules/react-quill/lib/mixin.js
+index 927a4d4..e282585 100644
+--- a/node_modules/react-quill/lib/mixin.js
++++ b/node_modules/react-quill/lib/mixin.js
+@@ -1,5 +1,6 @@
+ 'use strict';
+-var ReactDOM = require('react-dom');
++// var ReactDOM = require('react-dom');
++var ReactDOM
+ var Quill = require('quill');
+ var PropTypes = require('prop-types');
+ var isEqual = require('lodash/isEqual');
+@@ -16,6 +17,9 @@
+ 	},
+ 
+ 	componentDidMount: function() {
++		// Delay import of react-dom until needed.
++		if (!ReactDOM) { ReactDOM = require('react-dom') }
++
+ 		var _this = this;
+ 		var _props = this.props;
+ 		var id = _props.id;
