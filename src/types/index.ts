@@ -1,3 +1,5 @@
+import type { Timestamp } from 'firebase/firestore';
+
 export interface Project {
   id: string;
   title: string;
@@ -20,5 +22,5 @@ export interface BlogPost {
   date: string;
   content: string;
   category: 'professional' | 'personal';
-  createdAt?: string;
+  createdAt?: Timestamp | string;
 }
