@@ -19,6 +19,7 @@ export function useScrollAnimation<T extends HTMLElement>(
   const elementRef = useRef<T>(null);
   const [isInView, setIsInView] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const hasAnimated = useRef(false); // Ref to track if animation has run
 
   useEffect(() => {
     const element = elementRef.current;
@@ -33,20 +34,20 @@ export function useScrollAnimation<T extends HTMLElement>(
         if (entry.isIntersecting) {
           setIsInView(true);
           
-          // Trigger anime.js animation if provided
-          if (options?.animation) {
+          // Only animate if it hasn't animated before (when triggerOnce is true)
+          if (options?.animation && (!options.triggerOnce || !hasAnimated.current)) {
             anime({
               targets: element,
               ...options.animation,
             });
-          }
-
-          if (options?.triggerOnce && observerRef.current) {
-            observerRef.current.unobserve(element);
+            if (options.triggerOnce) {
+              hasAnimated.current = true; // Mark as animated
+              observer.unobserve(element); // Disconnect after animation
+            }
           }
         } else {
           if (!options?.triggerOnce) {
-            setIsInView(false); // Enable resetting isInView if triggerOnce is false
+            setIsInView(false);
           }
         }
       },
@@ -66,7 +67,9 @@ export function useScrollAnimation<T extends HTMLElement>(
         observerRef.current = null;
       }
     };
-  }, [options, elementRef]);
+    // The dependency array is intentionally kept minimal.
+    // We don't want this to re-run on every animation param change if not necessary.
+  }, [options?.threshold, options?.root, options?.rootMargin, options?.triggerOnce, options?.animation]);
 
   return [elementRef, isInView];
 }
