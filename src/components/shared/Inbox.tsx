@@ -7,12 +7,13 @@ import { db, auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, Inbox as InboxIcon, LogOut, Mail } from 'lucide-react';
+import { Loader2, Inbox as InboxIcon, LogOut, Mail, ArrowLeft } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import Link from 'next/link';
 
 
 interface Message {
@@ -70,9 +71,14 @@ export default function Inbox() {
   };
 
   return (
-    <div className="min-h-screen bg-secondary/30 text-foreground flex flex-col">
-      <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6 sticky top-0 z-10">
+    <div className="min-h-screen bg-secondary/10 text-foreground flex flex-col backdrop-blur-xl">
+      <header className="flex h-16 items-center justify-between border-b bg-background/50 px-4 md:px-6 sticky top-0 z-10">
         <div className='flex items-center gap-3'>
+          <Link href="/admin" className="mr-2">
+            <Button variant="outline" size="icon">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
           <InboxIcon className="h-6 w-6 text-primary" />
           <h1 className="text-2xl font-headline font-bold text-primary">Inbox</h1>
         </div>
@@ -84,7 +90,7 @@ export default function Inbox() {
       
       <div className="flex-1 grid md:grid-cols-[300px_1fr] lg:grid-cols-[350px_1fr]">
         {/* Message List Sidebar */}
-        <div className="border-r bg-background">
+        <div className="border-r bg-background/30">
             <div className="p-4">
                 <h2 className="text-xl font-semibold">Messages ({messages.length})</h2>
             </div>
@@ -104,7 +110,7 @@ export default function Inbox() {
                             className={cn(
                                 "cursor-pointer border-b p-4 transition-colors",
                                 selectedMessage?.id === msg.id 
-                                    ? "bg-primary/10" 
+                                    ? "bg-primary/20" 
                                     : "hover:bg-secondary/50"
                             )}
                         >
@@ -122,14 +128,14 @@ export default function Inbox() {
         </div>
 
         {/* Message Detail View */}
-        <div className="flex flex-col">
+        <div className="flex flex-col bg-background/10">
           {isLoading ? (
             <div className="flex-1 flex justify-center items-center">
               <Loader2 className="h-10 w-10 animate-spin text-primary" />
             </div>
           ) : selectedMessage ? (
             <>
-              <div className="p-4 md:p-6 border-b">
+              <div className="p-4 md:p-6 border-b bg-background/20">
                 <div className="flex items-start gap-4">
                     <Avatar className="h-12 w-12">
                         <AvatarFallback className="bg-primary text-primary-foreground text-lg">{getInitials(selectedMessage.name)}</AvatarFallback>

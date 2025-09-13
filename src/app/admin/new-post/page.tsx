@@ -108,8 +108,8 @@ export default function NewPostPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-secondary/30 p-4 sm:p-6">
-      <Card className="w-full max-w-3xl mx-auto shadow-2xl">
+    <div className="flex items-center justify-center min-h-screen bg-secondary/10 p-4 sm:p-6 backdrop-blur-xl">
+      <Card className="w-full max-w-3xl mx-auto shadow-2xl bg-background/50">
         <CardHeader>
           <CardTitle className="text-2xl sm:text-3xl font-headline text-primary">Create New Blog Post</CardTitle>
           <CardDescription>Fill out the details below and publish your article.</CardDescription>

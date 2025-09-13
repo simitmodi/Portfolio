@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -46,8 +47,8 @@ export default function AdminDashboardPage() {
 
   if (user) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-secondary/30 p-4">
-        <Card className="w-full max-w-md shadow-2xl">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-secondary/10 p-4 backdrop-blur-xl">
+        <Card className="w-full max-w-md bg-background/50 shadow-2xl">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl font-headline text-primary">Admin Dashboard</CardTitle>
             <CardDescription>What would you like to do?</CardDescription>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -133,8 +134,8 @@ export default function EditPostPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-secondary/30 p-4 sm:p-6">
-      <Card className="w-full max-w-3xl mx-auto shadow-2xl">
+    <div className="flex items-center justify-center min-h-screen bg-secondary/10 p-4 sm:p-6 backdrop-blur-xl">
+      <Card className="w-full max-w-3xl mx-auto shadow-2xl bg-background/50">
         <CardHeader>
           <CardTitle className="text-2xl sm:text-3xl font-headline text-primary">Edit Blog Post</CardTitle>
           <CardDescription>Make changes to your article and save them.</CardDescription>

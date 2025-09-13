@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -62,8 +63,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
-      <Card className="w-full max-w-sm mx-auto shadow-2xl">
+    <div className="flex items-center justify-center min-h-screen bg-secondary/10 backdrop-blur-xl">
+      <Card className="w-full max-w-sm mx-auto shadow-2xl bg-background/50">
         <CardHeader>
           <CardTitle className="text-2xl font-headline text-primary">Admin Login</CardTitle>
           <CardDescription>Enter your credentials to manage your site.</CardDescription>

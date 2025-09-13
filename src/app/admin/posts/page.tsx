@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -102,7 +103,7 @@ export default function ManagePostsPage() {
   }
   
   return (
-    <div className="min-h-screen bg-secondary/30 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-secondary/10 p-4 sm:p-6 lg:p-8 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 flex items-center justify-between">
           <Link href="/admin">
@@ -112,7 +113,7 @@ export default function ManagePostsPage() {
             </Button>
           </Link>
         </div>
-        <Card className="shadow-2xl">
+        <Card className="shadow-2xl bg-background/50">
           <CardHeader>
             <CardTitle className="text-2xl sm:text-3xl font-headline text-primary">Manage Blog Posts</CardTitle>
             <CardDescription>View, edit, or delete your published articles.</CardDescription>
