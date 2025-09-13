@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/lib/firebase';
-import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDocs, updateDoc, serverTimestamp, collection, query, where } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -22,13 +22,17 @@ const RichTextEditor = dynamic(() => import('@/components/shared/RichTextEditor'
   loading: () => <div className="min-h-64 bg-background rounded-md border border-input flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-muted-foreground" /></div>,
 });
 
+interface PostDocument extends BlogPost {
+  id: string;
+}
+
 export default function EditPostPage() {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
   const params = useParams();
   const slug = params.slug as string;
 
-  const [post, setPost] = useState<BlogPost | null>(null);
+  const [post, setPost] = useState<PostDocument | null>(null);
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
@@ -47,16 +51,15 @@ export default function EditPostPage() {
       const fetchPost = async () => {
         setIsLoadingPost(true);
         try {
-          // In a static export, Firestore queries by slug field are more reliable.
-          // Fallback to doc(db, 'blog', slug) might not work as expected if slug is not the doc ID.
-          // A more robust solution might require querying the collection.
-          // For simplicity, we assume slug is the document ID for editing.
-          const postRef = doc(db, 'blog', slug);
-          const postSnap = await getDoc(postRef);
+          const postsCollection = collection(db, 'blog');
+          const q = query(postsCollection, where('slug', '==', slug));
+          const querySnapshot = await getDocs(q);
 
-          if (postSnap.exists()) {
-            const postData = postSnap.data() as BlogPost;
-            setPost(postData);
+          if (!querySnapshot.empty) {
+            const postDoc = querySnapshot.docs[0];
+            const postData = postDoc.data() as BlogPost;
+            const postWithId = { ...postData, id: postDoc.id };
+            setPost(postWithId);
             setTitle(postData.title);
             setExcerpt(postData.excerpt);
             setContent(postData.content);
@@ -85,7 +88,7 @@ export default function EditPostPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !excerpt || !content) {
+    if (!title || !excerpt || !content || !post) {
       toast({
         title: 'Missing Fields',
         description: 'Please fill out all fields to update the post.',
@@ -96,7 +99,8 @@ export default function EditPostPage() {
     setIsSubmitting(true);
 
     try {
-      const postRef = doc(db, 'blog', slug);
+      // Use the document ID stored in the post state
+      const postRef = doc(db, 'blog', post.id);
       const postData = {
         title,
         excerpt,

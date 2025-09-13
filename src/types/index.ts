@@ -13,6 +13,7 @@ export interface Skill {
 }
 
 export interface BlogPost {
+  id?: string; // Made optional as it's not always present
   slug: string;
   title: string;
   excerpt: string;
