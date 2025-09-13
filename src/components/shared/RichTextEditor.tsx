@@ -22,8 +22,7 @@ import { EditorState, type LexicalEditor } from 'lexical';
 import { editorTheme } from '@/lib/lexical-theme';
 import { cn } from '@/lib/utils';
 import { $generateHtmlFromNodes } from '@lexical/html';
-
-const ToolbarPlugin = () => null; // Placeholder for now
+import ToolbarPlugin from './ToolbarPlugin';
 
 interface RichTextEditorProps {
   id?: string;
@@ -79,22 +78,25 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
           className
         )}
       >
-        <RichTextPlugin
-          contentEditable={
-            <ContentEditable
-              className="min-h-64 resize-y p-4 focus:outline-none"
-              aria-placeholder={placeholder}
-              id={id}
-              readOnly={disabled}
-            />
-          }
-          placeholder={
-            <div className="pointer-events-none absolute left-4 top-4 text-muted-foreground">
-              {placeholder}
-            </div>
-          }
-          ErrorBoundary={LexicalErrorBoundary}
-        />
+        <ToolbarPlugin />
+        <div className="relative">
+          <RichTextPlugin
+            contentEditable={
+              <ContentEditable
+                className="min-h-64 resize-y p-4 focus:outline-none"
+                aria-placeholder={placeholder}
+                id={id}
+                readOnly={disabled}
+              />
+            }
+            placeholder={
+              <div className="pointer-events-none absolute left-4 top-4 text-muted-foreground">
+                {placeholder}
+              </div>
+            }
+            ErrorBoundary={LexicalErrorBoundary}
+          />
+        </div>
         <OnChangePlugin onChange={handleOnChange} />
         <HistoryPlugin />
         <AutoFocusPlugin />
