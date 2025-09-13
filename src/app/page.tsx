@@ -5,6 +5,7 @@ import AboutSection from '@/components/sections/AboutSection';
 import AcademicSection from '@/components/sections/AcademicSection'; // New import
 import AchievementsSection from '@/components/sections/AchievementsSection'; // New import
 import ExtracurricularSection from '@/components/sections/ExtracurricularSection'; // New import
+import BlogSection from '@/components/sections/BlogSection';
 import ContactSection from '@/components/sections/ContactSection';
 import SideNavigationBar from '@/components/shared/SideNavigationBar';
 import MobileNavigationBar from '@/components/shared/MobileNavigationBar';
@@ -34,6 +35,7 @@ export default function HomePage() {
           <AcademicSection />
           <AchievementsSection />
           <ExtracurricularSection />
+          <BlogSection />
           <ContactSection />
         </main>
       </div>

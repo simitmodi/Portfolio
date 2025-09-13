@@ -23,6 +23,7 @@ const navItems = [
   { name: 'Academics', href: '#academics' },
   { name: 'Achievements', href: '#achievements' },
   { name: 'Extra-Curriculars', href: '#extracurriculars' },
+  { name: 'Blog', href: '#blog' },
   { name: 'Contact', href: '#contact' },
 ];
 

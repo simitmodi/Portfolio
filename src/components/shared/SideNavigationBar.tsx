@@ -14,6 +14,7 @@ const navItems = [
   { name: 'Academics', href: '#academics', id: 'academics' },
   { name: 'Achievements', href: '#achievements', id: 'achievements' },
   { name: 'Extra-Curriculars', href: '#extracurriculars', id: 'extracurriculars' },
+  { name: 'Blog', href: '#blog', id: 'blog' },
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 

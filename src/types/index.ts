@@ -1,3 +1,4 @@
+
 export interface Project {
   id: string;
   title: string;
@@ -10,4 +11,12 @@ export interface Project {
 export interface Skill {
   name: string;
   icon?: React.ComponentType<{ className?: string }>;
+}
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  content: string;
 }
