@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/lib/firebase';
-import { collection, getDocs, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, orderBy, query, where } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -73,7 +73,6 @@ export default function ManagePostsPage() {
     try {
       // This assumes slug is the document ID, which might not be correct.
       // A safer approach is to query for the document with this slug.
-      // For now, we stick to the existing logic which seems to be working for deletion.
       const postsCollection = collection(db, 'blog');
       const q = query(postsCollection, where('slug', '==', slug));
       const querySnapshot = await getDocs(q);
@@ -162,7 +161,7 @@ export default function ManagePostsPage() {
                             variant="ghost" 
                             size="icon" 
                             title="Edit Post"
-                            onClick={() => router.push(`/admin/posts/edit/${post.slug}`)}
+                            onClick={() => router.push(`/admin/posts/edit?slug=${post.slug}`)}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
