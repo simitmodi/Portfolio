@@ -29,8 +29,8 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 const ContactForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [cardRef, isCardInView] = useScrollAnimation<HTMLDivElement>({ 
-    triggerOnce: false, 
+  const [cardRef] = useScrollAnimation<HTMLDivElement>({ 
+    triggerOnce: true, // This is the fix
     threshold: 0.1,
     animation: {
       translateX: [50, 0],
