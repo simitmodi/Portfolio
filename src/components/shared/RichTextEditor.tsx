@@ -43,17 +43,23 @@ const InitialValuePlugin = ({ initialHtml }: { initialHtml: string }) => {
     if (!initialHtml) return;
 
     editor.update(() => {
-      if (editor.getEditorState().isEmpty()) {
-        const parser = new DOMParser();
-        const dom = parser.parseFromString(initialHtml, 'text/html');
-        const nodes = $generateNodesFromDOM(editor, dom);
-        editor.getRoot().select();
-        editor.getRoot().clear();
-        editor.getRoot().append(...nodes);
-      }
+      // In the browser, we can use the native DOMParser API to generate a DOM from a HTML string.
+      const parser = new DOMParser();
+      const dom = parser.parseFromString(initialHtml, "text/html");
+
+      // Once you have the DOM instance it's easy to generate LexicalNodes.
+      const nodes = $generateNodesFromDOM(editor, dom);
+
+      // Select the root
+      editor.getRoot().select();
+      
+      // Insert them at a selection.
+      editor.getRoot().clear();
+      editor.getRoot().append(...nodes);
     });
+  // The an ESLint warning is disabled here because we only want this to run on initial mount.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor, initialHtml]);
+  }, []);
 
   return null;
 };
