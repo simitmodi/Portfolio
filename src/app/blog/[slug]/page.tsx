@@ -50,9 +50,10 @@ async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost |
     
     if (postDoc) {
       const data = postDoc.data() as Omit<BlogPost, 'slug'>;
+      const category = data.category || 'professional';
       
-      // If it's not a private view, only show professional posts
-      if (!isPrivateView && data.category !== 'professional') {
+      // If it's a public view, only show professional posts
+      if (!isPrivateView && category !== 'professional') {
         return null; 
       }
 
@@ -62,7 +63,7 @@ async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost |
         date: data.date,
         excerpt: data.excerpt,
         content: data.content,
-        category: data.category || 'professional',
+        category: category,
       };
     }
     
