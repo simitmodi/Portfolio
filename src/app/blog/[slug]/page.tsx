@@ -7,13 +7,12 @@ import { db } from '@/lib/firebase';
 import type { BlogPost } from '@/types';
 
 // This function tells Next.js which pages to build at static export time.
-// It will only generate pages for "professional" posts. "Personal" posts will
-// be rendered on-demand when accessed with the correct query parameter.
+// It will now generate pages for ALL posts. The page logic itself will handle
+// whether a post is viewable based on its category and query params.
 export async function generateStaticParams() {
   try {
     const postsCollection = collection(db, 'blog');
-    const q = query(postsCollection, where('category', '==', 'professional'));
-    const postsSnapshot = await getDocs(q);
+    const postsSnapshot = await getDocs(postsCollection);
     const slugs = postsSnapshot.docs.map(doc => ({
       slug: doc.data().slug || doc.id,
     }));
@@ -66,7 +65,7 @@ async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost |
         date: data.date,
         excerpt: data.excerpt,
         content: data.content,
-        category: data.category,
+        category: data.category || 'professional',
       };
     }
     
