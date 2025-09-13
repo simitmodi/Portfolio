@@ -15,6 +15,21 @@ interface BlogPostPageProps {
   }
 }
 
+// Function to get all post slugs for static generation
+export async function generateStaticParams() {
+  try {
+    const postsCollection = collection(db, 'blog');
+    const postsSnapshot = await getDocs(postsCollection);
+    const slugs = postsSnapshot.docs.map(doc => ({
+      slug: doc.data().slug || doc.id,
+    }));
+    return slugs;
+  } catch (error) {
+    console.error("Failed to generate static params:", error);
+    return [];
+  }
+}
+
 async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost | null> {
   try {
     const postsCollection = collection(db, 'blog');
@@ -42,7 +57,7 @@ async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost |
       }
 
       return {
-        slug: data.slug || postDoc.id,
+        slug: postDoc.data().slug || postDoc.id,
         title: data.title,
         date: data.date,
         excerpt: data.excerpt,
