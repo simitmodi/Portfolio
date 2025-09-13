@@ -1,3 +1,4 @@
+
 'use client';
 import SectionTitle from '@/components/shared/SectionTitle';
 import BlogCard from '@/components/shared/BlogCard';
@@ -19,9 +20,8 @@ const BlogSection = () => {
         const postsCollection = collection(db, 'blog');
         const q = query(
           postsCollection, 
-          where('category', '==', 'professional'),
           orderBy('date', 'desc'), 
-          limit(3)
+          limit(10) // Fetch more posts to ensure we get 3 professional ones
         );
         const querySnapshot = await getDocs(q);
         const posts: BlogPost[] = querySnapshot.docs.map(doc => {
@@ -32,9 +32,12 @@ const BlogSection = () => {
             date: data.date,
             excerpt: data.excerpt,
             content: data.content,
-            category: data.category,
+            category: data.category || 'professional',
           };
-        });
+        })
+        .filter(post => post.category === 'professional') // Filter client-side
+        .slice(0, 3); // Take the first 3 professional posts
+
         setLatestPosts(posts);
       } catch (error) {
         console.error("Error fetching latest posts:", error);

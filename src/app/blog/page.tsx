@@ -20,23 +20,27 @@ export default function BlogListPage() {
     const fetchPosts = async () => {
       try {
         const postsCollection = collection(db, 'blog');
+        // Query to get all posts, ordered by date
         const q = query(
           postsCollection, 
-          where('category', '==', 'professional'),
           orderBy('date', 'desc')
         );
         const querySnapshot = await getDocs(q);
-        const fetchedPosts: BlogPost[] = querySnapshot.docs.map(doc => {
-          const data = doc.data();
-          return {
-            slug: data.slug || doc.id,
-            title: data.title,
-            date: data.date,
-            excerpt: data.excerpt,
-            content: data.content,
-            category: data.category,
-          };
-        });
+        const fetchedPosts: BlogPost[] = querySnapshot.docs
+          .map(doc => {
+            const data = doc.data();
+            return {
+              slug: data.slug || doc.id,
+              title: data.title,
+              date: data.date,
+              excerpt: data.excerpt,
+              content: data.content,
+              category: data.category || 'professional',
+            };
+          })
+          // Filter for professional posts on the client side
+          .filter(post => post.category === 'professional');
+
         setPosts(fetchedPosts);
       } catch (error) {
         console.error("Error fetching all posts:", error);
