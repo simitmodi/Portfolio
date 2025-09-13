@@ -7,16 +7,12 @@ import { db } from '@/lib/firebase';
 import type { BlogPost } from '@/types';
 
 interface BlogPostPageProps {
-  params: {
-    slug: string;
-  };
-  searchParams: {
-    [key: string]: string | string[] | undefined;
-  }
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 // Function to get all post slugs for static generation
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
+export async function generateStaticParams() {
   try {
     const postsCollection = collection(db, 'blog');
     const postsSnapshot = await getDocs(postsCollection);
