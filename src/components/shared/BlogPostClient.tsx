@@ -2,7 +2,7 @@
 'use client';
 
 import type { BlogPost } from '@/types';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Home } from 'lucide-react';
 import Link from 'next/link';
@@ -12,6 +12,9 @@ interface BlogPostClientProps {
 }
 
 export default function BlogPostClient({ post }: BlogPostClientProps) {
+  // Parse the ISO string to a Date object. parseISO handles timezones correctly.
+  const postDate = parseISO(post.date);
+
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto py-16 sm:py-20 md:py-24">
@@ -36,7 +39,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
                 {post.title}
               </h1>
               <p className="text-md text-muted-foreground mt-2">
-                Posted on {format(new Date(post.date), "MMMM d, yyyy")}
+                Posted on {format(postDate, "MMMM d, yyyy")}
               </p>
             </header>
             <div

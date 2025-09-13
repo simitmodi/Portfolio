@@ -8,7 +8,7 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 import anime from 'animejs';
 import { ArrowRight } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -39,7 +39,7 @@ const BlogCard = ({ post, index }: BlogCardProps) => {
     >
       <CardHeader>
         <CardTitle className="text-xl font-headline mb-1 text-accent">{post.title}</CardTitle>
-        <CardDescription>{format(new Date(post.date), "MMMM d, yyyy")}</CardDescription>
+        <CardDescription>{format(parseISO(post.date), "MMMM d, yyyy")}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">
         <p className="text-sm text-foreground/80 line-clamp-4">{post.excerpt}</p>

@@ -1,3 +1,4 @@
+
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import BlogPostClient from '@/components/shared/BlogPostClient';
@@ -37,10 +38,10 @@ async function getPost(slug: string): Promise<BlogPost | null> {
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      const doc = querySnapshot.docs[0];
-      const data = doc.data();
+      const postDoc = querySnapshot.docs[0];
+      const data = postDoc.data();
       return {
-        slug: doc.id,
+        slug: data.slug || postDoc.id,
         title: data.title,
         date: data.date,
         excerpt: data.excerpt,

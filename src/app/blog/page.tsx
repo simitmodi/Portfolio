@@ -1,10 +1,11 @@
+
 'use client';
 
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, Loader2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import SectionTitle from '@/components/shared/SectionTitle';
 import { useEffect, useState } from 'react';
 import type { BlogPost } from '@/types';
@@ -24,7 +25,7 @@ export default function BlogListPage() {
         const fetchedPosts: BlogPost[] = querySnapshot.docs.map(doc => {
           const data = doc.data();
           return {
-            slug: doc.id,
+            slug: data.slug || doc.id,
             title: data.title,
             date: data.date,
             excerpt: data.excerpt,
@@ -69,7 +70,7 @@ export default function BlogListPage() {
                       </Link>
                     </CardTitle>
                     <CardDescription>
-                      {format(new Date(post.date), "MMMM d, yyyy")}
+                      {format(parseISO(post.date), "MMMM d, yyyy")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
