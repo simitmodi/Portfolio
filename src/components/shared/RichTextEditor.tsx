@@ -64,7 +64,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
 }) => {
 
   const handleOnChange = (editorState: EditorState, editor: LexicalEditor) => {
-    editorState.read(() => {
+    editor.update(() => {
       const htmlString = $generateHtmlFromNodes(editor, null);
       onChange(htmlString);
     });
@@ -74,12 +74,15 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
     ...editorConfigBase,
     editorState: (editor: LexicalEditor) => {
       if (value) {
-        const parser = new DOMParser();
-        const dom = parser.parseFromString(value, "text/html");
-        const nodes = $generateNodesFromDOM(editor, dom);
-        editor.getRoot().select();
-        editor.getRoot().clear();
-        editor.getRoot().append(...nodes);
+        // Use an update block to safely manipulate the editor state
+        editor.update(() => {
+            const parser = new DOMParser();
+            const dom = parser.parseFromString(value, "text/html");
+            const nodes = $generateNodesFromDOM(editor, dom);
+            editor.getRoot().select();
+            editor.getRoot().clear();
+            editor.getRoot().append(...nodes);
+        });
       }
       return;
     },
