@@ -6,7 +6,7 @@ import { collection, getDocs, query, where, getDoc, doc } from 'firebase/firesto
 import { db } from '@/lib/firebase';
 import type { BlogPost } from '@/types';
 
-interface BlogPostPageProps {
+interface PageProps {
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }
@@ -70,7 +70,7 @@ async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost |
   }
 }
 
-export async function generateMetadata({ params, searchParams }: BlogPostPageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const isPrivateView = searchParams.view === 'private';
   const post = await getPost(params.slug, isPrivateView);
 
@@ -86,7 +86,7 @@ export async function generateMetadata({ params, searchParams }: BlogPostPagePro
   };
 }
 
-export default async function BlogPostPage({ params, searchParams }: BlogPostPageProps) {
+export default async function BlogPostPage({ params, searchParams }: PageProps) {
   const isPrivateView = searchParams.view === 'private';
   const post = await getPost(params.slug, isPrivateView);
 

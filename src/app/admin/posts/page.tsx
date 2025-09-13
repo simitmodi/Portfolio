@@ -154,7 +154,7 @@ export default function ManagePostsPage() {
                     <TableRow key={post.slug}>
                       <TableCell className="font-medium max-w-xs truncate">
                         <Link 
-                          href={`/blog/${post.slug}${post.category === 'personal' ? '?view=private' : ''}`} 
+                          href={`/blog/${post.slug}?${post.category === 'personal' ? 'view=private' : ''}`} 
                           className="hover:underline" 
                           target="_blank" 
                           title="View Post"
