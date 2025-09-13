@@ -1,3 +1,4 @@
+
 'use client';
 
 import 'react-quill/dist/quill.snow.css';
@@ -16,7 +17,10 @@ import { Loader2, ArrowLeft, Send } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
-const RichTextEditor = dynamic(() => import('@/components/shared/RichTextEditor'), { ssr: false });
+const RichTextEditor = dynamic(() => import('@/components/shared/RichTextEditor'), { 
+  ssr: false,
+  loading: () => <div className="min-h-64 bg-background rounded-md border border-input flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-muted-foreground" /></div>,
+});
 
 // Helper to create a URL-friendly slug
 const createSlug = (title: string) => {
@@ -36,7 +40,12 @@ export default function NewPostPage() {
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -134,14 +143,16 @@ export default function NewPostPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="content" className="text-lg">Content</Label>
-              <RichTextEditor
-                id="content"
-                value={content}
-                onChange={setContent}
-                placeholder="Write your full post here..."
-                className="bg-background"
-                disabled={isSubmitting}
-              />
+              {isClient && (
+                <RichTextEditor
+                  id="content"
+                  value={content}
+                  onChange={setContent}
+                  placeholder="Write your full post here..."
+                  className="bg-background"
+                  disabled={isSubmitting}
+                />
+              )}
             </div>
           </CardContent>
           <CardFooter className="flex justify-between items-center border-t pt-6">
