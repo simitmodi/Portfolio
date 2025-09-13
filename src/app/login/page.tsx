@@ -33,14 +33,22 @@ export default function LoginPage() {
     } catch (error) {
       console.error('Login error:', error);
       let errorMessage = 'An unexpected error occurred. Please try again.';
-      if (error instanceof Error && 'code' in error) {
-        const code = (error as {code: string}).code;
-        if (code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-credential') {
-          errorMessage = 'Invalid credentials. Please check your email and password.';
-        } else if (code === 'auth/too-many-requests') {
-          errorMessage = 'Too many failed login attempts. Please try again later.';
-        } else if (code === 'auth/invalid-api-key' || code === 'auth/configuration-not-found') {
+      // Check if error is a Firebase error
+      if (error && typeof error === 'object' && 'code' in error) {
+        const firebaseError = error as { code: string };
+        switch (firebaseError.code) {
+          case 'auth/wrong-password':
+          case 'auth/user-not-found':
+          case 'auth/invalid-credential':
+            errorMessage = 'Invalid credentials. Please check your email and password.';
+            break;
+          case 'auth/too-many-requests':
+            errorMessage = 'Too many failed login attempts. Please try again later.';
+            break;
+          case 'auth/invalid-api-key':
+          case 'auth/configuration-not-found':
             errorMessage = 'Firebase configuration error. Please contact the administrator.';
+            break;
         }
       }
       
