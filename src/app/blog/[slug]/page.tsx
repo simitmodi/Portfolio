@@ -6,6 +6,12 @@ import { collection, getDocs, query, where, getDoc, doc } from 'firebase/firesto
 import { db } from '@/lib/firebase';
 import type { BlogPost } from '@/types';
 
+// This defines the shape of the props for the page
+interface BlogPostPageProps {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
 // Function to get all post slugs for static generation
 export async function generateStaticParams() {
   try {
@@ -65,7 +71,7 @@ async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost |
   }
 }
 
-export async function generateMetadata({ params, searchParams }: { params: { slug: string }, searchParams: { [key: string]: string | string[] | undefined } }): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: BlogPostPageProps): Promise<Metadata> {
   const isPrivateView = searchParams.view === 'private';
   const post = await getPost(params.slug, isPrivateView);
 
@@ -81,7 +87,7 @@ export async function generateMetadata({ params, searchParams }: { params: { slu
   };
 }
 
-export default async function BlogPostPage({ params, searchParams }: { params: { slug: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
+export default async function BlogPostPage({ params, searchParams }: BlogPostPageProps) {
   const isPrivateView = searchParams.view === 'private';
   const post = await getPost(params.slug, isPrivateView);
 
