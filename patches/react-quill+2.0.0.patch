@@ -1,128 +1,87 @@
-diff --git a/node_modules/react-quill/lib/component.js b/node_modules/react-quill/lib/component.js
-index 2735d46..737f191 100644
---- a/node_modules/react-quill/lib/component.js
-+++ b/node_modules/react-quill/lib/component.js
-@@ -231,7 +231,7 @@
- 	},
- 
- 	getEditor: function getEditor() {
--		return this.quill;
-+		return this.quill
- 	},
- 
- 	getEditingArea: function getEditingArea() {
-@@ -239,7 +239,7 @@
- 	},
- 
- 	getSelection: function getSelection() {
--		return this.quill.getSelection();
-+		return this.quill.getSelection()
- 	},
- 
- 	setSelection: function setSelection(range, source) {
-@@ -279,15 +279,15 @@
- 		var el = this.getEditingArea();
- 		if (el) {
- 			if (range) {
--				return el.querySelector('.ql-editor');
-+				return el.querySelector('.ql-editor')
- 			} else {
--				return el.querySelector('.ql-editor').firstChild;
-+				return el.querySelector('.ql-editor').firstChild
- 			}
- 		}
--		return null;
-+		return null
- 	},
- 
--	/*
-+	/
- 	Can be used to retrieve the underlying Quill instance.
- 	*/
- 	get Quill() {
 diff --git a/node_modules/react-quill/lib/index.js b/node_modules/react-quill/lib/index.js
-index ce84a32..854f940 100644
+index 9b7eb6f..5997b62 100644
 --- a/node_modules/react-quill/lib/index.js
 +++ b/node_modules/react-quill/lib/index.js
-@@ -1,7 +1,7 @@
- 'use strict';
--
--var React = require('react');
--var ReactDOM = require('react-dom');
-+var React = require('react')
-+// var ReactDOM = require('react-dom');
-+var ReactDOM
- var Quill = require('quill');
- var PropTypes = require('prop-types');
- var QuillMixin = require('./mixin');
-@@ -10,13 +10,15 @@
+@@ -4,7 +4,7 @@
  
- // FIXME: Remove in the next major version
- function createReactQuill() {
-+	// Delay import of react-dom until needed.
-+	if (!ReactDOM) { ReactDOM = require('react-dom') }
- 	var component = React.createClass({
- 		displayName: 'ReactQuill',
--		mixins: [ QuillMixin, ToolbarMixin ],
-+		mixins: [QuillMixin, ToolbarMixin],
+ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
  
- 		propTypes: {
- 			id: PropTypes.string,
--			className: PropTypes.string,
-+			className: PropTypes.string
- 		},
+-var _react = require('react');
++var _react = require('react'); /* eslint-disable-line no-unused-vars */
  
- 		/*
-@@ -24,24 +26,24 @@
- 		*/
- 		getDefaultProps: function() {
- 			return {
--				className: '',
-+				className: ''
- 			};
--		},
-+		}
- 	});
+ var _react2 = _interopRequireDefault(_react);
+ 
+@@ -53,7 +53,7 @@
+ 	// We can't update values that deep in props, so we use a state variable
+ 	// to hold the latest value.
+ 	this.state = {
+-		value: this.isControlled() ? this.props.value : this.props.defaultValue
++		value: this.isControlled() ? this.props.value : this.props.defaultValue,
+ 	};
+ };
+ 
+@@ -141,7 +141,7 @@
+ 
+ 	getEditor: function getEditor() {
+ 		return this.editor;
+-	},
++	}, // eslint-disable-line no-unused-vars
  
  	/*
- 	We can't require `react-dom` in environments where it's not available,
- 	like React-Native. So we will only expose `findDOMNode` as a static method
- 	if `react-dom` is available.
--	*/
--	if (ReactDOM) {
-+	 */
-+	if (ReactDOM && ReactDOM.findDOMNode) {
- 		component.findDOMNode = ReactDOM.findDOMNode;
- 	}
+  	Renders the editor in a restrictive way
+@@ -211,7 +211,7 @@
+ 		}
+ 	},
  
--	return component;
-+	return component
- }
+-	render: function render() {
++	render: function render() { /* eslint-disable-line no-unused-vars */
+ 		return _react2['default'].createElement(
+ 			'div',
+ 			{ id: this.props.id,
+@@ -220,7 +220,7 @@
+ 				ref: this.setEditorRef },
+ 			this.props.children
+ 		);
+-	}
++	}, // eslint-disable-line no-unused-vars
  
--module.exports = createReactQuill();
-+module.exports = createReactQuill()
- module.exports.Quill = Quill;
- module.exports.Toolbar = require('./toolbar');
- module.exports.Mixin = QuillMixin;
+ });
+ 
 diff --git a/node_modules/react-quill/lib/mixin.js b/node_modules/react-quill/lib/mixin.js
-index 927a4d4..e282585 100644
+index 9110190..34d4a8e 100644
 --- a/node_modules/react-quill/lib/mixin.js
 +++ b/node_modules/react-quill/lib/mixin.js
 @@ -1,5 +1,6 @@
  'use strict';
--var ReactDOM = require('react-dom');
-+// var ReactDOM = require('react-dom');
-+var ReactDOM
+ 
++/* eslint-disable no-console */
+ var ReactDOM = require('react-dom');
  var Quill = require('quill');
- var PropTypes = require('prop-types');
- var isEqual = require('lodash/isEqual');
-@@ -16,6 +17,9 @@
+ 
+@@ -18,7 +19,10 @@
  	},
  
- 	componentDidMount: function() {
-+		// Delay import of react-dom until needed.
-+		if (!ReactDOM) { ReactDOM = require('react-dom') }
+ 	setEditorRef: function(element) {
+-		this.editor = element;
++		// Store the editor element on the component instance
++		if (element) {
++			this.editor = element;
++		}
+ 	},
+ 
+ 	/*
+@@ -37,7 +41,12 @@
+ 
+ 		// After the component has been mounted, we can create the editor
+ 		this.createEditor(
+-			ReactDOM.findDOMNode(this.editor),
++			// Use a ref to get the DOM node instead of findDOMNode
++			this.editor,
+ 			this.getEditorConfig()
+ 		);
++	},
 +
- 		var _this = this;
- 		var _props = this.props;
- 		var id = _props.id;
++	getEditorNode: function() {
++		return this.editor;
+ 	}
+ };
