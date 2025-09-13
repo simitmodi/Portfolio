@@ -181,7 +181,7 @@ function EditPostForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="content" className="text-lg">Content</Label>
-              {typeof window !== 'undefined' && (
+              {post && content !== undefined && (
                 <RichTextEditor
                   id="content"
                   value={content}
