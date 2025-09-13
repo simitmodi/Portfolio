@@ -31,6 +31,7 @@ const BlogSection = () => {
             excerpt: data.excerpt,
             content: data.content,
             category: data.category || 'professional',
+            createdAt: data.createdAt,
           };
         })
         .filter(post => post.category === 'professional') // Filter client-side
