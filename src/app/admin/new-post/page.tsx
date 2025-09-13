@@ -1,5 +1,6 @@
 'use client';
 
+import 'react-quill/dist/quill.snow.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -13,6 +14,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ArrowLeft, Send } from 'lucide-react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+const RichTextEditor = dynamic(() => import('@/components/shared/RichTextEditor'), { ssr: false });
 
 // Helper to create a URL-friendly slug
 const createSlug = (title: string) => {
@@ -57,7 +61,7 @@ export default function NewPostPage() {
       const postData = {
         title,
         excerpt,
-        content, // Storing as simple text, can be converted to HTML on render if needed
+        content, // Storing as HTML from the rich text editor
         date: new Date().toISOString(),
         slug: slug,
         createdAt: serverTimestamp(),
@@ -65,9 +69,6 @@ export default function NewPostPage() {
 
       const docRef = await addDoc(collection(db, 'blog'), postData);
       
-      // Update doc with its own ID as slug (optional, but good practice)
-      // await updateDoc(docRef, { slug: docRef.id });
-
       toast({
         title: 'Post Published!',
         description: 'Your new blog post is now live.',
@@ -133,15 +134,13 @@ export default function NewPostPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="content" className="text-lg">Content</Label>
-              <Textarea
+              <RichTextEditor
                 id="content"
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="Write your full post here. You can use HTML for formatting."
-                rows={12}
-                className="resize-y"
+                onChange={setContent}
+                placeholder="Write your full post here..."
+                className="bg-background"
                 disabled={isSubmitting}
-                required
               />
             </div>
           </CardContent>
