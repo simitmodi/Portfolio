@@ -1,7 +1,7 @@
 
 'use client';
 
-import type { FC } from 'react';
+import { type FC, useEffect } from 'react';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -18,11 +18,12 @@ import { ListItemNode, ListNode } from '@lexical/list';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import { type EditorState, type LexicalEditor } from 'lexical';
+import { type EditorState, type LexicalEditor, $getRoot, $getSelection } from 'lexical';
 import { editorTheme } from '@/lib/lexical-theme';
 import { cn } from '@/lib/utils';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import ToolbarPlugin from './ToolbarPlugin';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 interface RichTextEditorProps {
   id?: string;
@@ -33,7 +34,7 @@ interface RichTextEditorProps {
   disabled?: boolean;
 }
 
-const editorConfigBase = {
+const editorConfig = {
   namespace: 'PortfolioEditor',
   theme: editorTheme,
   onError(error: Error) {
@@ -54,6 +55,27 @@ const editorConfigBase = {
   ],
 };
 
+// Plugin to load initial HTML value
+const InitialValuePlugin = ({ initialHtml }: { initialHtml: string }) => {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    if (initialHtml) {
+      editor.update(() => {
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(initialHtml, 'text/html');
+        const nodes = $generateNodesFromDOM(editor, dom);
+        const root = $getRoot();
+        root.select();
+        root.clear();
+        root.append(...nodes);
+      });
+    }
+  }, [editor, initialHtml]);
+
+  return null;
+};
+
 const RichTextEditor: FC<RichTextEditorProps> = ({
   id,
   onChange,
@@ -69,24 +91,12 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
       onChange(htmlString);
     });
   };
-
+  
   const initialConfig = {
-    ...editorConfigBase,
-    editorState: (editor: LexicalEditor) => {
-      if (value) {
-        // Use an update block to safely manipulate the editor state
-        editor.update(() => {
-            const parser = new DOMParser();
-            const dom = parser.parseFromString(value, "text/html");
-            const nodes = $generateNodesFromDOM(editor, dom);
-            editor.getRoot().select();
-            editor.getRoot().clear();
-            editor.getRoot().append(...nodes);
-        });
-      }
-      return;
-    },
+    ...editorConfig,
+    editable: !disabled,
   };
+
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
@@ -96,7 +106,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
           className
         )}
       >
-        <ToolbarPlugin />
+        {!disabled && <ToolbarPlugin />}
         <div className="relative">
           <RichTextPlugin
             contentEditable={
@@ -115,6 +125,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
             ErrorBoundary={LexicalErrorBoundary}
           />
         </div>
+        <InitialValuePlugin initialHtml={value} />
         <OnChangePlugin onChange={handleOnChange} />
         <HistoryPlugin />
         <AutoFocusPlugin />

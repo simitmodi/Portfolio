@@ -183,7 +183,6 @@ function EditPostForm() {
               <Label htmlFor="content" className="text-lg">Content</Label>
               {post?.content !== undefined && (
                 <RichTextEditor
-                  key={post.id}
                   id="content"
                   value={content}
                   onChange={setContent}
