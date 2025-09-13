@@ -9,7 +9,7 @@ import { Loader2, Inbox, Edit, LogOut, Newspaper, BookText, User, MessageSquare,
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, Timestamp } from 'firebase/firestore';
 import type { BlogPost } from '@/types';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
@@ -53,7 +53,7 @@ export default function AdminDashboardPage() {
           let professionalCount = 0;
           let personalCount = 0;
           const fetchedPosts: BlogPost[] = postsSnapshot.docs.map(doc => {
-            const data = doc.data() as BlogPost;
+            const data = doc.data() as Omit<BlogPost, 'createdAt'> & { createdAt: Timestamp | string };
             const category = data.category || 'professional';
             
             if (category === 'professional') {
@@ -61,11 +61,21 @@ export default function AdminDashboardPage() {
             } else {
               personalCount++;
             }
+            
+            let postDate: Date;
+            if (data.createdAt && typeof (data.createdAt as Timestamp).toDate === 'function') {
+                postDate = (data.createdAt as Timestamp).toDate();
+            } else if (data.date) {
+                postDate = new Date(data.date);
+            } else {
+                postDate = new Date();
+            }
+
             return {
               ...data,
               category,
               slug: data.slug || doc.id,
-              date: data.createdAt?.toDate().toISOString() || new Date().toISOString(),
+              date: postDate.toISOString(),
             };
           });
 
