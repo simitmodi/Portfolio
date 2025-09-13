@@ -1,87 +1,356 @@
 diff --git a/node_modules/react-quill/lib/index.js b/node_modules/react-quill/lib/index.js
-index 9b7eb6f..5997b62 100644
+index 4514210..3484c2f 100644
 --- a/node_modules/react-quill/lib/index.js
 +++ b/node_modules/react-quill/lib/index.js
-@@ -4,7 +4,7 @@
- 
- function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
- 
--var _react = require('react');
-+var _react = require('react'); /* eslint-disable-line no-unused-vars */
- 
- var _react2 = _interopRequireDefault(_react);
- 
-@@ -53,7 +53,7 @@
- 	// We can't update values that deep in props, so we use a state variable
- 	// to hold the latest value.
- 	this.state = {
--		value: this.isControlled() ? this.props.value : this.props.defaultValue
-+		value: this.isControlled() ? this.props.value : this.props.defaultValue,
- 	};
- };
- 
-@@ -141,7 +141,7 @@
- 
- 	getEditor: function getEditor() {
- 		return this.editor;
--	},
-+	}, // eslint-disable-line no-unused-vars
- 
- 	/*
-  	Renders the editor in a restrictive way
-@@ -211,7 +211,7 @@
- 		}
- 	},
- 
--	render: function render() {
-+	render: function render() { /* eslint-disable-line no-unused-vars */
- 		return _react2['default'].createElement(
- 			'div',
- 			{ id: this.props.id,
-@@ -220,7 +220,7 @@
- 				ref: this.setEditorRef },
- 			this.props.children
- 		);
--	}
-+	}, // eslint-disable-line no-unused-vars
- 
- });
- 
-diff --git a/node_modules/react-quill/lib/mixin.js b/node_modules/react-quill/lib/mixin.js
-index 9110190..34d4a8e 100644
---- a/node_modules/react-quill/lib/mixin.js
-+++ b/node_modules/react-quill/lib/mixin.js
-@@ -1,5 +1,6 @@
+@@ -2,12 +2,11 @@
  'use strict';
  
-+/* eslint-disable no-console */
- var ReactDOM = require('react-dom');
- var Quill = require('quill');
+ Object.defineProperty(exports, "__esModule", {
+-	value: true
++  value: true
+ });
+-exports.default = undefined;
  
-@@ -18,7 +19,10 @@
- 	},
+ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
  
- 	setEditorRef: function(element) {
--		this.editor = element;
-+		// Store the editor element on the component instance
-+		if (element) {
-+			this.editor = element;
-+		}
- 	},
+ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+@@ -16,42 +15,22 @@
+ 
+ var _react = require('react');
+ 
+-var _react2 = _interopRequireDefault(_react);
+-
+-var _reactDom = require('react-dom');
+-
+-var _reactDom2 = _interopRequireDefault(_reactDom);
++var _react2 = _interopRequireWildcard(_react);
+ 
+ var _quill = require('quill');
+ 
+ var _quill2 = _interopRequireDefault(_quill);
+ 
+-var _propTypes = require('prop-types');
+-
+-var _propTypes2 = _interopRequireDefault(_propTypes);
+-
+ var _deepEqual = require('deep-equal');
+ 
+ var _deepEqual2 = _interopRequireDefault(_deepEqual);
+ 
+-var _lodash = require('lodash.debounce');
+-
+-var _lodash2 = _interopRequireDefault(_lodash);
+-
+-var _lodash3 = require('lodash.ismatch');
+-
+-var _lodash4 = _interopRequireDefault(_lodash3);
+-
+-var _lodash5 = require('lodash.isobject');
+-
+-var _lodash6 = _interopRequireDefault(_lodash5);
+-
+ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+ 
+-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
++function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+ 
+-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
++function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+ 
+-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
++var Quill = _quill2.default;
+ 
+ var QuillComponent = function (_React$Component) {
+ 	_inherits(QuillComponent, _React$Component);
+@@ -107,17 +86,16 @@
+ 		this.onEditorChangeSelection = this.onEditorChangeSelection.bind(this);
+ 		this.onEditorChange = this.onEditorChange.bind(this);
+ 		this.onEditorCompositionStart = this.onEditorCompositionStart.bind(this);
+-		this.onEditorCompositionEnd = this.onEditorCompositionEnd.bind(this);
+ 
+ 		this.debouncedEditorChange = (0, _lodash2.default)(function () {
+ 			if (_this2.onEditorChange) {
+-				_this2.onEditorChange.apply(_this2, arguments);
++				_this2.onEditorChange.apply(_this2, arguments)
+ 			}
+ 			if (_this2.onEditorChangeSelection) {
+-				_this2.onEditorChangeSelection.apply(_this2, arguments);
++				_this2.onEditorChangeSelection.apply(_this2, arguments)
+ 			}
+ 		}, this.props.debounce);
+-	}
++	};
  
  	/*
-@@ -37,7 +41,12 @@
+ 	We consider the component to be controlled if `value` is provided.
+@@ -148,8 +126,8 @@
+ 		}, {
+ 			key: 'isControlled',
+ 			value: function isControlled() {
+-				return 'value' in this.props;
+-			}
++				return 'value' in this.props
++			},
+ 		}, {
+ 			key: 'getEditorConfig',
+ 			value: function getEditorConfig() {
+@@ -165,7 +143,7 @@
+ 					modules: modules
+ 				}, this.props.modules);
  
- 		// After the component has been mounted, we can create the editor
- 		this.createEditor(
--			ReactDOM.findDOMNode(this.editor),
-+			// Use a ref to get the DOM node instead of findDOMNode
-+			this.editor,
- 			this.getEditorConfig()
- 		);
-+	},
+-				return config;
++				return config
+ 			}
+ 
+ 			/*
+@@ -201,7 +179,7 @@
+ 				} else {
+ 					var _ret = function () {
+ 						var editor = _this4.createEditor(_this4.getEditingArea(), _this4.getEditorConfig());
+-						_this4.editor = editor;
++						_this4.editor = editor
+ 
+ 						// Restore editor from Quill's own history.
+ 						if (editor.root.dataset.placeholder) {
+@@ -209,7 +187,7 @@
+ 						}
+ 						editor.enable(!_this4.props.readOnly);
+ 
+-						return {
++						return { v: void 0 };
+ 						};
+ 					}();
+ 
+@@ -217,7 +195,7 @@
+ 				}
+ 			}
+ 		}, {
+-			key: 'componentWillUnmount',
++			key: 'componentWillUnmount', 
+ 			value: function componentWillUnmount() {
+ 				this.destroyEditor(this.editor);
+ 				// Prevent leaks
+@@ -262,7 +240,7 @@
+ 
+ 				if (!this.isControlled()) return;
+ 
+-				var range = this.getEditorSelection();
++				var range = this.getEditorSelection()
+ 				var willBeEmpty = value === '<p><br></p>' || value === '';
+ 
+ 				if (value === this.getEditorContents()) return;
+@@ -275,7 +253,7 @@
+ 				}
+ 
+ 				if (range) {
+-					this.setEditorSelection(this.editor, range);
++					this.setEditorSelection(this.editor, range)
+ 				}
+ 			}
+ 		}, {
+@@ -293,7 +271,7 @@
+ 					return false;
+ 				});
+ 				var formatsEqual = (0, _deepEqual2.default)(next.formats, this.props.formats);
+-				return !formatsEqual;
++				return !formatsEqual
+ 			}
+ 		}, {
+ 			key: 'shouldComponentUpdate',
+@@ -311,7 +289,7 @@
+ 						(0, _deepEqual2.default)(this.props[prop], nextProps[prop])
+ 					);
+ 				});
+-			}
++			},
+ 		}, {
+ 			key: 'instantiateEditor',
+ 			value: function instantiateEditor() {
+@@ -330,7 +308,7 @@
+ 				}
+ 
+ 				var editor = this.createEditor(this.getEditingArea(), this.getEditorConfig());
+-				this.editor = editor;
++				this.editor = editor
+ 
+ 				// The editor is trying to restore from its own history.
+ 				// Let's do it after the editor is mounted.
+@@ -351,10 +329,10 @@
+ 
+ 				var editor = this.createEditor(el, config);
+ 
+-				if (config.bounds) {
+-					this.setEditorBounds(editor, config.bounds);
++				if (config.bounds) { 
++					this.setEditorBounds(editor, config.bounds)
+ 				}
+-				return editor;
++				return editor
+ 			}
+ 		}, {
+ 			key: 'destroyEditor',
+@@ -366,13 +344,13 @@
+ 		}, {
+ 			key: 'setEditorBounds',
+ 			value: function setEditorBounds(editor, bounds) {
+-				editor.options.bounds = bounds === 'self' ? _reactDom2.default.findDOMNode(this) : bounds;
+-			}
++				editor.options.bounds = bounds === 'self' ? this.quillContainerRef.current : bounds
++			},
+ 		}, {
+ 			key: 'setEditorContents',
+ 			value: function setEditorContents(editor, value) {
+ 				var sel = this.getEditorSelection();
+-				editor.setContents(editor.clipboard.convert(value));
++				editor.setContents(editor.clipboard.convert(value))
+ 				if (sel) {
+ 					this.setEditorSelection(editor, sel);
+ 				}
+@@ -380,14 +358,14 @@
+ 		}, {
+ 			key: 'getEditorContents',
+ 			value: function getEditorContents() {
+-				return this.editor.getContents();
+-			}
++				return this.editor.getContents()
++			},
+ 		}, {
+ 			key: 'setEditorSelection',
+ 			value: function setEditorSelection(editor, range) {
+ 				if (range) {
+-					editor.setSelection(range.index, range.length, range.source);
+-				}
++					editor.setSelection(range.index, range.length, range.source)
++				};
+ 			}
+ 		}, {
+ 			key: 'getEditorSelection',
+@@ -401,9 +379,9 @@
+ 		}, {
+ 			key: 'getEditingArea',
+ 			value: function getEditingArea() {
+-				return _reactDom2.default.findDOMNode(this.editingArea);
+-			}
++				return this.editingAreaRef.current;
++			},
+ 		}, {
+ 			key: 'getEditor',
+ 			value: function getEditor() {
+@@ -415,7 +393,7 @@
+ 				if (this.props.onFocus) {
+ 					this.props.onFocus(range, source, editor);
+ 				}
+-			}
++			},
+ 		}, {
+ 			key: 'onEditorBlur',
+ 			value: function onEditorBlur(previousRange, source, editor) {
+@@ -423,7 +401,7 @@
+ 				if (this.props.onBlur) {
+ 					this.props.onBlur(previousRange, source, editor);
+ 				}
+-			}
++			},
+ 		}, {
+ 			key: 'onEditorChange',
+ 			value: function onEditorChange(value, delta, source, editor) {
+@@ -441,7 +419,7 @@
+ 				if (this.props.onChange) {
+ 					this.props.onChange(value, delta, source, editor.getContents());
+ 				}
+-			}
++			},
+ 		}, {
+ 			key: 'onEditorChangeSelection',
+ 			value: function onEditorChangeSelection(range, source, editor) {
+@@ -450,22 +428,14 @@
+ 					var formats = editor.getFormat(range);
+ 					this.props.onChangeSelection(range, source, editor.getFormat(range));
+ 				}
+-			}
++			},
+ 		}, {
+ 			key: 'onEditorCompositionStart',
+ 			value: function onEditorCompositionStart() {
+-				this.setState({ composition: true });
++				this.setState({ composition: true })
+ 			}
+-		}, {
+-			key: 'onEditorCompositionEnd',
+-			value: function onEditorCompositionEnd() {
+-				this.setState({ composition: false });
+-				var editorChange = this.onEditorChange;
+-				var editorChangeSelection = this.onEditorChangeSelection;
+-
+-				this.debouncedEditorChange.cancel();
+-				this.debouncedEditorChange(editorChange, editorChangeSelection);
+-			}
++			// We can't use onCompositionEnd since the layout is not settled at
++			// that time. Using a timeout to wait for the DOM to be updated.
+ 		}, {
+ 			key: 'render',
+ 			value: function render() {
+@@ -475,7 +445,7 @@
+ 					_this6.props.style,
+ 					{
+ 						height: this.isControlled() ? 'auto' : ''
+-					}
++					},
+ 				),
+ 				onKeyPress: this.props.onKeyPress,
+ 				onKeyDown: this.props.onKeyDown,
+@@ -491,37 +461,37 @@
+ 						className: 'ql-editor',
+ 						ref: function ref(el) {
+ 							_this6.editingArea = el;
++							_this6.editingAreaRef.current = el
+ 						},
+ 						dangerouslySetInnerHTML: { __html: this.getEditorContents() }
+-					})
+-				]
++					}),
++				]),
+ 			);
+-			}
++		}
+ 		}]);
+ 
+ 		return QuillComponent;
+-	}(_react2.default.Component);
++	}(_react2.default.Component)
+ 
+-QuillComponent.propTypes = {
++QuillComponent.displayName = 'Quill';
++exports.default = QuillComponent;
++QuillComponent.defaultProps = {
+ 	theme: 'snow',
+ 	modules: {},
+ 	readOnly: false,
+-	debounce: false
+-};
+-QuillComponent.displayName = 'Quill';
+-exports.default = QuillComponent;
++	debounce: false,
++};
 +
-+	getEditorNode: function() {
-+		return this.editor;
- 	}
+ 
+ QuillComponent.Quill = _quill2.default;
+-
+-QuillComponent.register = function (name, statics, supress) {
++QuillComponent.register = function (name, statics, supress) { 
+ 	QuillComponent.Quill.register(name, statics, supress);
  };
+ 
+-QuillComponent.prototype.getEditor = function () {
++QuillComponent.prototype.getEditor = function() {
+ 	return this.editor;
+ };
+ 
+-QuillComponent.prototype.getEditingArea = function () {
+-	return _reactDom2.default.findDOMNode(this.editingArea);
++QuillComponent.prototype.getEditingArea = function() {
++	return this.editingAreaRef.current
+ };
+-module.exports = exports['default'];
++module.exports = exports['default']
+\ No newline at end of file
