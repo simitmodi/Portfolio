@@ -61,7 +61,7 @@ const BlogCard = ({ post, index }: BlogCardProps) => {
         </DialogHeader>
         <ScrollArea className="flex-grow pr-6 -mr-6">
           <div 
-            className="prose dark:prose-invert max-w-none" 
+            className="prose dark:prose-invert max-w-none text-white" 
             dangerouslySetInnerHTML={{ __html: post.content }} 
           />
         </ScrollArea>
