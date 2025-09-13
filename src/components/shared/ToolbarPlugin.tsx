@@ -4,21 +4,19 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useCallback, useEffect, useState }from 'react';
 import {
-  SELECTION_CHANGE_COMMAND,
-  FORMAT_TEXT_COMMAND,
-  FORMAT_ELEMENT_COMMAND,
   $getSelection,
   $isRangeSelection,
+  FORMAT_ELEMENT_COMMAND,
+  FORMAT_TEXT_COMMAND,
+  SELECTION_CHANGE_COMMAND,
   type LexicalEditor,
-  INSERT_TEXT_COMMAND,
 } from 'lexical';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import {
   $isListNode,
-  ListNode,
-  INSERT_UNORDERED_LIST_COMMAND,
   INSERT_ORDERED_LIST_COMMAND,
-  REMOVE_LIST_COMMAND
+  INSERT_UNORDERED_LIST_COMMAND,
+  ListNode,
 } from '@lexical/list';
 import { $getNearestNodeOfType } from '@lexical/utils';
 import {
@@ -94,7 +92,12 @@ export default function ToolbarPlugin() {
   }, [editor, isLink]);
 
   const onEmojiClick = (emojiData: EmojiClickData, event: MouseEvent) => {
-    editor.dispatchCommand(INSERT_TEXT_COMMAND, emojiData.emoji);
+    editor.update(() => {
+        const selection = $getSelection();
+        if ($isRangeSelection(selection)) {
+            selection.insertText(emojiData.emoji);
+        }
+    });
   };
 
 
@@ -217,3 +220,5 @@ function getSelectedNode(selection: any) {
     return $isRangeSelection(selection) ? focusNode : anchorNode;
   }
 }
+
+    
