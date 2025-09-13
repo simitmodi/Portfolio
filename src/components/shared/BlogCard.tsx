@@ -54,7 +54,7 @@ const BlogCard = ({ post, index }: BlogCardProps) => {
           </DialogTrigger>
         </CardFooter>
       </Card>
-      <DialogContent className="sm:max-w-3xl h-[90vh] flex flex-col bg-background/20 backdrop-blur-lg">
+      <DialogContent className="sm:max-w-3xl h-[90vh] flex flex-col bg-white/5 dark:bg-black/5 backdrop-blur-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-headline text-primary">{post.title}</DialogTitle>
           <p className="text-sm text-muted-foreground">{format(parseISO(post.date), "MMMM d, yyyy")}</p>
