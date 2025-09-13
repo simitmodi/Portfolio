@@ -51,7 +51,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       <CardFooter>
         <div className="flex space-x-2 w-full">
           {project.githubUrl && (
-             <Button asChild variant="default" className="flex-1 transition-transform duration-200 ease-out hover:-translate-y-0.5">
+             <Button asChild variant="default" className="w-full transition-transform duration-200 ease-out hover:-translate-y-0.5">
               <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                 <Github className="mr-2 h-4 w-4" /> Source Code
               </Link>
