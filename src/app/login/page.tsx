@@ -27,13 +27,12 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
       toast({
         title: 'Login Successful',
-        description: 'Redirecting to your inbox...',
+        description: 'Redirecting to your admin dashboard...',
       });
-      router.push('/inbox');
+      router.push('/admin'); // Redirect to the new admin dashboard
     } catch (error) {
       console.error('Login error:', error);
       let errorMessage = 'An unexpected error occurred. Please try again.';
-      // Check if error is a Firebase error
       if (error && typeof error === 'object' && 'code' in error) {
         const firebaseError = error as { code: string };
         switch (firebaseError.code) {
@@ -67,7 +66,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm mx-auto shadow-2xl">
         <CardHeader>
           <CardTitle className="text-2xl font-headline text-primary">Admin Login</CardTitle>
-          <CardDescription>Enter your credentials to view messages.</CardDescription>
+          <CardDescription>Enter your credentials to manage your site.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-6">

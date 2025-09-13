@@ -41,6 +41,7 @@ export default function InboxPage() {
     );
   }
 
+  // Redirect to admin dashboard if user is logged in
   if (user) {
     return <Inbox />;
   }
