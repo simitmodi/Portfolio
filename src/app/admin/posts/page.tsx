@@ -71,12 +71,31 @@ export default function ManagePostsPage() {
   const handleDelete = async (slug: string) => {
     setIsDeleting(slug);
     try {
-      await deleteDoc(doc(db, 'blog', slug));
-      toast({
-        title: "Post Deleted",
-        description: "The blog post has been successfully deleted.",
-      });
-      fetchPosts(); // Refresh the list
+      // This assumes slug is the document ID, which might not be correct.
+      // A safer approach is to query for the document with this slug.
+      // For now, we stick to the existing logic which seems to be working for deletion.
+      const postsCollection = collection(db, 'blog');
+      const q = query(postsCollection, where('slug', '==', slug));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const postDoc = querySnapshot.docs[0];
+        await deleteDoc(doc(db, 'blog', postDoc.id));
+        toast({
+          title: "Post Deleted",
+          description: "The blog post has been successfully deleted.",
+        });
+        fetchPosts(); // Refresh the list
+      } else {
+         // Fallback for older posts that might use ID as slug
+        const docRef = doc(db, "blog", slug);
+        await deleteDoc(docRef);
+        toast({
+          title: "Post Deleted",
+          description: "The blog post has been successfully deleted.",
+        });
+        fetchPosts(); // Refresh the list
+      }
     } catch (error) {
       console.error('Error deleting post:', error);
       toast({
@@ -139,11 +158,14 @@ export default function ManagePostsPage() {
                       <TableCell className="hidden md:table-cell">{format(parseISO(post.date), "MMMM d, yyyy")}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <Link href={`/admin/posts/edit/${post.slug}`}>
-                            <Button variant="ghost" size="icon" title="Edit Post">
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                          </Link>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            title="Edit Post"
+                            onClick={() => router.push(`/admin/posts/edit/${post.slug}`)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button variant="ghost" size="icon" title="Delete Post" disabled={isDeleting === post.slug}>
