@@ -1,13 +1,10 @@
 
 'use client';
-import Link from 'next/link';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { BlogPost } from '@/types';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 import anime from 'animejs';
-import { ArrowRight } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 
 interface BlogCardProps {
@@ -44,13 +41,6 @@ const BlogCard = ({ post, index }: BlogCardProps) => {
       <CardContent className="flex-grow">
         <p className="text-sm text-foreground/80 line-clamp-4">{post.excerpt}</p>
       </CardContent>
-      <CardFooter>
-        <Button asChild variant="link" className="px-0 transition-transform duration-200 ease-out hover:translate-x-1">
-          <Link href={`/blog/${post.slug}`}>
-            Read More <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

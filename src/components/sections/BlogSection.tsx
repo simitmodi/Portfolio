@@ -2,12 +2,10 @@
 'use client';
 import SectionTitle from '@/components/shared/SectionTitle';
 import BlogCard from '@/components/shared/BlogCard';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Loader2 } from 'lucide-react';
-import Link from 'next/link';
+import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { BlogPost } from '@/types';
-import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
+import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 const BlogSection = () => {
@@ -57,22 +55,13 @@ const BlogSection = () => {
             <Loader2 className="h-12 w-12 animate-spin text-primary" />
           </div>
         ) : latestPosts.length > 0 ? (
-          <>
-            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center mb-12">
-              {latestPosts.map((post, index) => (
-                <div key={post.slug} className="w-full max-w-lg">
-                  <BlogCard post={post} index={index} />
-                </div>
-              ))}
-            </div>
-            <div className="text-center">
-              <Button asChild size="lg" className="transition-transform duration-200 ease-out hover:-translate-y-0.5">
-                <Link href="/blog">
-                  View All Posts <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </div>
-          </>
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            {latestPosts.map((post, index) => (
+              <div key={post.slug} className="w-full max-w-lg">
+                <BlogCard post={post} index={index} />
+              </div>
+            ))}
+          </div>
         ) : (
           <p className="text-center text-foreground/70">
             No blog posts to display yet.

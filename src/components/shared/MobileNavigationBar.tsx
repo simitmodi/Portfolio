@@ -13,7 +13,6 @@ import {
 import { Menu } from 'lucide-react';
 import { portfolioConfig } from '@/data/portfolioConfig';
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
 import { LiveTime, LiveWeather } from './LiveClock';
 
 const navItems = [

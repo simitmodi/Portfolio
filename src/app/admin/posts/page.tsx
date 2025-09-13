@@ -153,14 +153,7 @@ export default function ManagePostsPage() {
                   {posts.map((post) => (
                     <TableRow key={post.slug}>
                       <TableCell className="font-medium max-w-xs truncate">
-                        <Link 
-                          href={`/blog/${post.slug}?${post.category === 'personal' ? 'view=private' : ''}`} 
-                          className="hover:underline" 
-                          target="_blank" 
-                          title="View Post"
-                        >
-                          {post.title}
-                        </Link>
+                        {post.title}
                       </TableCell>
                       <TableCell>
                         <Badge variant={post.category === 'personal' ? 'secondary' : 'default'}>
