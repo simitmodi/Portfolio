@@ -9,11 +9,12 @@ import { Loader2, Inbox, Edit, LogOut, Newspaper, BookText, User, MessageSquare,
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { collection, getDocs, orderBy, query, limit } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import type { BlogPost } from '@/types';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 
 interface Stats {
@@ -23,11 +24,15 @@ interface Stats {
   messages: number;
 }
 
+type FilterType = 'all' | 'professional' | 'personal';
+
 export default function AdminDashboardPage() {
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
   const [stats, setStats] = useState<Stats | null>(null);
-  const [recentPosts, setRecentPosts] = useState<BlogPost[]>([]);
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [isDataLoading, setIsDataLoading] = useState(true);
 
   useEffect(() => {
@@ -41,16 +46,15 @@ export default function AdminDashboardPage() {
       const fetchData = async () => {
         setIsDataLoading(true);
         try {
-          // Fetch posts for stats and recent posts list
           const postsCollection = collection(db, 'blog');
           const postsQuery = query(postsCollection, orderBy('createdAt', 'desc'));
           const postsSnapshot = await getDocs(postsQuery);
           
           let professionalCount = 0;
           let personalCount = 0;
-          const allPosts: BlogPost[] = postsSnapshot.docs.map(doc => {
+          const fetchedPosts: BlogPost[] = postsSnapshot.docs.map(doc => {
             const data = doc.data() as BlogPost;
-            const category = data.category || 'professional'; // Default to professional
+            const category = data.category || 'professional';
             
             if (category === 'professional') {
               professionalCount++;
@@ -65,21 +69,20 @@ export default function AdminDashboardPage() {
             };
           });
 
-          // Fetch contacts for stats
           const contactsSnapshot = await getDocs(collection(db, 'contacts'));
 
           setStats({
-            totalPosts: allPosts.length,
+            totalPosts: fetchedPosts.length,
             professionalPosts: professionalCount,
             personalPosts: personalCount,
             messages: contactsSnapshot.size,
           });
 
-          setRecentPosts(allPosts.slice(0, 5));
+          setAllPosts(fetchedPosts);
+          setFilteredPosts(fetchedPosts); // Initially show all posts
 
         } catch (err) {
           console.error("Failed to fetch dashboard data:", err);
-          // Handle toast notification for error if needed
         } finally {
           setIsDataLoading(false);
         }
@@ -87,6 +90,14 @@ export default function AdminDashboardPage() {
       fetchData();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (activeFilter === 'all') {
+      setFilteredPosts(allPosts);
+    } else {
+      setFilteredPosts(allPosts.filter(post => post.category === activeFilter));
+    }
+  }, [activeFilter, allPosts]);
 
 
   const handleLogout = async () => {
@@ -129,7 +140,6 @@ export default function AdminDashboardPage() {
             </Button>
           </header>
 
-          {/* Stats Cards */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -170,7 +180,6 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="grid gap-8 lg:grid-cols-3">
-            {/* Quick Actions */}
             <div className="lg:col-span-1 space-y-4">
                <Card>
                 <CardHeader>
@@ -190,46 +199,56 @@ export default function AdminDashboardPage() {
               </Card>
             </div>
             
-            {/* Recent Posts */}
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Recent Posts</CardTitle>
-                  <CardDescription>Your 5 most recently created or updated posts.</CardDescription>
+                  <CardTitle>Your Posts</CardTitle>
+                  <CardDescription>View, filter, and manage all your posts.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {recentPosts.length > 0 ? (
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Title</TableHead>
-                          <TableHead>Category</TableHead>
-                          <TableHead className="hidden md:table-cell">Date</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {recentPosts.map((post) => (
-                          <TableRow key={post.slug}>
-                            <TableCell className="font-medium max-w-xs truncate">{post.title}</TableCell>
-                            <TableCell>
-                              <Badge variant={post.category === 'personal' ? 'secondary' : 'default'}>
-                                {(post.category || 'professional').charAt(0).toUpperCase() + (post.category || 'professional').slice(1)}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell">{format(new Date(post.date), "MMMM d, yyyy")}</TableCell>
-                            <TableCell className="text-right">
-                              <Button variant="ghost" size="icon" onClick={() => router.push(`/admin/posts/edit?slug=${post.slug}`)}>
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  ) : (
-                     <p className="text-center text-muted-foreground py-12">You have not published any posts yet.</p>
-                  )}
+                  <Tabs value={activeFilter} onValueChange={(value) => setActiveFilter(value as FilterType)}>
+                    <TabsList className="grid w-full grid-cols-3 mb-4">
+                      <TabsTrigger value="all">All</TabsTrigger>
+                      <TabsTrigger value="professional">Professional</TabsTrigger>
+                      <TabsTrigger value="personal">Personal</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value={activeFilter}>
+                      {filteredPosts.length > 0 ? (
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Title</TableHead>
+                              <TableHead>Category</TableHead>
+                              <TableHead className="hidden md:table-cell">Date</TableHead>
+                              <TableHead className="text-right">Actions</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {filteredPosts.map((post) => (
+                              <TableRow key={post.slug}>
+                                <TableCell className="font-medium max-w-xs truncate">{post.title}</TableCell>
+                                <TableCell>
+                                  <Badge variant={post.category === 'personal' ? 'secondary' : 'default'}>
+                                    {(post.category || 'professional').charAt(0).toUpperCase() + (post.category || 'professional').slice(1)}
+                                  </Badge>
+                                </TableCell>
+                                <TableCell className="hidden md:table-cell">{format(new Date(post.date), "MMMM d, yyyy")}</TableCell>
+                                <TableCell className="text-right">
+                                  <Button variant="ghost" size="icon" onClick={() => router.push(`/admin/posts/edit?slug=${post.slug}`)}>
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      ) : (
+                         <p className="text-center text-muted-foreground py-12">
+                          No {activeFilter !== 'all' ? activeFilter : ''} posts found.
+                         </p>
+                      )}
+                    </TabsContent>
+                  </Tabs>
                 </CardContent>
               </Card>
             </div>
