@@ -120,7 +120,7 @@ export default function AdminDashboardPage() {
         <div className="max-w-7xl mx-auto">
           <header className="flex flex-col sm:flex-row justify-between sm:items-center mb-8 gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-primary font-headline">Welcome, Admin!</h1>
+              <h1 className="text-3xl font-bold text-primary font-headline">Welcome, Simit!</h1>
               <p className="text-muted-foreground">Here's your personal space overview.</p>
             </div>
             <Button variant="outline" onClick={handleLogout}>
@@ -214,7 +214,7 @@ export default function AdminDashboardPage() {
                             <TableCell className="font-medium max-w-xs truncate">{post.title}</TableCell>
                             <TableCell>
                               <Badge variant={post.category === 'personal' ? 'secondary' : 'default'}>
-                                {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
+                                {(post.category || 'professional').charAt(0).toUpperCase() + (post.category || 'professional').slice(1)}
                               </Badge>
                             </TableCell>
                             <TableCell className="hidden md:table-cell">{format(new Date(post.date), "MMMM d, yyyy")}</TableCell>
