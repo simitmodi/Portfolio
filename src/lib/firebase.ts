@@ -1,3 +1,4 @@
+
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
@@ -10,7 +11,6 @@ const firebaseConfig = {
   "storageBucket": "profolio-dy2gh.firebasestorage.app",
   "apiKey": "AIzaSyCEa7qf3JHivJp0T_Nz6IvsSeu5BWFFR8Y",
   "authDomain": "profolio-dy2gh.firebaseapp.com",
-  "measurementId": "",
   "messagingSenderId": "554597720213"
 };
 
