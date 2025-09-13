@@ -2,11 +2,9 @@
 import { initializeApp, getApps, getApp, type FirebaseOptions } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '.env.local' });
 
 // Your web app's Firebase configuration
+// This correctly uses the Next.js mechanism for exposing environment variables to the client.
 const firebaseConfig: FirebaseOptions = {
   projectId: "profolio-dy2gh",
   appId: "1:554597720213:web:1a9db513ff2ae344a47b9c",
