@@ -6,28 +6,32 @@ import { collection, getDocs, query, where, getDoc, doc } from 'firebase/firesto
 import { db } from '@/lib/firebase';
 import type { BlogPost } from '@/types';
 
-// This defines the shape of the props for the page
+// This defines the shape of the props that Next.js will pass to the page
 interface PageProps {
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-// Generate static paths for all blog posts
+// This function tells Next.js which blog post pages to build
 export async function generateStaticParams() {
   try {
     const postsCollection = collection(db, 'blog');
     const postsSnapshot = await getDocs(postsCollection);
+    
+    // The function must return an array of objects, where each object has a 'slug' property that is a string
     const slugs = postsSnapshot.docs.map(doc => ({
       slug: doc.data().slug || doc.id,
     }));
+    
     return slugs;
   } catch (error) {
     console.error("Error fetching slugs for generateStaticParams:", error);
+    // Return an empty array in case of an error to prevent build failure
     return [];
   }
 }
 
-
+// This function fetches the data for a single blog post
 async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost | null> {
   try {
     const postsCollection = collection(db, 'blog');
@@ -46,8 +50,8 @@ async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost |
       }
     }
     
-    if (postDoc) {
-      const data = postDoc.data() as Omit<BlogPost, 'slug'>;
+    if (postDoc?.exists()) {
+      const data = postDoc.data() as Omit<BlogPost, 'slug' | 'id'>;
       const category = data.category || 'professional';
       
       // If it's a public view, only show professional posts
@@ -72,6 +76,7 @@ async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost |
   }
 }
 
+// This function generates the metadata (like the page title) for the post
 export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const isPrivateView = searchParams.view === 'private';
   const post = await getPost(params.slug, isPrivateView);
@@ -88,6 +93,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   };
 }
 
+// This is the main page component
 export default async function BlogPostPage({ params, searchParams }: PageProps) {
   const isPrivateView = searchParams.view === 'private';
   const post = await getPost(params.slug, isPrivateView);
