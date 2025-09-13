@@ -15,6 +15,8 @@ import { useState } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 import anime from 'animejs';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -51,26 +53,18 @@ const ContactForm = () => {
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+      await addDoc(collection(db, "contacts"), {
+        ...data,
+        createdAt: serverTimestamp(),
       });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Something went wrong');
-      }
       
       toast({
         title: "Message Sent!",
-        description: "Thanks for reaching out. I'll get back to you soon.",
+        description: "Thanks for reaching out. Your message has been saved.",
       });
       form.reset();
     } catch (error) {
+      console.error('Error adding document: ', error);
       let errorMessage = "Failed to send message. Please try again later.";
       if (error instanceof Error) {
         errorMessage = error.message;
@@ -80,7 +74,6 @@ const ContactForm = () => {
         description: errorMessage,
         variant: "destructive",
       });
-      console.error('Form submission error:', error);
     } finally {
       setIsSubmitting(false);
     }
