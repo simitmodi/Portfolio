@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -8,9 +7,10 @@ import { auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Home } from 'lucide-react';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -23,7 +23,6 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     
-    // Attempt to sign in with Firebase
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast({
@@ -34,13 +33,14 @@ export default function LoginPage() {
     } catch (error) {
       console.error('Login error:', error);
       let errorMessage = 'An unexpected error occurred. Please try again.';
-      // Basic error handling for common Firebase auth errors
       if (error instanceof Error && 'code' in error) {
         const code = (error as {code: string}).code;
         if (code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-credential') {
           errorMessage = 'Invalid credentials. Please check your email and password.';
         } else if (code === 'auth/too-many-requests') {
           errorMessage = 'Too many failed login attempts. Please try again later.';
+        } else if (code === 'auth/invalid-api-key' || code === 'auth/configuration-not-found') {
+            errorMessage = 'Firebase configuration error. Please contact the administrator.';
         }
       }
       
@@ -93,6 +93,14 @@ export default function LoginPage() {
             </Button>
           </form>
         </CardContent>
+        <CardFooter className="flex flex-col gap-4 pt-4 border-t">
+          <Link href="/" className="w-full">
+            <Button variant="outline" className="w-full">
+              <Home className="mr-2 h-4 w-4" />
+              Return to Home
+            </Button>
+          </Link>
+        </CardFooter>
       </Card>
     </div>
   );

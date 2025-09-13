@@ -7,9 +7,13 @@ import { db, auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Inbox as InboxIcon, LogOut } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
+import { Loader2, Inbox as InboxIcon, LogOut, Mail } from 'lucide-react';
+import { format, formatDistanceToNow } from 'date-fns';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+
 
 interface Message {
   id: string;
@@ -19,9 +23,14 @@ interface Message {
   createdAt: Date;
 }
 
+const getInitials = (name: string) => {
+  return name.split(' ').map(n => n[0]).join('').toUpperCase();
+};
+
 export default function Inbox() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,7 +41,6 @@ export default function Inbox() {
         const querySnapshot = await getDocs(q);
         const fetchedMessages = querySnapshot.docs.map(doc => {
           const data = doc.data();
-          // Convert Firestore Timestamp to JS Date
           const createdAt = data.createdAt instanceof Timestamp ? data.createdAt.toDate() : new Date();
           return {
             id: doc.id,
@@ -43,6 +51,9 @@ export default function Inbox() {
           };
         });
         setMessages(fetchedMessages);
+        if (fetchedMessages.length > 0) {
+          setSelectedMessage(fetchedMessages[0]);
+        }
       } catch (error) {
         console.error("Error fetching messages:", error);
       } finally {
@@ -59,57 +70,94 @@ export default function Inbox() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8">
-      <div className="max-w-4xl mx-auto">
-        <header className="flex justify-between items-center mb-8">
-          <div className='flex items-center gap-3'>
-            <InboxIcon className="h-8 w-8 text-primary" />
-            <h1 className="text-4xl font-headline font-bold text-primary">Inbox</h1>
-          </div>
-          <Button variant="outline" onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </Button>
-        </header>
-
-        <Card className="shadow-2xl">
-          <CardHeader>
-            <CardTitle>Received Messages</CardTitle>
-            <CardDescription>
-              {isLoading ? 'Loading messages...' : `You have ${messages.length} messages.`}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+    <div className="min-h-screen bg-secondary/30 text-foreground flex flex-col">
+      <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6 sticky top-0 z-10">
+        <div className='flex items-center gap-3'>
+          <InboxIcon className="h-6 w-6 text-primary" />
+          <h1 className="text-2xl font-headline font-bold text-primary">Inbox</h1>
+        </div>
+        <Button variant="outline" onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
+        </Button>
+      </header>
+      
+      <div className="flex-1 grid md:grid-cols-[300px_1fr] lg:grid-cols-[350px_1fr]">
+        {/* Message List Sidebar */}
+        <div className="border-r bg-background">
+            <div className="p-4">
+                <h2 className="text-xl font-semibold">Messages ({messages.length})</h2>
+            </div>
+            <Separator />
             {isLoading ? (
-              <div className="flex justify-center items-center h-40">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              </div>
+                 <div className="flex justify-center items-center h-[calc(100vh-12rem)]">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                 </div>
             ) : messages.length === 0 ? (
-              <p className="text-center text-foreground/70 py-10">Your inbox is empty.</p>
+                <div className="text-center text-foreground/70 p-6">Your inbox is empty.</div>
             ) : (
-              <Accordion type="single" collapsible className="w-full">
-                {messages.map((msg) => (
-                  <AccordionItem key={msg.id} value={msg.id}>
-                    <AccordionTrigger>
-                      <div className="flex justify-between w-full pr-4">
-                        <div className="flex items-center gap-4">
-                          <span className="font-semibold text-primary">{msg.name}</span>
-                          <span className="text-sm text-foreground/70 truncate hidden sm:inline">{msg.email}</span>
+                <ScrollArea className="h-[calc(100vh-5rem)]">
+                    {messages.map(msg => (
+                        <div
+                            key={msg.id}
+                            onClick={() => setSelectedMessage(msg)}
+                            className={cn(
+                                "cursor-pointer border-b p-4 transition-colors",
+                                selectedMessage?.id === msg.id 
+                                    ? "bg-primary/10" 
+                                    : "hover:bg-secondary/50"
+                            )}
+                        >
+                            <div className="flex justify-between items-start">
+                                <span className="font-semibold text-primary text-md truncate">{msg.name}</span>
+                                <span className="text-xs text-foreground/60 flex-shrink-0 ml-2">
+                                    {formatDistanceToNow(msg.createdAt, { addSuffix: true })}
+                                </span>
+                            </div>
+                            <p className="text-sm text-foreground/70 truncate">{msg.email}</p>
                         </div>
-                        <span className="text-sm text-foreground/70 text-right">
-                          {formatDistanceToNow(msg.createdAt, { addSuffix: true })}
-                        </span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="p-4 bg-secondary/30 rounded-md">
-                      <p className="whitespace-pre-wrap">{msg.message}</p>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+                    ))}
+                </ScrollArea>
             )}
-          </CardContent>
-        </Card>
+        </div>
+
+        {/* Message Detail View */}
+        <div className="flex flex-col">
+          {isLoading ? (
+            <div className="flex-1 flex justify-center items-center">
+              <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            </div>
+          ) : selectedMessage ? (
+            <>
+              <div className="p-4 md:p-6 border-b">
+                <div className="flex items-start gap-4">
+                    <Avatar className="h-12 w-12">
+                        <AvatarFallback className="bg-primary text-primary-foreground text-lg">{getInitials(selectedMessage.name)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                        <h2 className="text-xl lg:text-2xl font-semibold">{selectedMessage.name}</h2>
+                        <p className="text-sm text-foreground/70">{selectedMessage.email}</p>
+                    </div>
+                    <div className="text-right text-xs text-foreground/60">
+                        <div>{format(selectedMessage.createdAt, "PP")}</div>
+                        <div>{format(selectedMessage.createdAt, "p")}</div>
+                    </div>
+                </div>
+              </div>
+              <ScrollArea className="flex-1">
+                <div className="p-4 md:p-6 whitespace-pre-wrap text-md leading-relaxed">
+                  {selectedMessage.message}
+                </div>
+              </ScrollArea>
+            </>
+          ) : (
+            <div className="flex-1 flex flex-col justify-center items-center text-center text-foreground/70 p-8">
+              <Mail className="h-16 w-16 mb-4" />
+              <h2 className="text-2xl font-semibold">Select a message</h2>
+              <p>Choose a message from the list to view its content.</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
