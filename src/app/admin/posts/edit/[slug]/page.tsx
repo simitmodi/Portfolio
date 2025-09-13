@@ -47,6 +47,10 @@ export default function EditPostPage() {
       const fetchPost = async () => {
         setIsLoadingPost(true);
         try {
+          // In a static export, Firestore queries by slug field are more reliable.
+          // Fallback to doc(db, 'blog', slug) might not work as expected if slug is not the doc ID.
+          // A more robust solution might require querying the collection.
+          // For simplicity, we assume slug is the document ID for editing.
           const postRef = doc(db, 'blog', slug);
           const postSnap = await getDoc(postRef);
 
