@@ -1,4 +1,3 @@
-
 export interface Project {
   id: string;
   title: string;
@@ -19,4 +18,5 @@ export interface BlogPost {
   excerpt: string;
   date: string;
   content: string;
+  createdAt?: string;
 }

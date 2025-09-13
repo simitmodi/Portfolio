@@ -4,7 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Loader2, Inbox, Edit, LogOut } from 'lucide-react';
+import { Loader2, Inbox, Edit, LogOut, Newspaper } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -53,16 +53,22 @@ export default function AdminDashboardPage() {
             <CardDescription>What would you like to do?</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Link href="/inbox" className="block">
-              <Button className="w-full" size="lg">
-                <Inbox className="mr-2 h-5 w-5" />
-                View Messages
-              </Button>
-            </Link>
             <Link href="/admin/new-post" className="block">
-              <Button className="w-full" size="lg" variant="secondary">
+              <Button className="w-full" size="lg">
                 <Edit className="mr-2 h-5 w-5" />
                 Write New Post
+              </Button>
+            </Link>
+            <Link href="/admin/posts" className="block">
+              <Button className="w-full" size="lg" variant="secondary">
+                <Newspaper className="mr-2 h-5 w-5" />
+                Manage Posts
+              </Button>
+            </Link>
+            <Link href="/inbox" className="block">
+              <Button className="w-full" size="lg" variant="secondary">
+                <Inbox className="mr-2 h-5 w_5" />
+                View Messages
               </Button>
             </Link>
             <Button className="w-full mt-4" variant="outline" onClick={handleLogout}>
