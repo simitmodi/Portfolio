@@ -1,4 +1,3 @@
-
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import BlogPostClient from '@/components/shared/BlogPostClient';
@@ -7,10 +6,26 @@ import { db } from '@/lib/firebase';
 import type { BlogPost } from '@/types';
 
 // This defines the shape of the props for the page
-interface BlogPostPageProps {
+interface PageProps {
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }
+
+// Generate static paths for all blog posts
+export async function generateStaticParams() {
+  try {
+    const postsCollection = collection(db, 'blog');
+    const postsSnapshot = await getDocs(postsCollection);
+    const slugs = postsSnapshot.docs.map(doc => ({
+      slug: doc.data().slug || doc.id,
+    }));
+    return slugs;
+  } catch (error) {
+    console.error("Error fetching slugs for generateStaticParams:", error);
+    return [];
+  }
+}
+
 
 async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost | null> {
   try {
@@ -56,7 +71,7 @@ async function getPost(slug: string, isPrivateView: boolean): Promise<BlogPost |
   }
 }
 
-export async function generateMetadata({ params, searchParams }: BlogPostPageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const isPrivateView = searchParams.view === 'private';
   const post = await getPost(params.slug, isPrivateView);
 
@@ -72,7 +87,7 @@ export async function generateMetadata({ params, searchParams }: BlogPostPagePro
   };
 }
 
-export default async function BlogPostPage({ params, searchParams }: BlogPostPageProps) {
+export default async function BlogPostPage({ params, searchParams }: PageProps) {
   const isPrivateView = searchParams.view === 'private';
   const post = await getPost(params.slug, isPrivateView);
 
