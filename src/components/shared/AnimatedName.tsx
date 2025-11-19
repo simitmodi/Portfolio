@@ -1,9 +1,7 @@
-
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import anime from 'animejs';
 
 interface AnimatedNameProps {
@@ -12,24 +10,49 @@ interface AnimatedNameProps {
 }
 
 const AnimatedName = ({ text, className }: AnimatedNameProps) => {
-  const [titleRef] = useScrollAnimation<HTMLHeadingElement>({ 
-    triggerOnce: false, 
-    threshold: 0.1,
-    animation: {
-      targets: '.letter',
-      opacity: [0,1],
-      translateY: [40,0],
-      translateZ: 0,
-      scale: [0.8, 1],
-      delay: anime.stagger(40, {start: 300}),
-      easing: 'easeOutExpo',
-    }
-  });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const chars = containerRef.current.querySelectorAll('.letter');
+    let timeoutId: NodeJS.Timeout;
+    let animation: anime.AnimeInstance;
+
+    const runAnimation = () => {
+      animation = anime({
+        targets: chars,
+        translateY: [
+          { value: '-2.75rem', easing: 'easeOutExpo', duration: 600 },
+          { value: 0, easing: 'easeOutBounce', duration: 800, delay: 100 }
+        ],
+        rotate: {
+          value: ['-1turn', '0turn'],
+          duration: 1400,
+          easing: 'easeInOutCirc'
+        },
+        delay: anime.stagger(50),
+        loop: false, // Disable built-in loop
+        complete: () => {
+          // Manually trigger next loop after 6 seconds
+          timeoutId = setTimeout(runAnimation, 6000);
+        }
+      });
+    };
+
+    runAnimation();
+
+    // Cleanup function
+    return () => {
+      clearTimeout(timeoutId);
+      if (animation) animation.pause();
+    };
+  }, [text]);
 
   const letters = text.split('').map((char, index) => (
-    <span 
+    <span
       key={index}
-      className="letter inline-block opacity-0"
+      className="letter inline-block origin-bottom"
       style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}
     >
       {char}
@@ -37,7 +60,7 @@ const AnimatedName = ({ text, className }: AnimatedNameProps) => {
   ));
 
   return (
-    <div ref={titleRef} className={cn("flex justify-center items-center", className)}>
+    <div ref={containerRef} className={cn("flex justify-center items-center", className)}>
       {letters}
     </div>
   );
