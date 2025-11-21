@@ -54,15 +54,15 @@ const BlogCard = ({ post, index }: BlogCardProps) => {
           </DialogTrigger>
         </CardFooter>
       </Card>
-      <DialogContent className="sm:max-w-3xl h-[90vh] flex flex-col bg-white/5 dark:bg-black/5 backdrop-blur-xl">
+      <DialogContent className="sm:max-w-3xl h-[90vh] flex flex-col bg-black/95 text-white dark:bg-black/5 dark:text-foreground backdrop-blur-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-headline text-primary">{post.title}</DialogTitle>
           <p className="text-sm text-muted-foreground">{format(parseISO(post.date), "MMMM d, yyyy")}</p>
         </DialogHeader>
         <ScrollArea className="flex-grow pr-6 -mr-6">
-          <div 
-            className="prose dark:prose-invert max-w-none text-white" 
-            dangerouslySetInnerHTML={{ __html: post.content }} 
+          <div
+            className="prose dark:prose-invert max-w-none text-white dark:text-foreground prose-strong:text-inherit prose-headings:text-inherit"
+            dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </ScrollArea>
       </DialogContent>
