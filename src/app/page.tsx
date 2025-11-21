@@ -21,10 +21,13 @@ export default function HomePage() {
       <MobileThemeSwitcher />
 
       {/* Desktop-only Live Clock in top right - Combined Pill */}
-      <div className="hidden md:flex fixed top-4 right-4 z-50 items-center rounded-full border border-border/40 bg-background/5 backdrop-blur-xl shadow-ultimate overflow-hidden">
-        <LiveWeather />
-        <Separator orientation="vertical" className="h-10 my-auto bg-border/40" />
-        <LiveTime />
+      <div className="hidden md:flex fixed top-4 right-4 z-50 flex-col items-center justify-center rounded-3xl border border-border/40 bg-background/5 backdrop-blur-xl shadow-ultimate overflow-hidden py-1 px-3 gap-0.5">
+        <span className="text-xs font-headline text-foreground/60 uppercase tracking-wider">Ahmedabad, Gujarat, IN</span>
+        <div className="flex items-center justify-center w-full">
+          <LiveWeather />
+          <Separator orientation="vertical" className="h-8 mx-2 bg-border/40" />
+          <LiveTime />
+        </div>
       </div>
 
       <div className="flex-grow flex flex-col md:ml-48 bg-background">

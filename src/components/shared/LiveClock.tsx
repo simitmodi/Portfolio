@@ -3,31 +3,34 @@
 
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Cloud, Sun, CloudRain, CloudSnow, CloudLightning, Haze } from 'lucide-react';
+import { Cloud, Sun, CloudRain, CloudSnow, CloudLightning, Haze, Moon } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface WeatherData {
-  temperature: number;
-  weathercode: number;
+    temperature: number;
+    weathercode: number;
+    is_day: number;
 }
 
-const WeatherIcon = ({ weathercode }: { weathercode: number }) => {
-  if (weathercode === 0) return <Sun className="w-5 h-5" />; // Clear sky
-  if (weathercode >= 1 && weathercode <= 3) return <Cloud className="w-5 h-5" />; // Mainly clear, partly cloudy, and overcast
-  if ((weathercode >= 51 && weathercode <= 67) || (weathercode >= 80 && weathercode <= 82)) return <CloudRain className="w-5 h-5" />; // Drizzle, Rain, and Showers
-  if (weathercode >= 71 && weathercode <= 77) return <CloudSnow className="w-5 h-5" />; // Snow
-  if (weathercode >= 95 && weathercode <= 99) return <CloudLightning className="w-5 h-5" />; // Thunderstorm
-  return <Haze className="w-5 h-5" />; // Default for fog, etc.
+const WeatherIcon = ({ weathercode, isDay }: { weathercode: number, isDay: number }) => {
+    if (weathercode === 0) {
+        return isDay === 1 ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />;
+    }
+    if (weathercode >= 1 && weathercode <= 3) return <Cloud className="w-5 h-5" />; // Mainly clear, partly cloudy, and overcast
+    if ((weathercode >= 51 && weathercode <= 67) || (weathercode >= 80 && weathercode <= 82)) return <CloudRain className="w-5 h-5" />; // Drizzle, Rain, and Showers
+    if (weathercode >= 71 && weathercode <= 77) return <CloudSnow className="w-5 h-5" />; // Snow
+    if (weathercode >= 95 && weathercode <= 99) return <CloudLightning className="w-5 h-5" />; // Thunderstorm
+    return <Haze className="w-5 h-5" />; // Default for fog, etc.
 }
 
 export const LiveTime = () => {
-    const [dateTime, setDateTime] = useState({ time: '', date: ''});
+    const [dateTime, setDateTime] = useState({ time: '', date: '' });
     const [desktopTime, setDesktopTime] = useState('');
 
     useEffect(() => {
         const updateClock = () => {
             const now = new Date();
-            
+
             const mobileTimeOptions: Intl.DateTimeFormatOptions = {
                 timeZone: 'Asia/Kolkata',
                 hour: '2-digit',
@@ -42,7 +45,7 @@ export const LiveTime = () => {
                 second: '2-digit',
                 hour12: false,
             };
-            
+
             setDateTime({
                 time: now.toLocaleTimeString('en-IN', mobileTimeOptions),
                 date: format(now, "do MMMM, yyyy")
@@ -50,7 +53,7 @@ export const LiveTime = () => {
 
             setDesktopTime(now.toLocaleTimeString('en-IN', desktopTimeOptions));
         };
-        
+
         if (typeof window !== 'undefined') {
             updateClock();
             const timerId = setInterval(updateClock, 1000);
@@ -66,7 +69,7 @@ export const LiveTime = () => {
             </div>
             {/* Desktop Time & Date */}
             <div className="hidden md:flex flex-col items-center justify-center h-16 w-44 p-2 text-center">
-                 {desktopTime ? (
+                {desktopTime ? (
                     <>
                         <span className="text-xl">{desktopTime}</span>
                         <span className="text-xs text-foreground/80">{dateTime.date}</span>
@@ -95,6 +98,7 @@ export const LiveWeather = () => {
                     setWeather({
                         temperature: data.current_weather.temperature,
                         weathercode: data.current_weather.weathercode,
+                        is_day: data.current_weather.is_day,
                     });
                 }
             } catch (error) {
@@ -105,16 +109,16 @@ export const LiveWeather = () => {
         if (typeof window !== 'undefined') {
             fetchWeather();
             // Update weather every 15 minutes
-            const timerId = setInterval(fetchWeather, 60 * 15 * 1000); 
+            const timerId = setInterval(fetchWeather, 60 * 15 * 1000);
             return () => clearInterval(timerId);
         }
     }, []);
-    
+
     return (
         <div className="flex items-center justify-center font-headline">
-             {/* Mobile / Default Weather Pill */}
+            {/* Mobile / Default Weather Pill */}
             <div className="md:hidden flex h-10 w-16 items-center justify-center rounded-full border border-border/40 bg-background/5 backdrop-blur-xl text-sm font-mono px-2 shadow-ultimate">
-                 {weather ? (
+                {weather ? (
                     <div className="flex items-center gap-1">
                         <span>{Math.round(weather.temperature)}°C</span>
                     </div>
@@ -127,7 +131,7 @@ export const LiveWeather = () => {
             <div className="hidden md:flex h-16 w-24 items-center justify-center text-xl px-2">
                 {weather ? (
                     <div className="flex items-center gap-2">
-                        <WeatherIcon weathercode={weather.weathercode} />
+                        <WeatherIcon weathercode={weather.weathercode} isDay={weather.is_day} />
                         <span>{Math.round(weather.temperature)}°C</span>
                     </div>
                 ) : (
